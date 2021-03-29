@@ -5,7 +5,7 @@ class Config(object):
     DEBUG = False
     TESTING = False
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    MONGO_URI = os.environ.get('MONGO_URI')
+    # MONGO_URI = os.environ.get('MONGO_URI')
     SESSION_COOKIE_SECURE = False
 
 class ProductionConfig(Config):

@@ -26,3 +26,9 @@ def not_found(error=None):
 @site.route("/")
 def index():
     return render_template("base_template.html")
+
+@site.route("/dashboard")
+def dashboard():
+    # dataset = pandas.read_csv("../site_data/dummy_data.csv")
+    # print(dataset.head(10))
+    return render_template("dashboard.html")
