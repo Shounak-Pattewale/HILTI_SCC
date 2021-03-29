@@ -11,8 +11,12 @@ import smtplib
 site = Blueprint("site", __name__, template_folder='../templates', static_folder='static',static_url_path='static')
 
 # Custom imports
-# from app import *
-# from app import app
+from app import *
+# from app import df
+
+from .models import *
+tool = Tools()
+
 
 @site.errorhandler(404)
 def not_found(error=None):
@@ -25,6 +29,7 @@ def not_found(error=None):
 
 @site.route("/")
 def index():
+    tool.data()
     return render_template("base_template.html")
 
 @site.route("/dashboard")
