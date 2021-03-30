@@ -4,7 +4,7 @@
 {% block main %}
 <body class="">
   <div class="wrapper" style="position: absolute;">
-    <div class="sidebar" data-color="orange">
+    <div class="sidebar" data-color="blue">
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
     -->
@@ -43,7 +43,7 @@
             </a>
           </li>
           <li>
-            <a href="{{ url_for('site.index') }}">
+            <a href="{{ url_for('site.user_profile') }}">
               <i class="now-ui-icons users_single-02"></i>
               <p>User Profile</p>
             </a>
@@ -60,12 +60,12 @@
               <p>Typography</p>
             </a>
           </li> -->
-          <li class="active-pro">
+          <!-- <li class="active-pro">
             <a href="./upgrade.html">
               <i class="now-ui-icons arrows-1_cloud-download-93"></i>
               <p>Upgrade to PRO</p>
             </a>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
@@ -81,7 +81,7 @@
                 <span class="navbar-toggler-bar bar3"></span>
               </button>
             </div>
-            <a class="navbar-brand" href="#pablo">Dashboard</a>
+            <a class="navbar-brand" href="#">Tool Usage</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -135,7 +135,7 @@
       </nav>
       <!-- End Navbar -->
       <div class="panel-header panel-header-lg">
-        <canvas id="bigDashboardChart"></canvas>
+        <canvas id="myChart1"></canvas>
       </div>
       <div class="content">
         <div class="row">
@@ -158,21 +158,21 @@
               </div>
               <div class="card-body">
                 <div class="chart-area">
-                  <canvas id="myChart"></canvas>
+                  <canvas id="myChart2"></canvas>
                 </div>
               </div>
-              <div class="card-footer">
+              <!-- <div class="card-footer">
                 <div class="stats">
                   <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="col-lg-4 col-md-6">
             <div class="card card-chart">
               <div class="card-header">
-                <h5 class="card-category">Torque</h5>
-                <h4 class="card-title">308.6</h4>
+                <h5 class="card-category">Electricity Consumption</h5>
+                <h4 class="card-title">240.6 (kWH)</h4>
                 <div class="dropdown">
                   <button type="button" class="btn btn-round btn-outline-default dropdown-toggle btn-simple btn-icon no-caret" data-toggle="dropdown">
                     <i class="now-ui-icons loader_gear"></i>
@@ -187,32 +187,32 @@
               </div>
               <div class="card-body">
                 <div class="chart-area">
-                  <canvas id="lineChartExampleWithNumbersAndGrid"></canvas>
+                  <canvas id="myChart3"></canvas>
                 </div>
               </div>
-              <div class="card-footer">
+              <!-- <div class="card-footer">
                 <div class="stats">
                   <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="col-lg-4 col-md-6">
             <div class="card card-chart">
               <div class="card-header">
-                <h5 class="card-category">Rotational speed [rpm]</h5>
-                <h4 class="card-title">42</h4>
+                <h5 class="card-category">Vibration (m/s <sup>2</sup>)</h5>
+                <h4 class="card-title">8.2(m/s <sup>2</sup>)</h4>
               </div>
               <div class="card-body">
                 <div class="chart-area">
-                  <canvas id="barChartSimpleGradientsNumbers"></canvas>
+                  <canvas id="myChart4"></canvas>
                 </div>
               </div>
-              <div class="card-footer">
+              <!-- <div class="card-footer">
                 <div class="stats">
                   <i class="now-ui-icons ui-2_time-alarm"></i> Last 7 days
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -220,8 +220,8 @@
           <div class="col-md-6">
             <div class="card  card-tasks">
               <div class="card-header ">
-                <h5 class="card-category">Backend development</h5>
-                <h4 class="card-title">Tasks</h4>
+                <h5 class="card-category"></h5>
+                <h4 class="card-title">Tool Details</h4>
               </div>
               <div class="card-body ">
                 <div class="table-full-width table-responsive">
@@ -300,8 +300,8 @@
           <div class="col-md-6">
             <div class="card">
               <div class="card-header">
-                <h5 class="card-category">All Persons List</h5>
-                <h4 class="card-title"> Employees Stats</h4>
+                <h5 class="card-category"></h5>
+                <h3 class="card-title">More Tools </h3>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
@@ -443,6 +443,7 @@
   <script src="{{url_for('static',filename='assets/js/plugins/bootstrap-notify.js')}}"></script>
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="{{url_for('static',filename='assets/js/now-ui-dashboard.min.js?v=1.5.0')}}" type="text/javascript"></script><!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
+  <script src="{{url_for('static',filename='assets/js/main.js')}}"></script>
   <script src="{{url_for('static',filename='assets/demo/demo.js')}}"></script>
   <script>
     $(document).ready(function() {
@@ -457,73 +458,135 @@
 
     console.log(arr)
 
-    // var ctx = document.getElementById('demo');
-
-    // var myLineChart = new Chart(ctx, {
-    //   type: 'line',
-    //   data: arr,
-    //   options: [
-    //     a,
-    //     b,
-    //     c,
-    //     d
-    //   ]
-    // });
-
-//     ctx = document.getElementById('demo').getContext("2d");
-
-// gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-// gradientStroke.addColorStop(0, '#80b6f4');
-// gradientStroke.addColorStop(1, chartColor);
-
-// gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
-// gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-// gradientFill.addColorStop(1, "rgba(249, 99, 59, 0.40)");
-
-// myChart = new Chart(ctx, {
-//     type: 'line',
-//     data: {
-//         labels: ["Jan", "Feb", "Mar", "Apr"],
-//         datasets: [{
-//             label: "Active Users",
-//             borderColor: "#f96332",
-//             pointBorderColor: "#FFF",
-//             pointBackgroundColor: "#f96332",
-//             pointBorderWidth: 2,
-//             pointHoverRadius: 4,
-//             pointHoverBorderWidth: 1,
-//             pointRadius: 4,
-//             fill: true,
-//             backgroundColor: gradientFill,
-//             borderWidth: 2,
-//             data: [10, 20, 30, 40]
-//         }]
-//     },
-//     options: gradientChartOptionsConfiguration
-// });
-
-
-var ctx = document.getElementById('myChart');
-var myChart = new Chart(ctx, {
-    type: 'line',
+    var chart = document.getElementById('myChart3').getContext('2d');
+var myChart = new Chart(chart, {
+    type: 'bar',
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green'],
-        datasets: [{
-            label: '# of Votes',
-            data: arr,
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    datasets: [
+        {
+            label: "Consumption",
+            fillColor: "rgba(220,220,220,0.5)",
+            strokeColor: "rgba(220,220,220,0.8)",
+            highlightFill: "rgba(220,220,220,0.75)",
+            highlightStroke: "rgba(220,220,220,1)",
+            data: [245, 280, 260, 254, 277, 250]
         }
+    ]
     }
 });
+
+var chart1 = document.getElementById('myChart2').getContext('2d');
+var myChart = new Chart(chart1, {
+    type: 'line',
+    data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        datasets: [{
+            label: 'Average Temperature',
+            data: [50, 57, 55, 56, 58, 54],
+        }]
+    }
+});
+
+var chart2 = document.getElementById('myChart4').getContext('2d');
+var myChart = new Chart(chart2, {
+    type: 'radar',
+    data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        datasets: [{
+            label: 'Vibration',
+            data: [7.4, 7.8, 7.3, 7.5, 7.9, 7.7],
+        }]
+    }
+});
+
+
+
+colors = {
+  purple: {
+    default: "rgba(149, 76, 233, 1)",
+    half: "rgba(149, 76, 233, 0.5)",
+    quarter: "rgba(149, 76, 233, 0.25)",
+    zero: "rgba(149, 76, 233, 0)"
+  },
+  indigo: {
+    default: "rgba(80, 102, 120, 1)",
+    quarter: "rgba(80, 102, 120, 0.25)"
+  }
+};
+
+ctx = document.getElementById("myChart1").getContext("2d");
+ctx.canvas.height = 80;
+
+gradient = ctx.createLinearGradient(0, 25, 0, 300);
+gradient.addColorStop(0, colors.purple.half);
+gradient.addColorStop(0.35, colors.purple.quarter);
+gradient.addColorStop(1, colors.purple.zero);
+
+var myChart = new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    datasets: [
+      {
+        fill: true,
+        backgroundColor: gradient,
+        pointBackgroundColor: colors.purple.default,
+        borderColor: colors.purple.default,
+        data: [8.0, 9.2, 10.6, 7.4, 9.9, 7.2],
+        lineTension: 0.2,
+        borderWidth: 2,
+        pointRadius: 3
+      }
+    ]
+  },
+  options: {
+    layout: {
+      padding: 10
+    },
+    responsive: true,
+    legend: {
+      display: false
+    },
+
+    scales: {
+      xAxes: [
+        {
+          gridLines: {
+            display: false
+          },
+          ticks: {
+            padding: 10,
+            autoSkip: false,
+            maxRotation: 15,
+            minRotation: 15
+          }
+        }
+      ],
+      yAxes: [
+        {
+          scaleLabel: {
+            display: true,
+            labelString: "Duration in Hours",
+            padding: 10
+          },
+          gridLines: {
+            display: true,
+            color: colors.indigo.quarter
+          },
+          ticks: {
+            beginAtZero: false,
+            max: 24,
+            min: 0,
+            padding: 10
+          }
+        }
+      ]
+    }
+  }
+});
+
+
   </script>
 </body>
 

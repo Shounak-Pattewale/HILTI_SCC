@@ -30,10 +30,14 @@ def not_found(error=None):
 @site.route("/")
 def index():
     tool.data()
-    return render_template("base_template.html")
+    return render_template("dashboard.html")
 
 @site.route("/dashboard")
 def dashboard():
-    # dataset = pandas.read_csv("../site_data/dummy_data.csv")
-    # print(dataset.head(10))
-    return render_template("dashboard.html")
+    data = [20, 35, 10, 15]
+    return render_template("dashboard.html", data=data)
+
+
+@site.route("/user_profile")
+def user_profile():
+    return render_template("user.html")
