@@ -9,22 +9,22 @@
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
     -->
       <div class="logo">
-        <a href="http://www.creative-tim.com" class="simple-text logo-mini">
+        <a href="" class="simple-text logo-mini">
           HILTI
         </a>
-        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+        <a href="" class="simple-text logo-normal">
           HTOT
         </a>
       </div>
       <div class="sidebar-wrapper" id="sidebar-wrapper">
         <ul class="nav">
           <li class="active ">
-            <a href="{{ url_for('site.dashboard') }}">
+            <a href="{{ url_for('site.index') }}">
               <i class="now-ui-icons design_app"></i>
               <p>Dashboard</p>
             </a>
           </li>
-          <li>
+          <!-- <li>
             <a href="./icons.html">
               <i class="now-ui-icons education_atom"></i>
               <p>Icons</p>
@@ -35,7 +35,7 @@
               <i class="now-ui-icons location_map-big"></i>
               <p>Maps</p>
             </a>
-          </li>
+          </li> -->
           <li>
             <a href="./notifications.html">
               <i class="now-ui-icons ui-1_bell-53"></i>
@@ -43,12 +43,12 @@
             </a>
           </li>
           <li>
-            <a href="./user.html">
+            <a href="{{ url_for('site.index') }}">
               <i class="now-ui-icons users_single-02"></i>
               <p>User Profile</p>
             </a>
           </li>
-          <li>
+          <!-- <li>
             <a href="./tables.html">
               <i class="now-ui-icons design_bullet-list-67"></i>
               <p>Table List</p>
@@ -59,7 +59,7 @@
               <i class="now-ui-icons text_caps-small"></i>
               <p>Typography</p>
             </a>
-          </li>
+          </li> -->
           <li class="active-pro">
             <a href="./upgrade.html">
               <i class="now-ui-icons arrows-1_cloud-download-93"></i>
@@ -142,8 +142,8 @@
           <div class="col-lg-4">
             <div class="card card-chart">
               <div class="card-header">
-                <h5 class="card-category">Global Sales</h5>
-                <h4 class="card-title">Shipped Products</h4>
+                <h5 class="card-category">Temperature</h5>
+                <h4 class="card-title">38&#176C</h4>
                 <div class="dropdown">
                   <button type="button" class="btn btn-round btn-outline-default dropdown-toggle btn-simple btn-icon no-caret" data-toggle="dropdown">
                     <i class="now-ui-icons loader_gear"></i>
@@ -158,7 +158,7 @@
               </div>
               <div class="card-body">
                 <div class="chart-area">
-                  <canvas id="lineChartExample"></canvas>
+                  <canvas id="myChart"></canvas>
                 </div>
               </div>
               <div class="card-footer">
@@ -171,8 +171,8 @@
           <div class="col-lg-4 col-md-6">
             <div class="card card-chart">
               <div class="card-header">
-                <h5 class="card-category">2018 Sales</h5>
-                <h4 class="card-title">All products</h4>
+                <h5 class="card-category">Torque</h5>
+                <h4 class="card-title">308.6</h4>
                 <div class="dropdown">
                   <button type="button" class="btn btn-round btn-outline-default dropdown-toggle btn-simple btn-icon no-caret" data-toggle="dropdown">
                     <i class="now-ui-icons loader_gear"></i>
@@ -200,8 +200,8 @@
           <div class="col-lg-4 col-md-6">
             <div class="card card-chart">
               <div class="card-header">
-                <h5 class="card-category">Email Statistics</h5>
-                <h4 class="card-title">24 Hours Performance</h4>
+                <h5 class="card-category">Rotational speed [rpm]</h5>
+                <h4 class="card-title">42</h4>
               </div>
               <div class="card-body">
                 <div class="chart-area">
@@ -450,6 +450,80 @@
       demo.initDashboardPageCharts();
 
     });
+    var arr = []
+    {% for i in data %}
+      arr.push({{i}});
+    {% endfor %}
+
+    console.log(arr)
+
+    // var ctx = document.getElementById('demo');
+
+    // var myLineChart = new Chart(ctx, {
+    //   type: 'line',
+    //   data: arr,
+    //   options: [
+    //     a,
+    //     b,
+    //     c,
+    //     d
+    //   ]
+    // });
+
+//     ctx = document.getElementById('demo').getContext("2d");
+
+// gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+// gradientStroke.addColorStop(0, '#80b6f4');
+// gradientStroke.addColorStop(1, chartColor);
+
+// gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
+// gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
+// gradientFill.addColorStop(1, "rgba(249, 99, 59, 0.40)");
+
+// myChart = new Chart(ctx, {
+//     type: 'line',
+//     data: {
+//         labels: ["Jan", "Feb", "Mar", "Apr"],
+//         datasets: [{
+//             label: "Active Users",
+//             borderColor: "#f96332",
+//             pointBorderColor: "#FFF",
+//             pointBackgroundColor: "#f96332",
+//             pointBorderWidth: 2,
+//             pointHoverRadius: 4,
+//             pointHoverBorderWidth: 1,
+//             pointRadius: 4,
+//             fill: true,
+//             backgroundColor: gradientFill,
+//             borderWidth: 2,
+//             data: [10, 20, 30, 40]
+//         }]
+//     },
+//     options: gradientChartOptionsConfiguration
+// });
+
+
+var ctx = document.getElementById('myChart');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green'],
+        datasets: [{
+            label: '# of Votes',
+            data: arr,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
   </script>
 </body>
 
