@@ -25,3 +25,23 @@ The above cycle has to be followed every time a tool needs servicing and this so
 
 ### Problem Solution
 The team has proposed the solution through data collection from the tools and analysis of the collected data in order to create trackers to make corrective decisions for better performance of the tools.
+
+### Project Requirements
+* pip install -r requirements.txt
+
+### dot-env Structure
+FLASK_ENV=development<br>
+SECRET_KEY='some key'<br>
+SESSION_KEY='some key'<br>
+MONGO_URI='mongodb url'
+
+### Run Command
+* Method one :
+1. export FLASK_APP=run.py
+2. export FLASK_ENV=development
+3. flask run
+
+* Method two :
+1. Launch your bash terminal, and type
+2. ./run
+<br>
