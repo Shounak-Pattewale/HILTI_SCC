@@ -29,8 +29,8 @@ def not_found(error=None):
 
 @site.route("/")
 def index():
-    tool.data()
-    return render_template("dashboard.html")
+    # tool.data()
+    return render_template("home.html")
 
 @site.route("/dashboard")
 def dashboard():
@@ -40,4 +40,4 @@ def dashboard():
 
 @site.route("/user_profile")
 def user_profile():
-    return render_template("user.html")
+    return render_template("user_profile.html")

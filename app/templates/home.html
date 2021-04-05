@@ -1,0 +1,52 @@
+{% extends 'base_template.html' %}
+{% block link %} {% endblock %}
+{% block title %} Home Page {% endblock %}
+{% block main %}
+<!-- {% include 'sidebar.html' %} -->
+<div class="wrapper ">
+    <div class="main-panel" id="main-panel">
+    <!-- Navbar -->
+      {% include 'navbar.html' %}
+    <!-- End Navbar -->
+        <div class="panel-header panel-header-sm">
+        </div>
+        <div class="content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Home Page</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <span>This is a plain notification</span>
+                            </div>
+                            <div class="alert alert-info">
+                                <button type="button" aria-hidden="true" class="close">
+                                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                                </button>
+                                <span>This is a notification with close button.</span>
+                            </div>
+                            <div class="alert alert-info alert-with-icon" data-notify="container">
+                                <button type="button" aria-hidden="true" class="close">
+                                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                                </button>
+                                <span data-notify="icon" class="now-ui-icons ui-1_bell-53"></span>
+                                <span data-notify="message">This is a notification with close button and icon.</span>
+                            </div>
+                            <div class="alert alert-info alert-with-icon" data-notify="container">
+                                <button type="button" aria-hidden="true" class="close">
+                                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                                </button>
+                                <span data-notify="icon" class="now-ui-icons ui-1_bell-53"></span>
+                                <span data-notify="message">This is a notification with close button and icon and have
+                                    many
+                                    lines. You can see that the icon and the close button are always vertically aligned.
+                                    This is a beautiful notification. So you don't have to worry about the style.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

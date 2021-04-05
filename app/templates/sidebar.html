@@ -1,0 +1,61 @@
+{% set active_page = url_for(request.endpoint) %}
+
+<div class="wrapper" style="position: absolute;">
+    <div class="sidebar" data-color="blue">
+        <div class="logo">
+            <a href="{{ url_for('site.index') }}" class="simple-text logo-mini">
+                HILTI
+            </a>
+            <a href="{{ url_for('site.index') }}" class="simple-text logo-normal">
+                HTOT
+            </a>
+        </div>
+
+        <div class="sidebar-wrapper" id="sidebar-wrapper">
+            <ul class="nav">
+
+                <li {% if active_page == "/" %} class="active"{% endif
+                    %}>
+                    <a href="{{ url_for('site.index') }}">
+
+                        <i class="now-ui-icons users_single-02"></i>
+
+                        <p>Home</p>
+                    </a>
+                </li>
+                
+
+                <li {% if active_page == "/user_profile" %} class="active"{% endif
+                    %}>
+                    <a href="{{ url_for('site.user_profile') }}">
+
+                        <i class="now-ui-icons users_single-02"></i>
+
+                        <p>User Profile</p>
+                    </a>
+                </li>
+
+                <li {% if active_page == "/dashboard" %} class="active"{% endif
+                    %}>
+                    <a href="{{ url_for('site.dashboard') }}">
+
+                        <i class="now-ui-icons design_app"></i>
+
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+
+                <li {% if active_page == "/notifications" %} class="active"{% endif
+                    %}>
+                    <a href="">
+
+                        <i class="now-ui-icons ui-1_bell-53"></i>
+
+                        <p>Notifications</p>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
