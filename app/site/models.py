@@ -13,7 +13,12 @@ import pandas as pd
 # from app import mongo
 
 class Tools:
+
+    def __init__(self):
+        self.df = pd.read_csv('telemetry.csv')
+        print(self.df.shape)
     
     def data(self):
-        df = pd.read_csv('data.csv')
-        print(df.head(10))
+        self.data = self.df.head(10)
+
+        return self.data

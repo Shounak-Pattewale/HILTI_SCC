@@ -339,12 +339,16 @@
     demo.initDashboardPageCharts();
 
   });
-  // var arr = []
-  // {% for i in data %}
-  //   arr.push({{i}});
-  // {% endfor %}
+  var arr = []
+  {% for i in volt %}
+    arr.push({{i}});
+  {% endfor %}
 
-  // console.log(arr)
+  var vibration = []
+  {% for i in vib %}
+    vibration.push({{i}});
+  {% endfor %}
+
 
   var chart = document.getElementById('myChart3').getContext('2d');
   var myChart = new Chart(chart, {
@@ -353,12 +357,12 @@
       labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
       datasets: [
         {
-          label: "Consumption",
+          label: "Voltage",
           fillColor: "rgba(220,220,220,0.5)",
           strokeColor: "rgba(220,220,220,0.8)",
           highlightFill: "rgba(220,220,220,0.75)",
           highlightStroke: "rgba(220,220,220,1)",
-          data: [245, 280, 260, 254, 277, 250]
+          data: arr
         }
       ]
     }
@@ -378,12 +382,12 @@
 
   var chart2 = document.getElementById('myChart4').getContext('2d');
   var myChart = new Chart(chart2, {
-    type: 'radar',
+    type: 'line',
     data: {
       labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
       datasets: [{
         label: 'Vibration',
-        data: [7.4, 7.8, 7.3, 7.5, 7.9, 7.7],
+        data: vibration,
       }]
     }
   });
