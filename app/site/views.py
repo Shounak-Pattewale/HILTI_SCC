@@ -35,10 +35,13 @@ def index():
 @site.route("/dashboard")
 def dashboard():
     data = tool.data()
+    vibration = data['vibration']
     volt = data['volt']
-    vib = data['vibration']
-    rotation = data['rotate']
-    return render_template("dashboard.html", volt=volt, vib=vib)
+    rotate = data['rotate']
+    # for i in data.index:
+    #     print(data['vibration'][i])
+   
+    return render_template("dashboard.html", data=data, vib=vibration, vol=volt, rot=rotate)
 
 
 @site.route("/user_profile")

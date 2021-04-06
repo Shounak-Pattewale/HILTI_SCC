@@ -15,7 +15,7 @@
       <div class="col-lg-4">
         <div class="card card-chart">
           <div class="card-header">
-            <h5 class="card-category">Temperature</h5>
+            <h5 class="card-category">Rotation</h5>
             <h4 class="card-title">38&#176C</h4>
             <div class="dropdown">
               <button type="button"
@@ -46,8 +46,8 @@
       <div class="col-lg-4 col-md-6">
         <div class="card card-chart">
           <div class="card-header">
-            <h5 class="card-category">Electricity Consumption</h5>
-            <h4 class="card-title">240.6 (kWH)</h4>
+            <h5 class="card-category">Voltage</h5>
+            <h4 class="card-title">50.6 (volt)</h4>
             <div class="dropdown">
               <button type="button"
                 class="btn btn-round btn-outline-default dropdown-toggle btn-simple btn-icon no-caret"
@@ -339,14 +339,21 @@
     demo.initDashboardPageCharts();
 
   });
-  var arr = []
-  {% for i in volt %}
-    arr.push({{i}});
+  
+  var vibration = []
+  var voltage = []
+  var rotate = []
+
+  {% for i in vol %}
+    voltage.push({{i}});
   {% endfor %}
 
-  var vibration = []
   {% for i in vib %}
     vibration.push({{i}});
+  {% endfor %}
+
+  {% for i in rot %}
+    rotate.push({{i}});
   {% endfor %}
 
 
@@ -362,7 +369,7 @@
           strokeColor: "rgba(220,220,220,0.8)",
           highlightFill: "rgba(220,220,220,0.75)",
           highlightStroke: "rgba(220,220,220,1)",
-          data: arr
+          data: voltage
         }
       ]
     }
@@ -374,8 +381,8 @@
     data: {
       labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
       datasets: [{
-        label: 'Average Temperature',
-        data: [50, 57, 55, 56, 58, 54],
+        label: 'Rotation',
+        data: rotate,
       }]
     }
   });

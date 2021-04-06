@@ -16,9 +16,9 @@ class Tools:
 
     def __init__(self):
         self.df = pd.read_csv('telemetry.csv')
-        print(self.df.shape)
+        # print(self.df.shape)
     
     def data(self):
-        self.data = self.df.head(10)
-
-        return self.data
+        data = self.df.head(6)
+        print("Self.data : ",data)
+        return data
