@@ -57,16 +57,18 @@
               </p>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
+              <a class="dropdown-item" href="#">Daily</a>
+              <a class="dropdown-item" href="#">Weekly</a>
+              <a class="dropdown-item" href="#">Monthly</a>
             </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#pablo">
               <i class="now-ui-icons users_single-02"></i>
               <p>
-                <span class="d-lg-none d-md-block">Account</span>
+                <span class="d-lg-none d-md-block">
+                  <a href="{{ url_for('site.user_profile') }}"></a>
+                </span>
               </p>
             </a>
           </li>

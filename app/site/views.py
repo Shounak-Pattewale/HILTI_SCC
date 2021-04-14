@@ -32,16 +32,34 @@ def index():
     # tool.data()
     return render_template("home.html")
 
+# def daily_data(data):
+#     # Date formate -> MM-DD=YYYY
+#     vibration_list = []
+#     vibrate = 0
+#     print("okay")
+#     for i in data.index:
+#         date = data['date'][i]
+#         while date == '01-01-2015':
+#             # vibrate += data['vibration'][i]
+#             vibration_list.append(data['vibration'][i])
+#             break
+#         else:
+#             print('Done')
+    
+#     return vibration_list
+
+
 @site.route("/dashboard")
 def dashboard():
     data = tool.data()
-    vibration = data['vibration']
-    volt = data['volt']
-    rotate = data['rotate']
-    # for i in data.index:
-    #     print(data['vibration'][i])
-   
-    return render_template("dashboard.html", data=data, vib=vibration, vol=volt, rot=rotate)
+    rotate = data['Rotation']
+    proc_temp = data['ProcTemp']
+    air_temp = data['AirTemp']
+    torque = data['Torque']
+    
+    # vib_list = daily_data(date, time, data)
+  
+    return render_template("dashboard.html", data=data, vib=vibration, vol=volt, rot=rotate, date=date, time=time)
 
 
 @site.route("/user_profile")

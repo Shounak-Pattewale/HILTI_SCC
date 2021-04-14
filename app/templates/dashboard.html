@@ -24,10 +24,10 @@
                 <i class="now-ui-icons loader_gear"></i>
               </button>
               <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <a class="dropdown-item text-danger" href="#">Remove Data</a>
+                <a class="dropdown-item" href="#">Daily</a>
+                <a class="dropdown-item" href="#">Weekly</a>
+                <a class="dropdown-item" href="#">Monthly</a>
+                <!-- <a class="dropdown-item text-danger" href="#">Remove Data</a> -->
               </div>
             </div>
           </div>
@@ -55,10 +55,10 @@
                 <i class="now-ui-icons loader_gear"></i>
               </button>
               <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <a class="dropdown-item text-danger" href="#">Remove Data</a>
+                <a class="dropdown-item" href="#">Daily</a>
+                <a class="dropdown-item" href="#">Weekly</a>
+                <a class="dropdown-item" href="#">Monthly</a>
+                <!-- <a class="dropdown-item text-danger" href="#">Remove Data</a> -->
               </div>
             </div>
           </div>
@@ -100,7 +100,7 @@
             <h5 class="card-category"></h5>
             <h4 class="card-title">Tool Details</h4>
           </div>
-          <div class="card-body ">
+          <!-- <div class="card-body ">
             <div class="table-full-width table-responsive">
               <table class="table">
                 <tbody>
@@ -178,11 +178,11 @@
                 </tbody>
               </table>
             </div>
-          </div>
+          </div> -->
           <div class="card-footer ">
             <hr>
             <div class="stats">
-              <i class="now-ui-icons loader_refresh spin"></i> Updated 3 minutes ago
+              <i class="now-ui-icons loader_refresh"></i> Updated 3 minutes ago
             </div>
           </div>
         </div>
@@ -198,16 +198,16 @@
               <table class="table">
                 <thead class=" text-primary">
                   <th>
-                    Name
+                    Tool Name
                   </th>
                   <th>
-                    Country
+                    Category
                   </th>
                   <th>
-                    City
+                    
                   </th>
                   <th class="text-right">
-                    Salary
+                    Status
                   </th>
                 </thead>
                 <tbody>
@@ -292,7 +292,7 @@
   <footer class="footer">
     <div class=" container-fluid ">
       <nav>
-        <ul>
+        <!-- <ul>
           <li>
             <a href="https://www.creative-tim.com">
               Creative Tim
@@ -308,7 +308,7 @@
               Blog
             </a>
           </li>
-        </ul>
+        </ul> -->
       </nav>
       <div class="copyright" id="copyright">
         &copy;
@@ -343,6 +343,7 @@
   var vibration = []
   var voltage = []
   var rotate = []
+  var time = []
 
   {% for i in vol %}
     voltage.push({{i}});
@@ -356,12 +357,16 @@
     rotate.push({{i}});
   {% endfor %}
 
+  {% for i in date %}
+    time.push({{i}});
+  {% endfor %}
+
 
   var chart = document.getElementById('myChart3').getContext('2d');
   var myChart = new Chart(chart, {
     type: 'bar',
     data: {
-      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      labels: time,
       datasets: [
         {
           label: "Voltage",
@@ -383,6 +388,7 @@
       datasets: [{
         label: 'Rotation',
         data: rotate,
+        borderColor: 'rgb(75, 192, 192)'
       }]
     }
   });
@@ -395,6 +401,7 @@
       datasets: [{
         label: 'Vibration',
         data: vibration,
+        borderColor: 'rgb(75, 100, 150)'
       }]
     }
   });

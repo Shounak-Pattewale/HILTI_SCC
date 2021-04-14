@@ -15,10 +15,9 @@ import pandas as pd
 class Tools:
 
     def __init__(self):
-        self.df = pd.read_csv('telemetry.csv')
+        self.df = pd.read_csv('failure_pred.csv')
         # print(self.df.shape)
     
     def data(self):
         data = self.df.head(6)
-        print("Self.data : ",data)
         return data
