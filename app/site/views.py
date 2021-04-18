@@ -59,7 +59,7 @@ def dashboard():
     
     # vib_list = daily_data(date, time, data)
   
-    return render_template("dashboard.html", data=data, vib=vibration, vol=volt, rot=rotate, date=date, time=time)
+    return render_template("dashboard.html", data=data)
 
 
 @site.route("/user_profile")
