@@ -15,8 +15,8 @@
       <div class="col-lg-4">
         <div class="card card-chart">
           <div class="card-header">
-            <h5 class="card-category">Rotation</h5>
-            <h4 class="card-title">38&#176C</h4>
+            <h5 class="card-category">Rotation [rpm]</h5>
+            <h4 class="card-title">1527</h4>
             <div class="dropdown">
               <button type="button"
                 class="btn btn-round btn-outline-default dropdown-toggle btn-simple btn-icon no-caret"
@@ -46,8 +46,8 @@
       <div class="col-lg-4 col-md-6">
         <div class="card card-chart">
           <div class="card-header">
-            <h5 class="card-category">Voltage</h5>
-            <h4 class="card-title">50.6 (volt)</h4>
+            <h5 class="card-category">Temperature [K]</h5>
+            <h4 class="card-title">308.6</h4>
             <div class="dropdown">
               <button type="button"
                 class="btn btn-round btn-outline-default dropdown-toggle btn-simple btn-icon no-caret"
@@ -77,8 +77,8 @@
       <div class="col-lg-4 col-md-6">
         <div class="card card-chart">
           <div class="card-header">
-            <h5 class="card-category">Vibration (m/s <sup>2</sup>)</h5>
-            <h4 class="card-title">8.2(m/s <sup>2</sup>)</h4>
+            <h5 class="card-category">Torque [nm]</h5>
+            <h4 class="card-title">40.2</h4>
           </div>
           <div class="card-body">
             <div class="chart-area">
@@ -340,41 +340,46 @@
 
   });
   
-  var vibration = []
-  var voltage = []
-  var rotate = []
+  var rotation = []
+  var proc_temp = []
+  var toolwear = []
+  var torque = []
   var time = []
 
-  {% for i in vol %}
-    voltage.push({{i}});
+  {% for i in rotate %}
+    rotation.push({{i}});
   {% endfor %}
 
-  {% for i in vib %}
-    vibration.push({{i}});
+  {% for i in proc_temp %}
+    proc_temp.push({{i}});
   {% endfor %}
 
-  {% for i in rot %}
-    rotate.push({{i}});
+  {% for i in toolwear %}
+    toolwear.push({{i}});
   {% endfor %}
 
-  {% for i in date %}
+  {% for i in torque %}
+    torque.push({{i}});
+  {% endfor %}
+
+  {% for i in x %}
     time.push({{i}});
   {% endfor %}
 
-
   var chart = document.getElementById('myChart3').getContext('2d');
   var myChart = new Chart(chart, {
-    type: 'bar',
+    type: 'line',
     data: {
-      labels: time,
+      labels: time.slice(1,8),
       datasets: [
         {
-          label: "Voltage",
+          label: "Temperature",
           fillColor: "rgba(220,220,220,0.5)",
           strokeColor: "rgba(220,220,220,0.8)",
           highlightFill: "rgba(220,220,220,0.75)",
           highlightStroke: "rgba(220,220,220,1)",
-          data: voltage
+          data: proc_temp,
+          borderColor: 'rgb(100, 192, 255)'
         }
       ]
     }
@@ -384,10 +389,10 @@
   var myChart = new Chart(chart1, {
     type: 'line',
     data: {
-      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      labels: ["06:00:00", "09:00:00", "12:00:00", "15:00:00", "18:00:00", "21:00:00"],
       datasets: [{
         label: 'Rotation',
-        data: rotate,
+        data: rotation,
         borderColor: 'rgb(75, 192, 192)'
       }]
     }
@@ -397,10 +402,10 @@
   var myChart = new Chart(chart2, {
     type: 'line',
     data: {
-      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      labels: ["06:00:00", "09:00:00", "12:00:00", "15:00:00", "18:00:00", "21:00:00"],
       datasets: [{
-        label: 'Vibration',
-        data: vibration,
+        label: 'Torque',
+        data: torque,
         borderColor: 'rgb(75, 100, 150)'
       }]
     }
@@ -430,16 +435,16 @@
   gradient.addColorStop(1, colors.purple.zero);
 
   var myChart = new Chart(ctx, {
-    type: "line",
+    type: "bar",
     data: {
-      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      labels: ["06:00:00", "09:00:00", "12:00:00", "15:00:00", "18:00:00", "21:00:00"],
       datasets: [
         {
           fill: true,
           backgroundColor: gradient,
           pointBackgroundColor: colors.purple.default,
           borderColor: colors.purple.default,
-          data: [8.0, 9.2, 10.6, 7.4, 9.9, 7.2],
+          data: toolwear,
           lineTension: 0.2,
           borderWidth: 2,
           pointRadius: 3
@@ -473,7 +478,7 @@
           {
             scaleLabel: {
               display: true,
-              labelString: "Duration in Hours",
+              labelString: "Tool Wear",
               padding: 10
             },
             gridLines: {

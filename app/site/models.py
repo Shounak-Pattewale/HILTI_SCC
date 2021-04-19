@@ -15,7 +15,7 @@ import pandas as pd
 class Tools:
 
     def __init__(self):
-        self.df = pd.read_csv('failure_pred.csv')
+        self.df = pd.read_csv('./app/site_data/tool_data.csv')
         # print(self.df.shape)
     
     def data(self):

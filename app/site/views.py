@@ -4,9 +4,9 @@ from datetime import datetime
 from flask import session
 from flask import flash
 import bcrypt
-from flask import g
-import os
-import smtplib
+from time import time
+import random
+import json
 
 site = Blueprint("site", __name__, template_folder='../templates', static_folder='static',static_url_path='static')
 
@@ -52,14 +52,22 @@ def index():
 @site.route("/dashboard")
 def dashboard():
     data = tool.data()
-    rotate = data['Rotation']
-    proc_temp = data['ProcTemp']
-    air_temp = data['AirTemp']
+    rotate = data['Rpm']
+    proc_temp = data['Process temp']
+    toolwear = data['Tool wear']
     torque = data['Torque']
-    
-    # vib_list = daily_data(date, time, data)
+    x = data['date']
+    # rotate_list = daily_data(date, time, data)
   
-    return render_template("dashboard.html", data=data)
+    return render_template("dashboard.html", data=data, rotate=rotate, proc_temp=proc_temp, toolwear=toolwear, torque=torque, x=x)
+
+
+@site.route('/data', methods=["GET", "POST"])
+def data():
+    data = [time() * 1000, random() * 100]
+    response = make_response(json.dumps(data))
+    response.content_type = 'application/json'
+    return response
 
 
 @site.route("/user_profile")
