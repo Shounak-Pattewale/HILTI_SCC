@@ -8,9 +8,9 @@
   {% include 'navbar.html' %}
   <!-- End Navbar -->
   <div class="panel-header panel-header-lg">
-    <canvas id="myChart1"></canvas>
+    <div id="chartdiv"></div>
   </div>
-  <div class="content">
+  <!-- <div class="content">
     <div class="row">
       <div class="col-lg-4">
         <div class="card card-chart">
@@ -27,7 +27,7 @@
                 <a class="dropdown-item" href="#">Daily</a>
                 <a class="dropdown-item" href="#">Weekly</a>
                 <a class="dropdown-item" href="#">Monthly</a>
-                <!-- <a class="dropdown-item text-danger" href="#">Remove Data</a> -->
+                <a class="dropdown-item text-danger" href="#">Remove Data</a>
               </div>
             </div>
           </div>
@@ -36,11 +36,11 @@
               <canvas id="myChart2"></canvas>
             </div>
           </div>
-          <!-- <div class="card-footer">
+          <div class="card-footer">
                 <div class="stats">
                   <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
                 </div>
-              </div> -->
+              </div>
         </div>
       </div>
       <div class="col-lg-4 col-md-6">
@@ -58,7 +58,7 @@
                 <a class="dropdown-item" href="#">Daily</a>
                 <a class="dropdown-item" href="#">Weekly</a>
                 <a class="dropdown-item" href="#">Monthly</a>
-                <!-- <a class="dropdown-item text-danger" href="#">Remove Data</a> -->
+                <a class="dropdown-item text-danger" href="#">Remove Data</a>
               </div>
             </div>
           </div>
@@ -67,11 +67,11 @@
               <canvas id="myChart3"></canvas>
             </div>
           </div>
-          <!-- <div class="card-footer">
+          <div class="card-footer">
                 <div class="stats">
                   <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
                 </div>
-              </div> -->
+              </div>
         </div>
       </div>
       <div class="col-lg-4 col-md-6">
@@ -85,241 +85,29 @@
               <canvas id="myChart4"></canvas>
             </div>
           </div>
-          <!-- <div class="card-footer">
+          <div class="card-footer">
                 <div class="stats">
                   <i class="now-ui-icons ui-2_time-alarm"></i> Last 7 days
                 </div>
-              </div> -->
+              </div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card  card-tasks">
-          <div class="card-header ">
-            <h5 class="card-category"></h5>
-            <h4 class="card-title">Tool Details</h4>
-          </div>
-          <!-- <div class="card-body ">
-            <div class="table-full-width table-responsive">
-              <table class="table">
-                <tbody>
-                  <tr>
-                    <td>
-                      <div class="form-check">
-                        <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox" checked>
-                          <span class="form-check-sign"></span>
-                        </label>
-                      </div>
-                    </td>
-                    <td class="text-left">Sign contract for "What are conference organizers afraid of?"</td>
-                    <td class="td-actions text-right">
-                      <button type="button" rel="tooltip" title=""
-                        class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral"
-                        data-original-title="Edit Task">
-                        <i class="now-ui-icons ui-2_settings-90"></i>
-                      </button>
-                      <button type="button" rel="tooltip" title=""
-                        class="btn btn-danger btn-round btn-icon btn-icon-mini btn-neutral"
-                        data-original-title="Remove">
-                        <i class="now-ui-icons ui-1_simple-remove"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="form-check">
-                        <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox">
-                          <span class="form-check-sign"></span>
-                        </label>
-                      </div>
-                    </td>
-                    <td class="text-left">Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-                    <td class="td-actions text-right">
-                      <button type="button" rel="tooltip" title=""
-                        class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral"
-                        data-original-title="Edit Task">
-                        <i class="now-ui-icons ui-2_settings-90"></i>
-                      </button>
-                      <button type="button" rel="tooltip" title=""
-                        class="btn btn-danger btn-round btn-icon btn-icon-mini btn-neutral"
-                        data-original-title="Remove">
-                        <i class="now-ui-icons ui-1_simple-remove"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="form-check">
-                        <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox" checked>
-                          <span class="form-check-sign"></span>
-                        </label>
-                      </div>
-                    </td>
-                    <td class="text-left">Flooded: One year later, assessing what was lost and what was found when a
-                      ravaging rain swept through metro Detroit
-                    </td>
-                    <td class="td-actions text-right">
-                      <button type="button" rel="tooltip" title=""
-                        class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral"
-                        data-original-title="Edit Task">
-                        <i class="now-ui-icons ui-2_settings-90"></i>
-                      </button>
-                      <button type="button" rel="tooltip" title=""
-                        class="btn btn-danger btn-round btn-icon btn-icon-mini btn-neutral"
-                        data-original-title="Remove">
-                        <i class="now-ui-icons ui-1_simple-remove"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div> -->
-          <div class="card-footer ">
-            <hr>
-            <div class="stats">
-              <i class="now-ui-icons loader_refresh"></i> Updated 3 minutes ago
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">
-            <h5 class="card-category"></h5>
-            <h3 class="card-title">More Tools </h3>
-          </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table">
-                <thead class=" text-primary">
-                  <th>
-                    Tool Name
-                  </th>
-                  <th>
-                    Category
-                  </th>
-                  <th>
-                    
-                  </th>
-                  <th class="text-right">
-                    Status
-                  </th>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      Dakota Rice
-                    </td>
-                    <td>
-                      Niger
-                    </td>
-                    <td>
-                      Oud-Turnhout
-                    </td>
-                    <td class="text-right">
-                      $36,738
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Minerva Hooper
-                    </td>
-                    <td>
-                      Curaçao
-                    </td>
-                    <td>
-                      Sinaai-Waas
-                    </td>
-                    <td class="text-right">
-                      $23,789
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Sage Rodriguez
-                    </td>
-                    <td>
-                      Netherlands
-                    </td>
-                    <td>
-                      Baileux
-                    </td>
-                    <td class="text-right">
-                      $56,142
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Doris Greene
-                    </td>
-                    <td>
-                      Malawi
-                    </td>
-                    <td>
-                      Feldkirchen in Kärnten
-                    </td>
-                    <td class="text-right">
-                      $63,542
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Mason Porter
-                    </td>
-                    <td>
-                      Chile
-                    </td>
-                    <td>
-                      Gloucester
-                    </td>
-                    <td class="text-right">
-                      $78,615
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
+  </div> -->
   <footer class="footer">
     <div class=" container-fluid ">
       <nav>
-        <!-- <ul>
-          <li>
-            <a href="https://www.creative-tim.com">
-              Creative Tim
-            </a>
-          </li>
-          <li>
-            <a href="http://presentation.creative-tim.com">
-              About Us
-            </a>
-          </li>
-          <li>
-            <a href="http://blog.creative-tim.com">
-              Blog
-            </a>
-          </li>
-        </ul> -->
       </nav>
       <div class="copyright" id="copyright">
         &copy;
         <script>
           document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
-        </script>, Designed by <a href="https://www.invisionapp.com" target="_blank">Invision</a>. Coded by <a
-          href="https://www.creative-tim.com" target="_blank">Creative Tim</a>.
+        </script>, Designed by <a href="" target="_blank">HTOT</a>. Coded by <a
+          href="" target="_blank">Shounak & Taha</a>.
       </div>
     </div>
   </footer>
-</div>
 </div>
 
 {% block script %}
@@ -330,174 +118,14 @@
 <script src="{{url_for('static',filename='assets/js/plugins/chartjs.min.js')}}"></script>
 
 <!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
-<script src="{{url_for('static',filename='assets/js/main.js')}}"></script>
-<script src="{{url_for('static',filename='assets/demo/demo.js')}}"></script>
+<!-- <script src="{{url_for('static',filename='assets/js/main.js')}}"></script> -->
+<!-- <script src="{{url_for('static',filename='assets/demo/demo.js')}}"></script> -->
 
 <script>
-  $(document).ready(function () {
-    // Javascript method's body can be found in assets/js/demos.js
-    demo.initDashboardPageCharts();
-
-  });
-  
-  var rotation = []
-  var proc_temp = []
-  var toolwear = []
-  var torque = []
-  var time = []
-
-  {% for i in rotate %}
-    rotation.push({{i}});
-  {% endfor %}
-
-  {% for i in proc_temp %}
-    proc_temp.push({{i}});
-  {% endfor %}
-
-  {% for i in toolwear %}
-    toolwear.push({{i}});
-  {% endfor %}
-
-  {% for i in torque %}
-    torque.push({{i}});
-  {% endfor %}
-
-  {% for i in x %}
-    time.push({{i}});
-  {% endfor %}
-
-  var chart = document.getElementById('myChart3').getContext('2d');
-  var myChart = new Chart(chart, {
-    type: 'line',
-    data: {
-      labels: time.slice(1,8),
-      datasets: [
-        {
-          label: "Temperature",
-          fillColor: "rgba(220,220,220,0.5)",
-          strokeColor: "rgba(220,220,220,0.8)",
-          highlightFill: "rgba(220,220,220,0.75)",
-          highlightStroke: "rgba(220,220,220,1)",
-          data: proc_temp,
-          borderColor: 'rgb(100, 192, 255)'
-        }
-      ]
-    }
-  });
-
-  var chart1 = document.getElementById('myChart2').getContext('2d');
-  var myChart = new Chart(chart1, {
-    type: 'line',
-    data: {
-      labels: ["06:00:00", "09:00:00", "12:00:00", "15:00:00", "18:00:00", "21:00:00"],
-      datasets: [{
-        label: 'Rotation',
-        data: rotation,
-        borderColor: 'rgb(75, 192, 192)'
-      }]
-    }
-  });
-
-  var chart2 = document.getElementById('myChart4').getContext('2d');
-  var myChart = new Chart(chart2, {
-    type: 'line',
-    data: {
-      labels: ["06:00:00", "09:00:00", "12:00:00", "15:00:00", "18:00:00", "21:00:00"],
-      datasets: [{
-        label: 'Torque',
-        data: torque,
-        borderColor: 'rgb(75, 100, 150)'
-      }]
-    }
-  });
-
-
-
-  colors = {
-    purple: {
-      default: "rgba(149, 76, 233, 1)",
-      half: "rgba(149, 76, 233, 0.5)",
-      quarter: "rgba(149, 76, 233, 0.25)",
-      zero: "rgba(149, 76, 233, 0)"
-    },
-    indigo: {
-      default: "rgba(80, 102, 120, 1)",
-      quarter: "rgba(80, 102, 120, 0.25)"
-    }
-  };
-
-  ctx = document.getElementById("myChart1").getContext("2d");
-  ctx.canvas.height = 80;
-
-  gradient = ctx.createLinearGradient(0, 25, 0, 300);
-  gradient.addColorStop(0, colors.purple.half);
-  gradient.addColorStop(0.35, colors.purple.quarter);
-  gradient.addColorStop(1, colors.purple.zero);
-
-  var myChart = new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: ["06:00:00", "09:00:00", "12:00:00", "15:00:00", "18:00:00", "21:00:00"],
-      datasets: [
-        {
-          fill: true,
-          backgroundColor: gradient,
-          pointBackgroundColor: colors.purple.default,
-          borderColor: colors.purple.default,
-          data: toolwear,
-          lineTension: 0.2,
-          borderWidth: 2,
-          pointRadius: 3
-        }
-      ]
-    },
-    options: {
-      layout: {
-        padding: 10
-      },
-      responsive: true,
-      legend: {
-        display: false
-      },
-
-      scales: {
-        xAxes: [
-          {
-            gridLines: {
-              display: false
-            },
-            ticks: {
-              padding: 10,
-              autoSkip: false,
-              maxRotation: 15,
-              minRotation: 15
-            }
-          }
-        ],
-        yAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              labelString: "Tool Wear",
-              padding: 10
-            },
-            gridLines: {
-              display: true,
-              color: colors.indigo.quarter
-            },
-            ticks: {
-              beginAtZero: false,
-              max: 24,
-              min: 0,
-              padding: 10
-            }
-          }
-        ]
-      }
-    }
-  });
-
-
+  // $(document).ready(function () {
+  //   // Javascript method's body can be found in assets/js/demos.js
+  //   demo.initDashboardPageCharts();
+  // });
 </script>
 {% endblock %}
 

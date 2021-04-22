@@ -1,17 +1,20 @@
-from flask import Blueprint, render_template, redirect, abort
-from flask import request, jsonify, make_response, url_for
+from flask import Blueprint, render_template, redirect, abort, session
+from flask import request, jsonify, make_response, url_for, flash
 from datetime import datetime
-from flask import session
-from flask import flash
 import bcrypt
 from time import time
 import random
 import json
+from flask_socketio import send
+import pickle
 
 site = Blueprint("site", __name__, template_folder='../templates', static_folder='static',static_url_path='static')
 
+model = pickle.load(open('/mnt/d/Taha/HILTI_SCC/app/site_data/trained.pkl', 'rb'))
+
 # Custom imports
 from app import *
+# from app import socketio
 # from app import df
 
 from .models import *
@@ -32,43 +35,27 @@ def index():
     # tool.data()
     return render_template("home.html")
 
-# def daily_data(data):
-#     # Date formate -> MM-DD=YYYY
-#     vibration_list = []
-#     vibrate = 0
-#     print("okay")
-#     for i in data.index:
-#         date = data['date'][i]
-#         while date == '01-01-2015':
-#             # vibrate += data['vibration'][i]
-#             vibration_list.append(data['vibration'][i])
-#             break
-#         else:
-#             print('Done')
-    
-#     return vibration_list
-
+def prediction(x):
+    pred = model.predict([x])
+    print(pred[0])
 
 @site.route("/dashboard")
 def dashboard():
-    data = tool.data()
-    rotate = data['Rpm']
-    proc_temp = data['Process temp']
-    toolwear = data['Tool wear']
-    torque = data['Torque']
-    x = data['date']
-    # rotate_list = daily_data(date, time, data)
+    return render_template('dashboard.html')
+    # data = tool.data()
+    # rotate = data['Rpm']
+    # proc_temp = data['Process temp']
+    # toolwear = data['Tool wear']
+    # torque = data['Torque']
+    # x = data['date']
   
-    return render_template("dashboard.html", data=data, rotate=rotate, proc_temp=proc_temp, toolwear=toolwear, torque=torque, x=x)
+    # return render_template("dashboard.html", data=data, rotate=rotate, proc_temp=proc_temp, toolwear=toolwear, torque=torque, x=x)
 
-
-@site.route('/data', methods=["GET", "POST"])
-def data():
-    data = [time() * 1000, random() * 100]
-    response = make_response(json.dumps(data))
-    response.content_type = 'application/json'
-    return response
-
+@socketio.on('message')
+def handle_message(resp):
+    print('Message: ', resp)
+    prediction(resp)
+    
 
 @site.route("/user_profile")
 def user_profile():
