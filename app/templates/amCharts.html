@@ -29,14 +29,6 @@
     <!-- Chart code -->
     <script>
 
-        // function requestData() {
-        //     // Ajax call to get the Data from Flask
-        //     var requests = $.get('/data');
-        //     console.log("Req : ", requests)
-        //         // call it again after one second
-        //         // setTimeout(requestData, 2000);
-        //     };
-
         var df = []
         data.forEach(function(d) {
             df[0] = d['Air temp']
@@ -109,8 +101,7 @@
         });
 
         $(document).ready(function () {
-                var socket = io.connect('http://127.0.0.1:5000');
-                // console.log("Here : ", socket)
+                var socket = io.connect('http://127.0.0.1:5000/dashboard');
                 socket.on('connect', function () {
                     var r = 0
                     setInterval(function () {
