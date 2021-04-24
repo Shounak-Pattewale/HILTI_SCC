@@ -10,8 +10,8 @@ import pickle
 
 site = Blueprint("site", __name__, template_folder='../templates', static_folder='static',static_url_path='static')
 
-# model = pickle.load(open('/mnt/d/Taha/HILTI_SCC/app/site_data/trained.pkl', 'rb'))
-model = pickle.load(open('/mnt/d/Shounak/My Projects/HILTI_SCC/app/site_data/trained.pkl', 'rb'))
+model = pickle.load(open('/mnt/d/Taha/HILTI_SCC/app/site_data/trained.pkl', 'rb'))
+# model = pickle.load(open('/mnt/d/Shounak/My Projects/HILTI_SCC/app/site_data/trained.pkl', 'rb'))
 
 # Custom imports
 from app import *
