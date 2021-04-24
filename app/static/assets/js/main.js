@@ -18,19 +18,19 @@ am4core.ready(function () {
 
     chart.data = [{
         "country": "Air Temperature",
-        "visits": df[0]
+        "visits": df[0][0]
     }, {
         "country": "Process Temperature",
-        "visits": df[1]
+        "visits": df[1][0]
     }, {
         "country": "RPM",
-        "visits": df[2]
+        "visits": df[2][0]
     }, {
         "country": "Torque",
-        "visits": df[3]
+        "visits": df[3][0]
     }, {
         "country": "Tool Wear",
-        "visits": df[4]
+        "visits": df[4][0]
     }];
 
     // console.log(2)
@@ -77,23 +77,33 @@ $(document).ready(function () {
         var socket = io.connect('http://127.0.0.1:5000');
         // console.log("Here : ", socket)
         socket.on('connect', function () {
-            var r = 0
+            var r = 1
             setInterval(function () {
                 if(r>10000) {
                     r = 0
                 }
                 var msg = [df[1][r], df[2][r], df[3][r], df[4][r]];
 
+        // ##### Main Barchart updation (amCharts) #####
                 chart.data[0]['visits'] = df[0][r]
                 chart.data[1]['visits'] = df[1][r]
                 chart.data[2]['visits'] = df[2][r]
                 chart.data[3]['visits'] = df[3][r]
                 chart.data[4]['visits'] = df[4][r]
-
                 chart.invalidateRawData();
-                // console.log('before socket call')
+                // End of Barchart
+
+        // ##### Sending message for prediction #####
                 socket.send(msg);
-                // console.log('R Final : ',r)
+
+        //##### Linechart updation #####
+                var current = []
+                for (let i=r; i<r+7; i++){
+                        current.push(df[2][i]);
+                }
+                updateData(lineChart, current)
+                // End of Linechart
+
                 r+=1
             }, 10000)
         });
@@ -145,13 +155,6 @@ function updateData(chart,x) {
     chart.update()
 }
 
-setInterval(function () {
-    current = []
-    for (let i=0; i<7; i++){
-        current.push(df[0][i]);
-    }
-    updateData(lineChart, current)
-}, 2000);
 
 // BAR GRAPH
 
@@ -215,7 +218,7 @@ var myChart = new Chart(ctx, {
     }
 });
 
-function updateData(chart,x, y) {
+function updateData2(chart,x, y) {
     console.log(chart.data.datasets[0].data)
     chart.data.datasets[0].data=x
     console.log(chart.data.datasets[0].data)
@@ -225,5 +228,5 @@ function updateData(chart,x, y) {
 
 // inserting the new dataset after 3 seconds
 setTimeout(function () {
-  updateData(barChart, [16, 14, 8, 34, 56], [16, 14, 18, 34, 56]);
+  updateData2(barChart, [16, 14, 8, 34, 56], [16, 14, 18, 34, 56]);
 }, 3000);
