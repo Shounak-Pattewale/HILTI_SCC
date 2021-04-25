@@ -15,13 +15,44 @@
     <canvas id="barChart"></canvas>
   </div> -->
 
-  <div class="content">
+  <div class="content" style="margin-top: -15px;">
     <div class="row">
+      <div class="col-lg-4 col-md-6">
+        <div class="card card-chart">
+          <div class="card-header">
+            <h5 class="card-category">Rotational Speed [rpm]</h5>
+            <h4 class="card-title" id="rotational_speed">1408</h4>
+            <div class="dropdown">
+              <button type="button"
+                class="btn btn-round btn-outline-default dropdown-toggle btn-simple btn-icon no-caret"
+                data-toggle="dropdown">
+                <i class="now-ui-icons loader_gear"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Daily</a>
+                <a class="dropdown-item" href="#">Weekly</a>
+                <a class="dropdown-item" href="#">Monthly</a>
+                <a class="dropdown-item text-danger" href="#">Remove Data</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chart-area">
+              <canvas id="lineChart"></canvas>
+            </div>
+          </div>
+          <div class="card-footer">
+                <div class="stats">
+                  <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
+                </div>
+              </div>
+        </div>
+      </div>
       <div class="col-lg-4">
         <div class="card card-chart">
           <div class="card-header">
-            <h5 class="card-category">Rotation [rpm]</h5>
-            <h4 class="card-title">1527</h4>
+            <h5 class="card-category">Temperature [K]</h5>
+            <h4 class="card-title" id="temperature">300</h4>
             <div class="dropdown">
               <button type="button"
                 class="btn btn-round btn-outline-default dropdown-toggle btn-simple btn-icon no-caret"
@@ -51,43 +82,12 @@
       <div class="col-lg-4 col-md-6">
         <div class="card card-chart">
           <div class="card-header">
-            <h5 class="card-category">Temperature [K]</h5>
-            <h4 class="card-title">308.6</h4>
-            <div class="dropdown">
-              <button type="button"
-                class="btn btn-round btn-outline-default dropdown-toggle btn-simple btn-icon no-caret"
-                data-toggle="dropdown">
-                <i class="now-ui-icons loader_gear"></i>
-              </button>
-              <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#">Daily</a>
-                <a class="dropdown-item" href="#">Weekly</a>
-                <a class="dropdown-item" href="#">Monthly</a>
-                <a class="dropdown-item text-danger" href="#">Remove Data</a>
-              </div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="chart-area">
-              <canvas id="lineChart"></canvas>
-            </div>
-          </div>
-          <div class="card-footer">
-                <div class="stats">
-                  <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
-                </div>
-              </div>
-        </div>
-      </div>
-      <!-- <div class="col-lg-4 col-md-6">
-        <div class="card card-chart">
-          <div class="card-header">
             <h5 class="card-category">Torque [nm]</h5>
-            <h4 class="card-title">40.2</h4>
+            <h4 class="card-title" id="torque">677</h4>
           </div>
           <div class="card-body">
             <div class="chart-area">
-              <canvas id="myChart4"></canvas>
+              <div id="myChart4"></div>
             </div>
           </div>
           <div class="card-footer">
@@ -96,7 +96,7 @@
                 </div>
               </div>
         </div>
-      </div> -->
+      </div>
     </div>
     </div>
   </div>
@@ -120,14 +120,11 @@
 <!-- Chart JS -->
 <script src="{{url_for('static',filename='assets/js/plugins/chartjs.min.js')}}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
-<!-- <script type="text/javascript" src="{{ url_for('static', filename='assets/js/line.js') }}"></script> -->
 
 <script>
-  // $(document).ready(function () {
-  //   // Javascript method's body can be found in assets/js/demos.js
-  //   demo.initDashboardPageCharts();
-  // });
+
 </script>
+
 {% endblock %}
 
 {% endblock %}
