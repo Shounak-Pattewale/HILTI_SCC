@@ -6,6 +6,9 @@ class Config(object):
     TESTING = False
     SECRET_KEY = os.environ.get('SECRET_KEY')
     # MONGO_URI = os.environ.get('MONGO_URI')
+    SITE_DOCS = join(dirname(realpath(__file__)),"app/site_data/site_docs/")
+
+
     SESSION_COOKIE_SECURE = False
 
 class ProductionConfig(Config):

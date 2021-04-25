@@ -266,7 +266,7 @@ am4core.ready(function () {
         if (r > 10000) {
           r = 0;
         }
-        var msg = [df[1][r], df[2][r], df[3][r], df[4][r]];
+        var msg = [df[1][r], df[2][r], df[3][r], df[4][r], i];
 
         // ##### Main Barchart updation (amCharts) #####
         chart.data[0]["visits"] = df[0][r];
@@ -282,7 +282,7 @@ am4core.ready(function () {
 
         //##### Linechart updation #####
         var rotation = [];
-        for (let i = r; i < r + 7; i++) {
+        for (let i = r + 1; i < r + 7; i++) {
           rotation.push(df[2][i]);
         }
         updateLineData(lineChart, rotation);
@@ -292,7 +292,7 @@ am4core.ready(function () {
         //##### Bar graph updation #####
         process_temp = [];
         air_temp = [];
-        for (let j = r; j < r + 7; j++) {
+        for (let j = r+1 ; j < r + 7; j++) {
           process_temp.push(df[0][j]);
           air_temp.push(df[1][j]);
         }
@@ -300,7 +300,7 @@ am4core.ready(function () {
         $("#temperature").html(air_temp[5]);
 
 
-        if (i < 23) {
+        if (i < 10000) {
             hand.showValue(df[2][i], 1000, am4core.ease.cubicOut);
             i += 1;
           } else {
@@ -323,7 +323,7 @@ var lineChart = new Chart(dtx, {
     datasets: [
       {
         label: "Rotational Speed",
-        data: [1408],
+        data: [df[2][0],df[2][1],df[2][2],df[2][3],df[2][4],df[2][5]],
         fill: false,
         borderColor: ["rgba(255, 99, 132, 1)"],
         borderWidth: 1,
@@ -415,23 +415,3 @@ function updateBarData(chart, x, y) {
   chart.update();
 }
 
-new Chart(document.getElementById("myChart4"), {
-  type: "bar",
-  data: {
-    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-    datasets: [
-      {
-        label: "Population (millions)",
-        backgroundColor: ["#3e95cd"],
-        data: [2478, 5267, 734, 784, 433, 677],
-      },
-    ],
-  },
-  options: {
-    legend: { display: false },
-    title: {
-      display: true,
-      text: "Predicted world population (millions) in 2050",
-    },
-  },
-});

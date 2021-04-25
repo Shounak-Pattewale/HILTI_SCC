@@ -19,5 +19,5 @@ class Tools:
         # print(self.df.shape)
     
     def data(self):
-        data = self.df.head(6)
+        data = self.df
         return data
