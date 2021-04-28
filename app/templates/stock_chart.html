@@ -1,0 +1,77 @@
+{% extends 'base_template.html' %}
+{% block link %} {% endblock %}
+{% block title %} History {% endblock %}
+{% block main %}
+
+<!-- Sidebar -->
+{% include 'sidebar.html' %}
+<div class="main-panel" id="main-panel">
+    <!-- Navbar -->
+    {% include 'navbar.html' %}
+
+    <div class="jumbotron" style="padding-top: 100px; padding-bottom: 0px;">
+        <div id="stockContainer" style="height: 400px; min-width: 310px"></div>
+    </div>
+    <div class="card text-center">
+        <div class="card-header text-muted">
+            Current Data : {{val}}
+        </div>
+        <div class="card-body">
+            <form action="{{url_for('site.history')}}" method="POST" enctype="multipart/form-data" class="mt-2">
+
+                <div class="form-group" style="padding:0 300px 0 ">
+                    <label for="parameter"></label>
+                    <select name="parameter" id="parameter" required class="form-control">
+                        <option value="" disabled selected>Select</option>
+                        <option value="Air temp">Air Temperature</option>
+                        <option value="Process temp">Process Temperature</option>
+                        <option value="Rpm">Rotational Speed</option>
+                        <option value="Torque">Torque</option>
+                        <option value="Tool wear">Tool Wear</option>
+                    </select>
+                    <div class="card-footer text-muted">
+                        <button type="submit" class="btn btn-primary m-auto justify-content-center">View</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% block script %}
+    <script>
+
+        $.getJSON('http://127.0.0.1:5000/post_json/{{val}}', function (data) {
+
+            Highcharts.stockChart('stockContainer', {
+                rangeSelector: {
+                    selected: 1
+                },
+                title: {
+                    text: "Tool History"
+                },
+                series: [{
+                    name: 'Value',
+                    data: data,
+                    type: 'areaspline',
+                    threshold: null,
+                    tooltip: {
+                        valueDecimals: 2
+                    },
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    }
+                }]
+            });
+        });
+    </script>
+    {% endblock %}
+    {% endblock %}
