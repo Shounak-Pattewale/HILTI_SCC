@@ -20,8 +20,8 @@
       <div class="col-lg-4 col-md-6">
         <div class="card card-chart">
           <div class="card-header">
-            <h5 class="card-category">Rotational Speed [rpm]</h5>
-            <h4 class="card-title" id="rotational_speed">1408</h4>
+            <h5 class="card-category">Torque [Nm]</h5>
+            <h4 class="card-title" id="rotational_speed">40 Nm</h4>
             <div class="dropdown">
               <button type="button"
                 class="btn btn-round btn-outline-default dropdown-toggle btn-simple btn-icon no-caret"
@@ -42,17 +42,17 @@
             </div>
           </div>
           <div class="card-footer">
-                <div class="stats">
-                  <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
-                </div>
-              </div>
+            <div class="stats">
+              <i class="now-ui-icons loader_refresh spin"></i> Just Updated
+            </div>
+          </div>
         </div>
       </div>
       <div class="col-lg-4">
         <div class="card card-chart">
           <div class="card-header">
             <h5 class="card-category">Temperature [K]</h5>
-            <h4 class="card-title" id="temperature">300</h4>
+            <h4 class="card-title" id="temperature">300 K</h4>
             <div class="dropdown">
               <button type="button"
                 class="btn btn-round btn-outline-default dropdown-toggle btn-simple btn-icon no-caret"
@@ -73,17 +73,17 @@
             </div>
           </div>
           <div class="card-footer">
-                <div class="stats">
-                  <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
-                </div>
-              </div>
+            <div class="stats">
+              <i class="now-ui-icons loader_refresh spin"></i> Just Updated
+            </div>
+          </div>
         </div>
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="card card-chart">
           <div class="card-header">
-            <h5 class="card-category">Torque [nm]</h5>
-            <h4 class="card-title" id="torque">677</h4>
+            <h5 class="card-category">Rotational Speed [rpm]</h5>
+            <h4 class="card-title" id="torque">1052.7 rpm</h4>
           </div>
           <div class="card-body">
             <div class="chart-area">
@@ -91,13 +91,126 @@
             </div>
           </div>
           <div class="card-footer">
-                <div class="stats">
-                  <i class="now-ui-icons ui-2_time-alarm"></i> Last 7 days
-                </div>
-              </div>
+            <div class="stats">
+              <i class="now-ui-icons loader_refresh spin"></i> Just Updated
+            </div>
+          </div>
         </div>
       </div>
     </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card card-chart" style="height: 95.5%;">
+        <div class="card-header">
+          <h5 class="card-category">Machine Failure Count</h5>
+          <!-- <h4 class="card-title" id="temperature">300 K</h4> -->
+        </div>
+        <div class="card-body">
+          <div class="chart-area">
+            <canvas id="doughnutChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-category"></h5>
+          <h3 class="card-title">STATS </h3>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class=" text-primary">
+                <th>
+                  Parameters
+                </th>
+                <th>
+                  Range
+                </th>
+                <th>
+                  min
+                </th>
+                <th class="text-right">
+                  max
+                </th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    Rotational Speed
+                  </td>
+                  <td id="rpm">
+                    
+                  </td>
+                  <td>
+                    1181
+                  </td>
+                  <td class="text-right">
+                    2886
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Process Temperature
+                  </td>
+                  <td id="process">
+                    
+                  </td>
+                  <td>
+                    305.7
+                  </td>
+                  <td class="text-right">
+                    313.8
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Air Temperature
+                  </td>
+                  <td id="air">
+                    
+                  </td>
+                  <td>
+                    295.3
+                  </td>
+                  <td class="text-right">
+                    304.5
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Torque
+                  </td>
+                  <td id="torque">
+                    
+                  </td>
+                  <td>
+                    3.8
+                  </td>
+                  <td class="text-right">
+                    76.6
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Tool Wear
+                  </td>
+                  <td id="toolwear">
+                    
+                  </td>
+                  <td>
+                    0
+                  </td>
+                  <td class="text-right">
+                    251
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <footer class="footer">
@@ -113,7 +226,6 @@
       </div>
     </div>
   </footer>
-</div>
 
 {% block script %}
 
@@ -122,7 +234,6 @@
 <script type="text/javascript" src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
 
 <script>
-
 </script>
 
 {% endblock %}

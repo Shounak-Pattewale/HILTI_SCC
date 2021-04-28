@@ -1,5 +1,7 @@
 appdirs==1.4.3
+autopep8==1.5.6
 bcrypt==3.2.0
+bidict==0.21.2
 CacheControl==0.12.6
 certifi==2019.11.28
 cffi==1.14.5
@@ -12,6 +14,7 @@ distro==1.4.0
 dnspython==2.1.0
 Flask==1.1.2
 Flask-PyMongo==2.3.0
+Flask-SocketIO==5.0.1
 Flask-WTF==0.14.3
 gunicorn==20.1.0
 html5lib==1.0.1
@@ -28,11 +31,15 @@ packaging==20.3
 pandas==1.2.3
 pep517==0.8.2
 progress==1.5
+pycodestyle==2.7.0
 pycparser==2.20
+PyJWT==1.7.1
 pymongo==3.11.3
 pyparsing==2.4.6
 python-dateutil==2.8.1
 python-dotenv==0.16.0
+python-engineio==4.1.0
+python-socketio==5.2.1
 pytoml==0.1.21
 pytz==2021.1
 requests==2.22.0
@@ -42,6 +49,7 @@ scipy==1.6.2
 six==1.14.0
 threadpoolctl==2.1.0
 toml==0.10.2
+twilio==6.57.0
 urllib3==1.25.8
 webencodings==0.5.1
 Werkzeug==1.0.1

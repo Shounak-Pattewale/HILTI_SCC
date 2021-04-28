@@ -1,9 +1,10 @@
 import pickle
 import pandas as pd
 
-model = pickle.load(open('trained.pkl','rb'))
+model = pickle.load(open('./trained.pkl','rb'))
 df = pd.read_csv('test.csv')
 # df = df.head(100)
+print(df.info())
 
 z = []
 

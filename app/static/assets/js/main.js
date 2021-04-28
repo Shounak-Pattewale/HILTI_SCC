@@ -5,12 +5,14 @@ data.forEach(function (d) {
   df[2] = d["Rpm"];
   df[3] = d["Torque"];
   df[4] = d["Tool wear"];
+  df[5] = d['time'];
 });
 
 am4core.ready(function () {
   // console.log("1")
 
   // Themes begin
+  // am4core.useTheme(am4themes_dark);
   am4core.useTheme(am4themes_animated);
   // Themes end
 
@@ -262,6 +264,7 @@ am4core.ready(function () {
     socket.on("connect", function () {
       var r = 1;
       var i = 0;
+      var l = 0;
       setInterval(function () {
         if (r > 10000) {
           r = 0;
@@ -282,33 +285,42 @@ am4core.ready(function () {
 
         //##### Linechart updation #####
         var rotation = [];
-        for (let i = r + 1; i < r + 7; i++) {
-          rotation.push(df[2][i]);
+        var labels = [];
+        for (let k = r + 1; k < r + 7; k++) {
+          rotation.push(df[3][k]);
+          labels.push(df[5][k]);
         }
-        updateLineData(lineChart, rotation);
-        $("#rotational_speed").html(rotation[5]);
+        updateLineData(lineChart, rotation, labels);
+        $("#rotational_speed").html(rotation[5] + " Nm");
+        $("#rpm").html(rotation[5] + " Nm");
         // End of Linechart
 
         //##### Bar graph updation #####
         process_temp = [];
         air_temp = [];
+        temp_labels = [];
         for (let j = r+1 ; j < r + 7; j++) {
           process_temp.push(df[0][j]);
           air_temp.push(df[1][j]);
+          temp_labels.push(df[5][j]);
         }
-        updateBarData(myChart, air_temp, process_temp);
-        $("#temperature").html(air_temp[5]);
+        updateBarData(myChart, air_temp, process_temp, temp_labels);
+        $("#temperature").html(air_temp[5] + " K");
 
 
-        if (i < 10000) {
-            hand.showValue(df[2][i], 1000, am4core.ease.cubicOut);
-            i += 1;
+        if (l < 10000) {
+            hand.showValue(df[2][l], 1000, am4core.ease.cubicOut);
+            $("#torque").html(df[2][l] + " rpm");
+            $("#torque").html(df[2][l] + " rpm");
+            l += 1;
           } else {
-            i = 0;
+            l = 0;
           }
 
+          i++;
+
         r += 1;
-      }, 5000);
+      }, 2000);
     });
   });
 
@@ -319,11 +331,11 @@ var dtx = document.getElementById("lineChart").getContext("2d");
 var lineChart = new Chart(dtx, {
   type: "line",
   data: {
-    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    labels: [df[5][0],df[5][1],df[5][2],df[5][3],df[5][4],df[5][5]],
     datasets: [
       {
-        label: "Rotational Speed",
-        data: [df[2][0],df[2][1],df[2][2],df[2][3],df[2][4],df[2][5]],
+        label: "Torque",
+        data: [df[3][0],df[3][1],df[3][2],df[3][3],df[3][4],df[3][5]],
         fill: false,
         borderColor: ["rgba(255, 99, 132, 1)"],
         borderWidth: 1,
@@ -339,8 +351,9 @@ var lineChart = new Chart(dtx, {
   },
 });
 
-function updateLineData(chart, x) {
+function updateLineData(chart, x, labels) {
   chart.data.datasets[0].data = x;
+  chart.data.labels = labels;
   chart.update();
 }
 
@@ -350,11 +363,11 @@ var ctx = document.getElementById("barChart").getContext("2d");
 var myChart = new Chart(ctx, {
   type: "line",
   data: {
-    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    labels: [df[5][0],df[5][1],df[5][2],df[5][3],df[5][4],df[5][5]],
     datasets: [
       {
         label: "Process Temp",
-        data: [12, 19, 3, 5, 2, 3],
+        data: [df[1][0],df[1][1],df[1][2],df[1][3],df[1][4],df[1][5]],
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(255, 99, 132, 0.2)",
@@ -377,7 +390,7 @@ var myChart = new Chart(ctx, {
       },
       {
         label: "Air Temp",
-        data: [26, 29, 34, 51, 27, 23],
+        data: [df[0][0],df[0][1],df[0][2],df[0][3],df[0][4],df[0][5]],
         backgroundColor: [
           "rgba(54, 162, 235, 0.2)",
           "rgba(54, 162, 235, 0.2)",
@@ -409,9 +422,30 @@ var myChart = new Chart(ctx, {
   },
 });
 
-function updateBarData(chart, x, y) {
+function updateBarData(chart, x, y, labels) {
   chart.data.datasets[0].data = x;
   chart.data.datasets[1].data = y;
+  chart.data.labels = labels;
   chart.update();
 }
 
+
+new Chart(document.getElementById("doughnutChart"), {
+  type: 'doughnut',
+  data: {
+    labels: ["L", "M", "H"],
+    datasets: [
+      {
+        label: "Machine Failures",
+        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f"],
+        data: [15, 11, 9]
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: false,
+      text: ''
+    }
+  }
+});
