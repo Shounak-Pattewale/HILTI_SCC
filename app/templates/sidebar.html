@@ -55,6 +55,16 @@
                     </a>
                 </li>
 
+                <li {% if active_page == "/history" %} class="active"{% endif
+                    %}>
+                    <a href="{{url_for('site.history')}}">
+
+                        <i class="now-ui-icons education_paper"></i>
+
+                        <p>Tool History</p>
+                    </a>
+                </li>
+
             </ul>
         </div>
     </div>

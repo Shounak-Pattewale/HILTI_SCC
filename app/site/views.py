@@ -72,3 +72,30 @@ def get_report():
     new_df.to_csv(site_docs+'user_data.csv')
 
     return send_from_directory(site_docs, filename="user_data.csv", as_attachment = True)
+
+@site.route("/history", methods=["POST","GET"])
+def history():
+    if request.method == "GET":
+        val = "Air temp"
+        return render_template("stock_chart.html",val=val)
+    else :
+        req = request.form
+        val = req.get('parameter')
+        return render_template("stock_chart.html",val=val)
+
+@site.route("/post_json/<string:val>")
+def post_json(val):
+    df = tool.data()
+    d1 = df['unix'].values.tolist()
+    d2 = df[val].values.tolist()
+
+    x = []
+    for i in range(len(d1)):
+        d = []
+        d.append(d1[i])
+        d.append(d2[i])
+        x.append(d)
+
+    response = make_response(json.dumps(x))
+    response.content_type = 'application/json'
+    return response  
