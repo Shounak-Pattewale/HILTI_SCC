@@ -3,50 +3,70 @@
 {% block title %} Home Page {% endblock %}
 {% block main %}
 <!-- {% include 'sidebar.html' %} -->
-<div class="wrapper ">
+<div class="wrapper">
     <div class="main-panel" id="main-panel">
-    <!-- Navbar -->
-      {% include 'navbar.html' %}
-    <!-- End Navbar -->
-        <div class="panel-header panel-header-sm">
+        <!-- Navbar -->
+        {% include 'navbar.html' %}
+        <!-- End Navbar -->
+        <div class="panel-header-sm panel-newbgcolor" >
         </div>
-        <div class="content">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Home Page</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="alert alert-info">
-                                <span>This is a plain notification</span>
+        <div class="content panel-newbgcolor">
+            <div class="row mt-4">
+                <div class="col-lg-12 col-md-6">
+                    <div class="card panel-newbgcolor">
+                        <div class="card-body panel-newbgcolor">
+                            <div class="alert nav-newbgcolor">
+                                <span>Power tools are used in all construction projects for various purposes. As power
+                                    tools are more efficient and increases productivity they are frequently used in
+                                    construction sites. In large sites tracking the power tools and their service
+                                    requirements are quite challenging. Breakdown of power tools in middle of an
+                                    important job can seriously affect the works if a replacement is not available
+                                    immediately. An attempt has been made in this project to track and monitor the
+                                    health of the power tools, shorter service time, better inventory management of
+                                    spares with help of technology which can give better user experience to the customer
+                                    with minimum works disruption. </span>
                             </div>
-                            <div class="alert alert-info">
-                                <button type="button" aria-hidden="true" class="close">
-                                    <i class="now-ui-icons ui-1_simple-remove"></i>
-                                </button>
-                                <span>This is a notification with close button.</span>
+                            <div class="alert nav-newbgcolor"> 
+                                <span><strong>Problem Description : </strong><br><br>
+                                    The Hilti tools used at construction sites have moving parts and other parts which
+                                    require servicing at regular intervals or when any part is damaged.
+
+                                    When the machine or tool requires servicing, the tool has to be sent to the
+                                    servicing centre. If a spare machine is available with the customer or Hilti the
+                                    work can proceed without interruption.
+
+                                    In most of the cases, the machine breaks down during its use at the construction
+                                    site without warning and the works get severely affected. It has been noticed that
+                                    machines do not have any indicator to give distress signal prior to the breakdown or
+                                    when the routine servicing is due as per its uses.
+
+                                    Once the machine is breakdown, it follows the following path:<br><br>
+                                    <ol>
+                                        <li>Day 1 – Booking by customer for machine servicing</li>
+                                        <li>Day 2 – Picking up of machine by third party courier</li>
+                                        <li>Day 3 – Machine at Hilti Service Centre </li>
+                                        <li>Day 4 – Machine repairing and dispatch from the service center to customer
+                                        </li>
+                                        <li>Day 5 – Machine reached to customer</li>
+                                    </ol>
+                                    The above cycle has to be followed every time a tool needs servicing and this
+                                    sometimes happens during an important job in progress which eventually hinders the
+                                    work progress at any job site.
+                                </span>
                             </div>
-                            <div class="alert alert-info alert-with-icon" data-notify="container">
-                                <button type="button" aria-hidden="true" class="close">
-                                    <i class="now-ui-icons ui-1_simple-remove"></i>
-                                </button>
-                                <span data-notify="icon" class="now-ui-icons ui-1_bell-53"></span>
-                                <span data-notify="message">This is a notification with close button and icon.</span>
-                            </div>
-                            <div class="alert alert-info alert-with-icon" data-notify="container">
-                                <button type="button" aria-hidden="true" class="close">
-                                    <i class="now-ui-icons ui-1_simple-remove"></i>
-                                </button>
-                                <span data-notify="icon" class="now-ui-icons ui-1_bell-53"></span>
-                                <span data-notify="message">This is a notification with close button and icon and have
-                                    many
-                                    lines. You can see that the icon and the close button are always vertically aligned.
-                                    This is a beautiful notification. So you don't have to worry about the style.</span>
+                            <div class="alert nav-newbgcolor" data-notify="container">
+                                <span data-notify="message"><strong>Problem Solution : </strong><br><br>
+
+                                    The team has proposed the solution through data collection from the tools and
+                                    analysis of the collected data in order to create trackers to make corrective
+                                    decisions for better performance of the tools.
+
+                                    The link for the GitHub has been provided below:<br>
+                                <a href="http://github.com/Shounak-Pattewale/HILTI_SCC" target="_blank">Click Here</a></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-{% endblock %}
+        {% endblock %}

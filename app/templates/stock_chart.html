@@ -5,18 +5,18 @@
 
 <!-- Sidebar -->
 {% include 'sidebar.html' %}
-<div class="main-panel" id="main-panel">
+<div class="main-panel panel-newbgcolor" id="main-panel">
     <!-- Navbar -->
     {% include 'navbar.html' %}
 
-    <div class="jumbotron" style="padding-top: 100px; padding-bottom: 0px;">
+    <div class="jumbotron panel-newbgcolor" style="padding-top: 100px; padding-bottom: 0px;">
         <div id="stockContainer" style="height: 400px; min-width: 310px"></div>
     </div>
-    <div class="card text-center">
-        <div class="card-header text-muted">
-            Current Data : {{val}}
+    <div class="card text-center panel-newbgcolor" style="margin-bottom: 0px;">
+        <div class="card-header text-muted" style="font-size: large;">
+             Current Data : {{val}} 
         </div>
-        <div class="card-body">
+        <div class="card-body panel-newbgcolor">
             <form action="{{url_for('site.history')}}" method="POST" enctype="multipart/form-data" class="mt-2">
 
                 <div class="form-group" style="padding:0 300px 0 ">
@@ -30,7 +30,7 @@
                         <option value="Tool wear">Tool Wear</option>
                     </select>
                     <div class="card-footer text-muted">
-                        <button type="submit" class="btn btn-primary m-auto justify-content-center">View</button>
+                        <button type="submit" class="btn nav-newbgcolor m-auto justify-content-center">View</button>
                     </div>
                 </div>
             </form>

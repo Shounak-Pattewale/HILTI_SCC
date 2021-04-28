@@ -1,7 +1,7 @@
 {% set active_page = url_for(request.endpoint) %}
 
 <div class="wrapper" style="position: absolute;">
-    <div class="sidebar" data-color="blue">
+    <div class="sidebar">
         <div class="logo">
             <a href="{{ url_for('site.index') }}" class="simple-text logo-mini">
                 HILTI
@@ -14,13 +14,16 @@
         <div class="sidebar-wrapper" id="sidebar-wrapper">
             <ul class="nav">
 
-                <li {% if active_page == "/" %} class="active"{% endif
+                <li {% if active_page == "/" %} class="active" style="color: #141E30;"{%endif
                     %}>
                     <a href="{{ url_for('site.index') }}">
-
+                        {% if active_page == "/" %}
+                        <i class="now-ui-icons users_single-02" style="color: #141E30;"></i>
+                        <p style="color: #141E30;">Home</p>
+                        {% else %}
                         <i class="now-ui-icons users_single-02"></i>
-
                         <p>Home</p>
+                        {% endif %}
                     </a>
                 </li>
                 
@@ -28,30 +31,39 @@
                 <li {% if active_page == "/user_profile" %} class="active"{% endif
                     %}>
                     <a href="{{ url_for('site.user_profile') }}">
-
+                        {% if active_page == "/user_profile" %}
+                        <i class="now-ui-icons users_single-02" style="color: #141E30;"></i>
+                        <p style="color: #141E30;">User Profile</p>
+                        {% else %}
                         <i class="now-ui-icons users_single-02"></i>
-
-                        <p>User Profile</p>
+                        <p >User Profile</p>
+                        {% endif %}
                     </a>
                 </li>
 
                 <li {% if active_page == "/dashboard" %} class="active"{% endif
                     %}>
                     <a href="{{ url_for('site.dashboard') }}">
-
-                        <i class="now-ui-icons design_app"></i>
-
+                        {% if active_page == "/dashboard" %}
+                        <i class="now-ui-icons business_chart-bar-32" style="color: #141E30;"></i>
+                        <p style="color: #141E30;">Dashboard </p>
+                        {% else %}
+                        <i class="now-ui-icons business_chart-bar-32"></i>
                         <p>Dashboard</p>
+                        {% endif %}
                     </a>
                 </li>
 
                 <li {% if active_page == "/notifications" %} class="active"{% endif
                     %}>
                     <a href="">
-
+                        {% if active_page == "/notifications" %}
+                        <i class="now-ui-icons ui-1_bell-53" style="color: #141E30;"></i>
+                        <p style="color: #141E30;">Notifications</p>
+                        {% else %}
                         <i class="now-ui-icons ui-1_bell-53"></i>
-
                         <p>Notifications</p>
+                        {% endif %}
                     </a>
                 </li>
 
@@ -59,9 +71,13 @@
                     %}>
                     <a href="{{url_for('site.history')}}">
 
+                        {% if active_page == "/history" %}
+                        <i class="now-ui-icons education_paper" style="color: #141E30;"></i>
+                        <p style="color: #141E30;">Tool History</p>
+                        {% else %}
                         <i class="now-ui-icons education_paper"></i>
-
-                        <p>Tool History</p>
+                        <p >Tool History</p>
+                        {% endif %}
                     </a>
                 </li>
 

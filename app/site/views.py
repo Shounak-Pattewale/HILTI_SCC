@@ -28,13 +28,14 @@ from app import *
 site = Blueprint("site", __name__, template_folder='../templates',
                  static_folder='static', static_url_path='static')
 
-model = pickle.load(
-    open('/mnt/d/Taha/HILTI_SCC/app/site_data/trained.pkl', 'rb'))
+model = pickle.load(open('app/site_data/trained.pkl', 'rb'))
 # model = pickle.load(open('/mnt/d/Shounak/My Projects/HILTI_SCC/app/site_data/trained.pkl', 'rb'))
 
 tool = Tools()
 
 site_docs = app.config["SITE_DOCS"]
+email_id = app.config["EMAIL_ID"]
+email_pw = app.config["EMAIL_PW"]
 
 @site.errorhandler(404)
 def not_found(error=None):
@@ -84,8 +85,8 @@ def sendEmail(username):
     # For Email Module
     try:
         print("Sending email..!!")
-        email_address = 'lustblood03@gmail.com'
-        email_password = 'Bloodlust1703'
+        email_address = email_id
+        email_password = email_pw
         msg = EmailMessage()
         msg['Subject'] = 'HILTI tool failure'
         msg['From'] = email_address
@@ -151,4 +152,3 @@ def post_json(val):
     response = make_response(json.dumps(x))
     response.content_type = 'application/json'
     return response  
->>>>>>> 88bd33a34822d031cf48333c001d0c580488eb1d

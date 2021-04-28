@@ -29,28 +29,16 @@ am4core.ready(function () {
         highScore: 1350,
       },
       {
-        title: "Better",
-        color: "#fdae19",
-        lowScore: 1350,
-        highScore: 1500,
-      },
-      {
         title: "Good",
         color: "#54b947",
-        lowScore: 1500,
+        lowScore: 1350,
         highScore: 2000,
-      },
-      {
-        title: "Very High",
-        color: "#ee1f25",
-        lowScore: 2750,
-        highScore: 3000,
       },
       {
         title: "High",
         color: "#f04922",
         lowScore: 2000,
-        highScore: 2750,
+        highScore: 3000,
       },
     ],
   };
