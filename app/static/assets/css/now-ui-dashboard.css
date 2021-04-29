@@ -4067,7 +4067,7 @@ Created using IcoMoon - icomoon.io
   background: -o-linear-gradient(#888 0%, #000 80%);
   background: -moz-linear-gradient(#888 0%, #000 80%);
   background: linear-gradient(to top,#888 0%, #000 80%);
-  background: #141E30;  /* fallback for old browsers */
+  background: #141E30;  
 
   z-index: 3;
 }
