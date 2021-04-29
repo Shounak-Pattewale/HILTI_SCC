@@ -33,7 +33,12 @@ The team has proposed the solution through data collection from the tools and an
 FLASK_ENV=development<br>
 SECRET_KEY='some key'<br>
 SESSION_KEY='some key'<br>
-MONGO_URI='mongodb url'
+MONGO_URI='mongodb url'<br>
+EMAIL_ID='email id'<br>
+EMAIL_PW='email password'<br>
+ACCOUNT_SID = 'some key'<br>
+AUTH_TOKEN = 'some key'<br>
+PHONE_NUM = 'phone number'<br>
 
 ### Run Command
 * Method one :
