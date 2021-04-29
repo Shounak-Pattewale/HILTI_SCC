@@ -5,16 +5,16 @@
 
 <!-- Sidebar -->
 {% include 'sidebar.html' %}
-<div class="main-panel panel-newbgcolor" id="main-panel">
+<div class="main-panel" id="main-panel" style="background-color: #ECE9E6;">
     <!-- Navbar -->
     {% include 'navbar.html' %}
 
-    <div class="jumbotron panel-newbgcolor" style="padding-top: 100px; padding-bottom: 0px;">
+    <div class="jumbotron" style="padding-top: 100px; padding-bottom: 0px; background-color: #ECE9E6;">
         <div id="stockContainer" style="height: 400px; min-width: 310px"></div>
     </div>
     <div class="card text-center panel-newbgcolor" style="margin-bottom: 0px;">
         <div class="card-header text-muted" style="font-size: large;">
-             Current Data : {{val}} 
+            Current Data : {{val}}
         </div>
         <div class="card-body panel-newbgcolor">
             <form action="{{url_for('site.history')}}" method="POST" enctype="multipart/form-data" class="mt-2">
@@ -46,8 +46,32 @@
                 rangeSelector: {
                     selected: 1
                 },
+                chart: {
+                    backgroundColor: {
+                        linearGradient: [0, 0, 0, 0],
+                        stops: [
+                            [0, '#FFFFFF']
+                            // [1, '#ECE9E6']
+                        ]
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        color: '#141E30'
+                    }
+                },
                 title: {
-                    text: "Tool History"
+                    text: "Tool History",
+                    style: {
+                        color: '#000',
+                        fontWeight: 'bold',
+                        fontSize: '25px',
+                        fontFamily: 'Trebuchet MS, Verdana, sans-serif'
+
+                    }
+                },
+                scrollbar: {
+                    enabled: false
                 },
                 series: [{
                     name: 'Value',
@@ -67,9 +91,56 @@
                         stops: [
                             [0, Highcharts.getOptions().colors[0]],
                             [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                        ]
+                        ],
                     }
-                }]
+                }],
+                xAxis: {
+                    gridLineWidth: 1,
+                    lineColor: '#333',
+                    tickColor: '#fff',
+                    labels: {
+                        style: {
+                            color: '#000',
+                            text: 'Time',
+                            font: '11px Trebuchet MS, Verdana, sans-serif'
+                        }
+                    },
+                    title: {
+                        style: {
+                            color: '#000',
+                            fontWeight: 'bold',
+                            fontSize: '12px',
+                            fontFamily: 'Trebuchet MS, Verdana, sans-serif'
+
+                        }
+                    }
+                },
+                yAxis: {
+                    alternateGridColor: null,
+                    // minorTickInterval: 'auto',
+                    lineColor: '#333',
+                    lineWidth: 1,
+                    tickWidth: 1,
+                    tickColor: '#fff',
+                    labels: {
+                        style: {
+                            color: '#000',
+                            text: 'Values',
+                            font: '11px Trebuchet MS, Verdana, sans-serif'
+                        }
+                    },
+                    title: {
+                        style: {
+                            color: '#000',
+                            fontWeight: 'bold',
+                            fontSize: '12px',
+                            fontFamily: 'Trebuchet MS, Verdana, sans-serif'
+                        }
+                    }
+                },
+                credits: {
+                    text: ""
+                }
             });
         });
     </script>
