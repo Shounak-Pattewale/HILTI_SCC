@@ -29,13 +29,15 @@ site = Blueprint("site", __name__, template_folder='../templates',
                  static_folder='static', static_url_path='static')
 
 model = pickle.load(open('app/site_data/trained.pkl', 'rb'))
-# model = pickle.load(open('/mnt/d/Shounak/My Projects/HILTI_SCC/app/site_data/trained.pkl', 'rb'))
 
 tool = Tools()
 
 site_docs = app.config["SITE_DOCS"]
 email_id = app.config["EMAIL_ID"]
 email_pw = app.config["EMAIL_PW"]
+account_sid = app.config["ACCOUNT_SID"]
+auth_token = app.config["AUTH_TOKEN"]
+phone_num = app.config['PHONE_NUM']
 
 @site.errorhandler(404)
 def not_found(error=None):
@@ -66,12 +68,10 @@ def user_profile():
 
 def sendMessage(receipent):
     try:
-        account_sid = 'ACc320869579518126eca9bff99e30433a'
-        auth_token = '9169a92a56be0b88d0a5b4a0c8fae845'
         client = Client(account_sid, auth_token)
 
         message = client.messages.create(
-        body="Your HILTI tool with id #HT4587 may require maintenance. You are suggested to take necessary actions to prevent your tools from further damage. View tool stats on the link given below. -Team H",
+        body="Your Hilti tool might require some action. Check mail for more info. -Team HTOT",
         from_='+13312530016',
         to=receipent
         )
@@ -91,10 +91,11 @@ def sendEmail(username):
         msg['Subject'] = 'HILTI tool failure'
         msg['From'] = email_address
         msg['To'] = username
-        msg.set_content('Your HILTI tool with id #HT4587 may require maintenance. You are suggested to take necessary actions to prevent your tools from further damage. Click on the link given below to visit the Dashboard. -Team HTOT')
+        msg.set_content('The tool Serial number L63880 needs service. Please contact Hilti Service by clicking the following link')
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
             smtp.login(email_address, email_password)
             smtp.send_message(msg)
+        print("Email Sent successfully!")
     except Exception as error:
         print(error)
         return "<h1> We have following error </h1> <p>{}</p>".format(error)
@@ -103,10 +104,11 @@ def sendEmail(username):
 def prediction(x):
     pred = model.predict([x])
     print('Prediction : ', pred[0])
+    sendEmail('tahambohra@gmail.com')
 
     # if pred[0] == 1:
-    #     sendEmail('sarbajitrc@gmail.com')
-    #     sendMessage('9823196905')
+    #     sendEmail('tahambohra@gmail.com')
+    #     sendMessage(phone_num)
 
 
 @socketio.on('message')

@@ -9,6 +9,9 @@ class Config(object):
     SITE_DOCS = join(dirname(realpath(__file__)),"app/site_data/site_docs/")
     EMAIL_ID = os.environ.get('EMAIL_ID')
     EMAIL_PW = os.environ.get('EMAIL_PW')
+    ACCOUNT_SID = os.environ.get('ACCOUNT_SID')
+    AUTH_TOKEN = os.environ.get('AUTH_TOKEN')
+    PHONE_NUM = os.environ.get('PHONE_NUM')
 
 
     SESSION_COOKIE_SECURE = False
