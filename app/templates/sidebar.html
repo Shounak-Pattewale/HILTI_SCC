@@ -27,7 +27,7 @@
                     </a>
                 </li>
                 
-
+                {% if session %}
                 <li {% if active_page == "/user_profile" %} class="active"{% endif
                     %}>
                     <a href="{{ url_for('site.user_profile') }}">
@@ -80,6 +80,38 @@
                         {% endif %}
                     </a>
                 </li>
+
+                {% else %}
+
+                <li {% if active_page == "/login" %} class="active"{% endif
+                    %}>
+                    <a href="{{url_for('site.login')}}">
+
+                        {% if active_page == "/login" %}
+                        <i class="now-ui-icons gestures_tap-01" style="color: #141E30;"></i>
+                        <p style="color: #141E30;">Login</p>
+                        {% else %}
+                        <i class="now-ui-icons gestures_tap-01"></i>
+                        <p >Login</p>
+                        {% endif %}
+                    </a>
+                </li>
+
+                <li {% if active_page == "/signup" %} class="active"{% endif
+                    %}>
+                    <a href="{{url_for('site.signup')}}">
+
+                        {% if active_page == "/signup" %}
+                        <i class="now-ui-icons business_badge" style="color: #141E30;"></i>
+                        <p style="color: #141E30;">Signup</p>
+                        {% else %}
+                        <i class="now-ui-icons business_badge"></i>
+                        <p >Signup</p>
+                        {% endif %}
+                    </a>
+                </li>
+
+                {% endif %}
 
             </ul>
         </div>

@@ -31,6 +31,7 @@ site = Blueprint("site", __name__, template_folder='../templates',
 model = pickle.load(open('app/site_data/trained.pkl', 'rb'))
 
 tool = Tools()
+user = Users()
 
 site_docs = app.config["SITE_DOCS"]
 email_id = app.config["EMAIL_ID"]
@@ -58,12 +59,73 @@ def index():
 
 @site.route("/dashboard")
 def dashboard():
-    return render_template('dashboard.html')
+    if session:
+        return render_template('dashboard.html')
+    return redirect(url_for('site.login'))
+
+@site.route('/signup',methods=["GET","POST"])
+def signup():
+    if request.method == "POST":
+        req = request.form
+
+        password = req['password']
+        hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(14))
+
+        u_dict = {
+        "company" : req['company'],
+        "email" : req['email'],
+        "password" : hashed_pw
+        }
+        
+        if req['password'] == req['cm_password']:
+            flash("Signup successful","success")
+            user.addUser(u_dict)
+            return render_template('user/login.html')
+        
+        flash("Password does not match..!!",'danger')
+        return render_template('user/signup.html',u=u_dict)
+
+    return render_template('user/signup.html',u=[])
+
+@site.route('/login',methods=["GET","POST"])
+def login():
+    if request.method == "POST":
+        req = request.form
+        email = req['email']
+        password = req['password']
+        status = user.findUser(email, password)
+        if type(status) == str:
+            session.clear()
+            session['logged_in'] = True
+            session['EMAIL'] = email
+            print("Logined as : ",session['EMAIL'])
+            flash("Login successful","success")
+            return redirect(url_for('site.index'))
+        elif status == -1:
+            flash("Incorrect Email or Password","danger")
+        else:
+            flash("User does not exist, Please Sign Up!","danger")
+
+    return render_template('user/login.html')
+
+
+@site.route('/logout')
+def logout():
+    if session:
+        print("CLEARING SESSION FOR : ",session['EMAIL'])
+        session.clear()
+        return redirect(url_for('site.index'))
+    
+    print("Please login first")
+    return render_template('home.html')
 
 
 @site.route("/user_profile")
 def user_profile():
-    return render_template("user_profile.html")
+    if session:
+        return render_template('user/user_profile.html')
+    return redirect(url_for("site.login"))
+
 
 
 def sendMessage(receipent):
@@ -80,11 +142,9 @@ def sendMessage(receipent):
     except:
         print("Error while sending message. Try again!")
 
-
 def sendEmail(username):
     # For Email Module
     try:
-        print("Sending email..!!")
         email_address = email_id
         email_password = email_pw
         msg = EmailMessage()
@@ -100,7 +160,6 @@ def sendEmail(username):
         print(error)
         return "<h1> We have following error </h1> <p>{}</p>".format(error)
 
-
 def prediction(x):
     pred = model.predict([x])
     print('Prediction : ', pred[0])
@@ -110,7 +169,6 @@ def prediction(x):
     #     sendEmail('tahambohra@gmail.com')
     #     sendMessage(phone_num)
 
-
 @socketio.on('message')
 def handle_message(resp):
     print('Message: ', resp)
@@ -118,7 +176,6 @@ def handle_message(resp):
     global nowPointer
     nowPointer = resp[4]
     prediction(x)
-
 
 @site.route("/get_report")
 def get_report():
@@ -130,13 +187,15 @@ def get_report():
 
 @site.route("/history", methods=["POST","GET"])
 def history():
-    if request.method == "GET":
-        val = "Air temp"
-        return render_template("stock_chart.html",val=val)
-    else :
-        req = request.form
-        val = req.get('parameter')
-        return render_template("stock_chart.html",val=val)
+    if session:
+        if request.method == "GET":
+            val = "Air temp"
+            return render_template("stock_chart.html",val=val)
+        else :
+            req = request.form
+            val = req.get('parameter')
+            return render_template("stock_chart.html",val=val)
+    return redirect(url_for('site.login'))
 
 @site.route("/post_json/<string:val>")
 def post_json(val):

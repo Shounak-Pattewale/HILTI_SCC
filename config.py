@@ -5,7 +5,7 @@ class Config(object):
     DEBUG = False
     TESTING = False
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    # MONGO_URI = os.environ.get('MONGO_URI')
+    MONGO_URI = os.environ.get('MONGO_URI')
     SITE_DOCS = join(dirname(realpath(__file__)),"app/site_data/site_docs/")
     EMAIL_ID = os.environ.get('EMAIL_ID')
     EMAIL_PW = os.environ.get('EMAIL_PW')
