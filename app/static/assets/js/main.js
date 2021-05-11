@@ -251,21 +251,27 @@ am4core.ready(function () {
     // console.log("Here : ", socket)
     socket.on("connect", function () {
       var r = 1;
+      var s = 7;
       var i = 0;
-      var l = 0;
+      var l = 1;
       setInterval(function () {
         if (r > 10000) {
           r = 0;
         }
-        var msg = [df[1][r], df[2][r], df[3][r], df[4][r], i];
+        var msg = [df[1][s], df[2][r], df[3][s], df[4][r], i];
 
         // ##### Main Barchart updation (amCharts) #####
-        chart.data[0]["visits"] = df[0][r];
-        chart.data[1]["visits"] = df[1][r];
-        chart.data[2]["visits"] = df[2][r];
-        chart.data[3]["visits"] = df[3][r];
-        chart.data[4]["visits"] = df[4][r];
+        chart.data[0]["visits"] = df[0][s]; //air temp
+        chart.data[1]["visits"] = df[1][s]; //process temp
+        chart.data[2]["visits"] = df[2][r]; //rpm
+        chart.data[3]["visits"] = df[3][s]; //torque
+        chart.data[4]["visits"] = df[4][r]; //toolwear
         chart.invalidateRawData();
+        $("#rpm").html(df[2][r]);
+        $("#process").html(df[1][s]);
+        $("#air").html(df[0][s]);
+        $("#torque").html(df[3][s]);
+        $("#toolwear").html(df[4][r]);
         // End of Barchart
 
         // ##### Sending message for prediction #####
@@ -280,7 +286,6 @@ am4core.ready(function () {
         }
         updateLineData(lineChart, rotation, labels);
         $("#rotational_speed").html(rotation[5] + " Nm");
-        $("#rpm").html(rotation[5] + " Nm");
         // End of Linechart
 
         //##### Bar graph updation #####
@@ -298,14 +303,14 @@ am4core.ready(function () {
 
         if (l < 10000) {
             hand.showValue(df[2][l], 1000, am4core.ease.cubicOut);
-            $("#torque").html(df[2][l] + " rpm");
-            $("#torque").html(df[2][l] + " rpm");
+            $("#torque_").html(df[2][l] + " rpm");
             l += 1;
           } else {
             l = 0;
           }
 
           i++;
+          s++;
 
         r += 1;
       }, 2000);
