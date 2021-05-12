@@ -12,8 +12,11 @@ class Config(object):
     ACCOUNT_SID = os.environ.get('ACCOUNT_SID')
     AUTH_TOKEN = os.environ.get('AUTH_TOKEN')
     PHONE_NUM = os.environ.get('PHONE_NUM')
-
-
+    APP_SECRET_KEY = os.environ.get("APP_SECRET_KEY")
+    SESSION_COOKIE_NAME = os.environ.get('SESSION_COOKIE_NAME')
+    GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
+    GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
+    SESSION_COOKIE_NAME = os.environ.get('SESSION_COOKIE_NAME')
     SESSION_COOKIE_SECURE = False
 
 class ProductionConfig(Config):
