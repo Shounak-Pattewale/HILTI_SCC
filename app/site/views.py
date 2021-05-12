@@ -5,6 +5,9 @@ from flask import request, jsonify, make_response, url_for, flash
 # For sending files
 from flask import send_from_directory, send_file, safe_join, abort
 
+# Google oAuth api
+from authlib.integrations.flask_client import OAuth
+
 # imports for sending alert message
 import smtplib
 from email.message import EmailMessage
@@ -19,7 +22,7 @@ import random
 import json
 import pickle
 import pandas as pd
-
+import os
 
 # custom imports
 from .models import *
@@ -39,6 +42,22 @@ email_pw = app.config["EMAIL_PW"]
 account_sid = app.config["ACCOUNT_SID"]
 auth_token = app.config["AUTH_TOKEN"]
 phone_num = app.config['PHONE_NUM']
+google_client_id = app.config['GOOGLE_CLIENT_ID']
+google_client_secret = app.config['GOOGLE_CLIENT_SECRET']
+
+# oAuth Setup
+google = oauth.register(
+    name='google',
+    client_id=google_client_id,
+    client_secret=google_client_secret,
+    access_token_url='https://accounts.google.com/o/oauth2/token',
+    access_token_params=None,
+    authorize_url='https://accounts.google.com/o/oauth2/auth',
+    authorize_params=None,
+    api_base_url='https://www.googleapis.com/oauth2/v1/',
+    userinfo_endpoint='https://openidconnect.googleapis.com/v1/userinfo',
+    client_kwargs={'scope': 'openid email profile'},
+)
 
 @site.errorhandler(404)
 def not_found(error=None):
@@ -54,6 +73,11 @@ def not_found(error=None):
 
 @site.route("/")
 def index():
+    if session:
+        print("Session : ", session)
+        email = dict(session)['profile']['email']
+        print("Loggedin as : ",email)
+        return render_template("home.html")    
     return render_template("home.html")
 
 
@@ -97,8 +121,8 @@ def login():
         if type(status) == str:
             session.clear()
             session['logged_in'] = True
-            session['EMAIL'] = email
-            print("Logined as : ",session['EMAIL'])
+            session['email'] = email
+            print("Logined as : ",session['email'])
             flash("Login successful","success")
             return redirect(url_for('site.index'))
         elif status == -1:
@@ -108,11 +132,29 @@ def login():
 
     return render_template('user/login.html')
 
+@site.route('/google_login')
+def google_login():
+    google = oauth.create_client('google')
+    redirect_uri = url_for('site.authorize', _external=True)
+    return google.authorize_redirect(redirect_uri)
+
+@site.route('/authorize')
+def authorize():
+    google = oauth.create_client('google')
+    token = google.authorize_access_token()
+    resp = google.get('userinfo')
+    user_info = resp.json()
+    user = oauth.google.userinfo()
+    session['profile'] = user_info
+    session['email'] = user_info['email']
+    session['logged_in']=True
+    session.permanent = True
+    return redirect(url_for('site.index'))
 
 @site.route('/logout')
 def logout():
     if session:
-        print("CLEARING SESSION FOR : ",session['EMAIL'])
+        print("CLEARING SESSION FOR : ",session['email'])
         session.clear()
         return redirect(url_for('site.index'))
     
