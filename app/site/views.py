@@ -22,12 +22,9 @@ import random
 import json
 import pickle
 import pandas as pd
-<<<<<<< HEAD
 import os
-=======
 from geopy import Nominatim
 
->>>>>>> 1d189dba8d611150faa0d57159028c413f11f76d
 
 # custom imports
 from .models import *
@@ -155,8 +152,7 @@ def not_found(error=None):
 def index():
     if session:
         print("Session : ", session)
-        email = dict(session)['profile']['email']
-        print("Loggedin as : ",email)
+        print("Loggedin as : ",session['EMAIL'])
         return render_template("home.html")    
     return render_template("home.html")
 
@@ -204,11 +200,6 @@ def login():
         if status:
             session.clear()
             session['logged_in'] = True
-<<<<<<< HEAD
-            session['email'] = email
-            print("Logined as : ",session['email'])
-            flash("Login successful","success")
-=======
             session['EMAIL'] = status[0]
             session['COMPANY'] = status[1]
             print("Logged in as : ", session['EMAIL'])
@@ -219,13 +210,10 @@ def login():
             
             with open('app/static/map_data.js', 'w') as file:
                 file.write("let mapdata = " + json_object)
-
             
             file.close()
-
             print(datetime.now())
-            
->>>>>>> 1d189dba8d611150faa0d57159028c413f11f76d
+
             return redirect(url_for('site.index'))
         elif status == -1:
             flash("Incorrect Email or Password","danger")
@@ -248,15 +236,17 @@ def authorize():
     user_info = resp.json()
     user = oauth.google.userinfo()
     session['profile'] = user_info
-    session['email'] = user_info['email']
+    session['EMAIL'] = user_info['email']
     session['logged_in']=True
     session.permanent = True
     return redirect(url_for('site.index'))
 
+# Add try/except
+
 @site.route('/logout')
 def logout():
     if session:
-        print("CLEARING SESSION FOR : ",session['email'])
+        print("CLEARING SESSION FOR : ",session['EMAIL'])
         session.clear()
         return redirect(url_for('site.index'))
     
