@@ -22,6 +22,11 @@ class Tools:
         data = self.df
         return data
 
+    def getCompanyDetails(self, username):
+        resp = list(mongo.db.tool_data.find({'Name of Owner': username}, {'_id':0, 'City':1, 'Region':1}))
+
+        return resp
+
 class Users:
 
     def addUser(self,newuser):
@@ -40,7 +45,7 @@ class Users:
       
         if found is not None:
             if bcrypt.checkpw(password.encode('utf-8'), found["password"]):
-                return found["email"]
+                return [found["email"], found["company name"]]
             else:
                 return -1
         else:

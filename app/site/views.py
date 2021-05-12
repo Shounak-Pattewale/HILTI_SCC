@@ -19,6 +19,7 @@ import random
 import json
 import pickle
 import pandas as pd
+from geopy import Nominatim
 
 
 # custom imports
@@ -57,7 +58,7 @@ flex-direction: column;
 background-color: #d0d0d0;
 
 }
-#first {
+# first {
 padding: 10px;
 border-radius: 5px;
 background-color: #fff;
@@ -87,6 +88,33 @@ border-radius: 2px;
 </html>
 
 '''
+def getMapData(username):
+    resp = tool.getCompanyDetails(username)
+    new_dict = dict()
+    for i in range(len(resp)):
+        new_dict[resp[i]['City']] = new_dict.get(resp[i]['City'], 0) + 1
+
+    geolocator = Nominatim(user_agent='App')
+    arr = []
+    j = 0
+    for key, value in new_dict.items():
+        location = geolocator.geocode(key)
+        arr.append(
+            {'Name': key, 
+            'Count': value, 
+            'latitude': location.latitude, 
+            'longitude': location.longitude, 
+            'region': resp[j]['Region']
+            }
+        )
+        j += 1
+    
+    final_ = [{
+        'Company': username,
+        'Cities': arr,
+    }]
+
+    return final_
 
 @site.errorhandler(404)
 def not_found(error=None):
@@ -111,7 +139,8 @@ def dashboard():
         return render_template('dashboard.html')
     return redirect(url_for('site.login'))
 
-@site.route('/signup',methods=["GET","POST"])
+
+@site.route('/signup', methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
         req = request.form
@@ -120,34 +149,49 @@ def signup():
         hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(14))
 
         u_dict = {
-        "company" : req['company'],
-        "email" : req['email'],
-        "password" : hashed_pw
+        "company": req['company'],
+        "email": req['email'],
+        "password": hashed_pw
         }
-        
+
         if req['password'] == req['cm_password']:
-            flash("Signup successful","success")
+            flash("Signup successful", "success")
             user.addUser(u_dict)
             return render_template('user/login.html')
-        
-        flash("Password does not match..!!",'danger')
-        return render_template('user/signup.html',u=u_dict)
 
-    return render_template('user/signup.html',u=[])
+        flash("Password does not match..!!", 'danger')
+        return render_template('user/signup.html', u=u_dict)
 
-@site.route('/login',methods=["GET","POST"])
+    return render_template('user/signup.html', u=[])
+
+
+@site.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         req = request.form
         email = req['email']
         password = req['password']
         status = user.findUser(email, password)
-        if type(status) == str:
+        print("status => ", status)
+        if status:
             session.clear()
             session['logged_in'] = True
-            session['EMAIL'] = email
-            print("Logined as : ",session['EMAIL'])
-            flash("Login successful","success")
+            session['EMAIL'] = status[0]
+            session['COMPANY'] = status[1]
+            print("Logged in as : ", session['EMAIL'])
+            flash("Login successful", "success")
+
+            print(datetime.now())            
+            json_object = json.dumps(getMapData(status[1]))
+            
+            with open('app/static/map_data.js', 'w') as file:
+                file.write("let mapdata = " + json_object)
+
+            
+            file.close()
+
+            print(datetime.now())
+            
             return redirect(url_for('site.index'))
         elif status == -1:
             flash("Incorrect Email or Password","danger")
@@ -168,10 +212,11 @@ def logout():
     return render_template('home.html')
 
 
-@site.route("/user_profile")
+@site.route("/profile")
 def user_profile():
     if session:
-        return render_template('user/user_profile.html')
+        user_ = user.getUser(session['EMAIL'])
+        return render_template('user/user_profile.html', user=user_)
     return redirect(url_for("site.login"))
 
 
@@ -225,7 +270,7 @@ def handle_message(resp):
     nowPointer = resp[4]
     prediction(x)
 
-@site.route("/get_report")
+@site.route("/generate report")
 def get_report():
     df = tool.data()
     new_df = df.head(nowPointer)
@@ -260,4 +305,10 @@ def post_json(val):
 
     response = make_response(json.dumps(x))
     response.content_type = 'application/json'
-    return response  
+    return response
+
+@site.route('/tool_location')
+def map():
+    username = session['COMPANY']
+    response = getMapData(username)
+    return render_template('map.html', mapdb=response)
