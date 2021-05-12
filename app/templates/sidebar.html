@@ -18,10 +18,10 @@
                     %}>
                     <a href="{{ url_for('site.index') }}">
                         {% if active_page == "/" %}
-                        <i class="now-ui-icons users_single-02" style="color: #141E30;"></i>
+                        <i class="now-ui-icons business_bank" style="color: #141E30;"></i>
                         <p style="color: #141E30;">Home</p>
                         {% else %}
-                        <i class="now-ui-icons users_single-02"></i>
+                        <i class="now-ui-icons business_bank"></i>
                         <p>Home</p>
                         {% endif %}
                     </a>
@@ -54,15 +54,15 @@
                     </a>
                 </li>
 
-                <li {% if active_page == "/notifications" %} class="active"{% endif
+                <li {% if active_page == "/tool_location" %} class="active"{% endif
                     %}>
-                    <a href="">
-                        {% if active_page == "/notifications" %}
-                        <i class="now-ui-icons ui-1_bell-53" style="color: #141E30;"></i>
-                        <p style="color: #141E30;">Notifications</p>
+                    <a href="{{ url_for('site.map') }}">
+                        {% if active_page == "/tool_location" %}
+                        <i class="now-ui-icons location_pin" style="color: #141E30;"></i>
+                        <p style="color: #141E30;">Tool Location</p>
                         {% else %}
-                        <i class="now-ui-icons ui-1_bell-53"></i>
-                        <p>Notifications</p>
+                        <i class="now-ui-icons location_pin"></i>
+                        <p>Tool Location</p>
                         {% endif %}
                     </a>
                 </li>
