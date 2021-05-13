@@ -150,11 +150,14 @@ def not_found(error=None):
 
 @site.route("/")
 def index():
-    if session:
-        print("Session : ", session)
-        print("Loggedin as : ",session['EMAIL'])
-        return render_template("home.html")    
-    return render_template("home.html")
+    try:
+        if session:
+            print("Session : ", session)
+            print("Loggedin as : ",session['EMAIL'])
+            return render_template("home.html")    
+        return render_template("home.html")
+    except:
+        return render_template("home.html")
 
 
 @site.route("/dashboard")
@@ -166,6 +169,9 @@ def dashboard():
 
 @site.route('/signup', methods=["GET", "POST"])
 def signup():
+    if session:
+        flash("Please logout first","danger")
+        return redirect(url_for('site.index'))
     if request.method == "POST":
         req = request.form
 
@@ -187,10 +193,14 @@ def signup():
         return render_template('user/signup.html', u=u_dict)
 
     return render_template('user/signup.html', u=[])
+    
 
 
 @site.route('/login', methods=["GET", "POST"])
 def login():
+    if session:
+        flash("Please logout first","danger")
+        return redirect(url_for('site.index'))
     if request.method == "POST":
         req = request.form
         email = req['email']
