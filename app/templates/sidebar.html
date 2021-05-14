@@ -27,7 +27,7 @@
                     </a>
                 </li>
                 
-                {% if session %}
+                {% if session['logged_in']==True  %}
                 <li {% if active_page == "/user_profile" %} class="active"{% endif
                     %}>
                     <a href="{{ url_for('site.user_profile') }}">

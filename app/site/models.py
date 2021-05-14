@@ -29,29 +29,40 @@ class Tools:
 
 class Users:
 
-    def addUser(self,newuser):
+    def addUser(self,newuser,google):
 
-        user = {
-            "company name": newuser['company'],
-            "email": newuser['email'],
-            "password": newuser['password']
-        }
+        if google == 0:
+            user = {
+                "Company": newuser['company'],
+                "Email": newuser['email'],
+                "password": newuser['password']
+            }
+        elif google == 1:
+            user = {
+                "First name": newuser['First name'],
+                "Last name": newuser['Last name'],
+                "Email": newuser['Email'],
+                "Profile pic" : newuser['Profile pic']
+            }
 
         mongo.db.htot_users.insert_one(user) 
 
     def findUser(self,email,password):
         
-        found = mongo.db.htot_users.find_one({"email":email},{"_id":0})
+        found = mongo.db.htot_users.find_one({"Email":email},{"_id":0})
       
         if found is not None:
             if bcrypt.checkpw(password.encode('utf-8'), found["password"]):
-                return [found["email"], found["company name"]]
+                return [found["Email"], found["Company"]]
             else:
                 return -1
         else:
             return 0
         
     def getUser(self,email):
-        user = mongo.db.htot_users.find_one({'email': email})
+        user = mongo.db.htot_users.find_one({'Email': email})
+        return user
 
+    def updateUser_data(self,email,edit):
+        user = mongo.db.htot_users.update({'Email':email},{'$set':edit})
         return user

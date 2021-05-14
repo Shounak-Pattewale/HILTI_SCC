@@ -20,24 +20,18 @@
             </div>
             <div class="card-body">
 
-              <form>
+              <form action="{{url_for('site.user_profile')}}" method="POST">
                 <div class="row">
-                  <div class="col-md-5 pr-1">
+                  <div class="col-md-6 pr-1">
                     <div class="form-group">
                       <label>Company</label>
-                      <input type="text" class="form-control" disabled="false" placeholder="Company" value="{{user['company name']}}">
+                      <input type="text" class="form-control" name="Company" placeholder="Company" value="{{_user['Company']}}">
                     </div>
                   </div>
-                  <div class="col-md-3 px-1">
-                    <div class="form-group">
-                      <label>Username</label>
-                      <input type="text" class="form-control" placeholder="Username" value="{{user['email'][:2]}}">
-                    </div>
-                  </div>
-                  <div class="col-md-4 pl-1">
+                  <div class="col-md-6 pl-1">
                     <div class="form-group">
                       <label for="exampleInputEmail1">Email address</label>
-                      <input type="email" class="form-control" placeholder="Email" value="{{user['email']}}">
+                      <input type="email" class="form-control" name="Email" disabled placeholder="Email" value="{{_user['Email']}}">
                     </div>
                   </div>
                 </div>
@@ -45,13 +39,13 @@
                   <div class="col-md-6 pr-1">
                     <div class="form-group">
                       <label>First Name</label>
-                      <input type="text" class="form-control" placeholder="Company" value="Taha">
+                      <input type="text" class="form-control" name="First name"  placeholder="{{_user['First name']}}" value="{{_user['First name']}}">
                     </div>
                   </div>
                   <div class="col-md-6 pl-1">
                     <div class="form-group">
                       <label>Last Name</label>
-                      <input type="text" class="form-control" placeholder="Last Name" value="{{user['lname']}}">
+                      <input type="text" class="form-control" name="Last name" placeholder="Last Name" value="{{_user['Last name']}}">
                     </div>
                   </div>
                 </div>
@@ -59,8 +53,8 @@
                   <div class="col-md-12">
                     <div class="form-group">
                       <label>Address</label>
-                      <input type="text" class="form-control" placeholder="Home Address"
-                        value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
+                      <input type="text" class="form-control" name="Address" placeholder="Work/Home Address"
+                        value="{{_user['Address']}}">
                     </div>
                   </div>
                 </div>
@@ -68,19 +62,19 @@
                   <div class="col-md-4 pr-1">
                     <div class="form-group">
                       <label>City</label>
-                      <input type="text" class="form-control" placeholder="City" value="Pune">
+                      <input type="text" class="form-control" name="City" placeholder="City" value="{{_user['City']}}">
                     </div>
                   </div>
                   <div class="col-md-4 px-1">
                     <div class="form-group">
                       <label>Country</label>
-                      <input type="text" class="form-control" placeholder="Country" value="India">
+                      <input type="text" class="form-control" name="Country" placeholder="Country" value="{{_user['Country']}}">
                     </div>
                   </div>
                   <div class="col-md-4 pl-1">
                     <div class="form-group">
                       <label>Postal Code</label>
-                      <input type="number" class="form-control" placeholder="ZIP Code" value="411048">
+                      <input type="number" class="form-control" placeholder="ZIP Code" name="Zip_code" value="{{_user['Zip_code']}}">
                     </div>
                   </div>
                 </div>
@@ -88,10 +82,13 @@
                   <div class="col-md-12">
                     <div class="form-group">
                       <label>About Me</label>
-                      <textarea rows="4" cols="80" class="form-control" placeholder="Here can be your description"
-                        value="Mike">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Beatae hic perspiciatis.</textarea>
+                      <textarea rows="4" cols="80" class="form-control" name="Info" placeholder="A few words about you ..."
+                        value="{{_user['Info']}}">{{_user['Info']}}</textarea>
                     </div>
                   </div>
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary">Edit Profile</button>
                 </div>
               </form>
 
@@ -106,11 +103,11 @@
             <div class="card-body">
               <div class="author">
                 <a href="#">
-                  <img class="avatar border-gray" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKG2hW_deWb_k2hbgxtr7XanI9Phw6pmih-A&usqp=CAU" alt="...">
-                  <h5 class="title">Taha</h5>
+                  <img class="avatar border-gray" src="{{_user['Profile pic']}}" alt="Profile Picture">
+                  <h5 class="title">{{_user['First Name']}}</h5>
                 </a>
                 <p class="description">
-                  tahal24
+                  Something
                 </p>
               </div>
               <p class="description text-center">

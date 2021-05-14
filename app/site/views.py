@@ -36,7 +36,7 @@ site = Blueprint("site", __name__, template_folder='../templates',
 model = pickle.load(open('app/site_data/trained.pkl', 'rb'))
 
 tool = Tools()
-user = Users()
+User = Users()
 
 site_docs = app.config["SITE_DOCS"]
 email_id = app.config["EMAIL_ID"]
@@ -108,6 +108,10 @@ border-radius: 2px;
 </html>
 
 '''
+
+# USER DEFINED FUNCTIONS
+
+# Map API
 def getMapData(username):
     resp = tool.getCompanyDetails(username)
     new_dict = dict()
@@ -136,6 +140,62 @@ def getMapData(username):
 
     return final_
 
+# Send Message
+def sendMessage(receipent):
+    try:
+        client = Client(account_sid, auth_token)
+
+        message = client.messages.create(
+        body="Your Hilti tool might require some action. Check mail for more info. -Team HTOT",
+        from_='+13312530016',
+        to=receipent
+        )
+
+        print(message.sid)
+    except:
+        print("Error while sending message. Try again!")
+
+# Send Email
+def sendEmail(username):
+    # For Email Module
+    try:
+        email_address = email_id
+        email_password = email_pw
+        msg = EmailMessage()
+        msg['Subject'] = 'HILTI tool failure'
+        msg['From'] = email_address
+        msg['To'] = username
+        msg.set_content(html, subtype='html')
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+            smtp.login(email_address, email_password)
+            smtp.send_message(msg)
+        print("Email sent successfully!")
+    except Exception as error:
+        print(error)
+        return "<h1> We have following error </h1> <p>{}</p>".format(error)
+
+# Prediction
+def prediction(x):
+    pred = model.predict([x])
+    print('Prediction : ', pred[0])
+    if pred[0] == 1:
+        try:
+            if session:
+                sendEmail(session['EMAIL'])
+                sendMessage(phone_num)
+        except:
+            print("Failure predicted, could not send an email..!!!")
+
+# SOCKET IO
+@socketio.on('message')
+def handle_message(resp):
+    print('Message: ', resp)
+    x = [resp[0], resp[1], resp[2], resp[3]]
+    global nowPointer
+    nowPointer = resp[4]
+    prediction(x)
+
+# Error Handler
 @site.errorhandler(404)
 def not_found(error=None):
     message = {
@@ -146,7 +206,6 @@ def not_found(error=None):
     return (resp, 200)
 
 ############# INDEX ROUTE #############
-
 
 @site.route("/")
 def index():
@@ -185,16 +244,19 @@ def signup():
         }
 
         if req['password'] == req['cm_password']:
-            flash("Signup successful", "success")
-            user.addUser(u_dict)
-            return render_template('user/login.html')
+            found = User.getUser(req['email'])
+            if found is None:
+                flash("Signup successful", "success")
+                User.addUser(u_dict,0)
+                return render_template('user/login.html')
+            flash("User already exists","danger")
+            return render_template('user/signup.html',u=[])
 
         flash("Password does not match..!!", 'danger')
         return render_template('user/signup.html', u=u_dict)
 
     return render_template('user/signup.html', u=[])
     
-
 
 @site.route('/login', methods=["GET", "POST"])
 def login():
@@ -205,7 +267,7 @@ def login():
         req = request.form
         email = req['email']
         password = req['password']
-        status = user.findUser(email, password)
+        status = User.findUser(email, password)
         print("status => ", status)
         if status:
             session.clear()
@@ -232,12 +294,14 @@ def login():
 
     return render_template('user/login.html')
 
+# Google oAuth login
 @site.route('/google_login')
 def google_login():
     google = oauth.create_client('google')
     redirect_uri = url_for('site.authorize', _external=True)
     return google.authorize_redirect(redirect_uri)
 
+# Google oAuth authorize
 @site.route('/authorize')
 def authorize():
     google = oauth.create_client('google')
@@ -249,78 +313,59 @@ def authorize():
     session['EMAIL'] = user_info['email']
     session['logged_in']=True
     session.permanent = True
+    found = User.getUser(user_info['email'])
+    if found is None:
+        newuser = {
+            'First name' : user_info['given_name'],
+            'Last name' : user_info['family_name'],
+            'Email' : user_info['email'],
+            'Profile pic' : user_info['picture']
+            }
+        
+        User.addUser(newuser,1)
+        return redirect(url_for('site.user_profile',_user=newuser))
+
     return redirect(url_for('site.index'))
 
 # Add try/except
-
 @site.route('/logout')
 def logout():
-    if session:
-        print("CLEARING SESSION FOR : ",session['EMAIL'])
-        session.clear()
-        return redirect(url_for('site.index'))
-    
-    print("Please login first")
-    return render_template('home.html')
+    try:
+        if session:
+            print("CLEARING SESSION FOR : ",session['EMAIL'])
+            session.clear()
+            return redirect(url_for('site.index'))
+    except:    
+        print("Please login first")
+        return render_template('home.html')
 
 
-@site.route("/profile")
+@site.route("/profile",methods=['GET','POST'])
 def user_profile():
-    if session:
-        user_ = user.getUser(session['EMAIL'])
-        return render_template('user/user_profile.html', user=user_)
+    if request.method == "POST":
+        if session:
+            req = request.form
+            edit = {
+                'Company': req['Company'],
+                'First name' : req ['First name'],
+                'Last name' : req ['Last name'],
+                'Address' : req ['Address'],
+                'City' : req ['City'],
+                'Country' : req ['Country'],
+                'Zip_code' : req ['Zip_code'],
+                'Info' : req ['Info']
+            }
+            User.updateUser_data(session['EMAIL'],edit)
+            return redirect(url_for('site.user_profile'))
+        return redirect(url_for("site.login"))
+    
+    if request.method == "GET":
+        if session:  
+            _user = User.getUser(session['EMAIL'])
+            return render_template('user/user_profile.html', _user=_user)
+
     return redirect(url_for("site.login"))
 
-
-
-def sendMessage(receipent):
-    try:
-        client = Client(account_sid, auth_token)
-
-        message = client.messages.create(
-        body="Your Hilti tool might require some action. Check mail for more info. -Team HTOT",
-        from_='+13312530016',
-        to=receipent
-        )
-
-        print(message.sid)
-    except:
-        print("Error while sending message. Try again!")
-
-def sendEmail(username):
-    # For Email Module
-    try:
-        email_address = email_id
-        email_password = email_pw
-        msg = EmailMessage()
-        msg['Subject'] = 'HILTI tool failure'
-        msg['From'] = email_address
-        msg['To'] = username
-        msg.set_content(html, subtype='html')
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-            smtp.login(email_address, email_password)
-            smtp.send_message(msg)
-        print("Email Sent successfully!")
-    except Exception as error:
-        print(error)
-        return "<h1> We have following error </h1> <p>{}</p>".format(error)
-
-def prediction(x):
-    pred = model.predict([x])
-    print('Prediction : ', pred[0])
-
-
-    if pred[0] == 1:
-        sendEmail('tahambohra@gmail.com')
-        sendMessage(phone_num)
-
-@socketio.on('message')
-def handle_message(resp):
-    print('Message: ', resp)
-    x = [resp[0], resp[1], resp[2], resp[3]]
-    global nowPointer
-    nowPointer = resp[4]
-    prediction(x)
 
 @site.route("/generate report")
 def get_report():
