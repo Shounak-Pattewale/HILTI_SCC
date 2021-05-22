@@ -112,6 +112,8 @@ border-radius: 2px;
 # USER DEFINED FUNCTIONS
 
 # Map API
+
+
 def getMapData(username):
     resp = tool.getCompanyDetails(username)
     new_dict = dict()
@@ -124,15 +126,15 @@ def getMapData(username):
     for key, value in new_dict.items():
         location = geolocator.geocode(key)
         arr.append(
-            {'Name': key, 
-            'Count': value, 
-            'latitude': location.latitude, 
-            'longitude': location.longitude, 
+            {'Name': key,
+            'Count': value,
+            'latitude': location.latitude,
+            'longitude': location.longitude,
             'region': resp[j]['Region']
             }
         )
         j += 1
-    
+
     final_ = [{
         'Company': username,
         'Cities': arr,
@@ -141,6 +143,8 @@ def getMapData(username):
     return final_
 
 # Send Message
+
+
 def sendMessage(receipent):
     try:
         client = Client(account_sid, auth_token)
@@ -156,20 +160,25 @@ def sendMessage(receipent):
         print("Error while sending message. Try again!")
 
 # Send Email
+
+
 def sendEmail(username):
     # For Email Module
     try:
-        email_address = email_id
-        email_password = email_pw
+        from_mail = email_id
+        from_passw = email_pw
+
         msg = EmailMessage()
-        msg['Subject'] = 'HILTI tool failure'
-        msg['From'] = email_address
+        msg['Subject'] = "HILTI Tool Failure"
+        msg['From'] = "Hilti Tool Online Tracking"
         msg['To'] = username
         msg.set_content(html, subtype='html')
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-            smtp.login(email_address, email_password)
-            smtp.send_message(msg)
+
+        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+        server.login(from_mail, from_passw)
+        server.send_message(msg)
         print("Email sent successfully!")
+        server.quit()
     except Exception as error:
         print(error)
         return "<h1> We have following error </h1> <p>{}</p>".format(error)
@@ -181,8 +190,9 @@ def prediction(x):
     if pred[0] == 1:
         try:
             if session:
-                sendEmail(session['EMAIL'])
-                sendMessage(phone_num)
+                print("********************MACHINE FAILURE********************")
+                # sendEmail(session['EMAIL'])
+                # sendMessage(phone_num)
         except:
             print("Failure predicted, could not send an email..!!!")
 
@@ -278,12 +288,7 @@ def login():
             flash("Login successful", "success")
 
             print(datetime.now())            
-            json_object = json.dumps(getMapData(status[1]))
             
-            with open('app/static/map_data.js', 'w') as file:
-                file.write("let mapdata = " + json_object)
-            
-            file.close()
             print(datetime.now())
 
             return redirect(url_for('site.index'))
@@ -407,5 +412,11 @@ def post_json(val):
 @site.route('/tool_location')
 def map():
     username = session['COMPANY']
-    response = getMapData(username)
+    response = json.dumps(getMapData(username))
+    # json_object = json.dumps(getMapData(status[1]))
+            
+    with open('app/static/map_data.js', 'w') as file:
+        file.write("let mapdata = " + response)
+    
+    file.close()
     return render_template('map.html', mapdb=response)
