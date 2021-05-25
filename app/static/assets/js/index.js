@@ -1,3 +1,12 @@
+console.log(mapdata)
+console.log(sessionStorage)
+var company  = String(company)
+
+var company_no = company.slice(8);
+
+var no = parseInt(company_no);
+
+
 markers = [];
 function initMap() {
   var india = {
@@ -16,8 +25,9 @@ function initMap() {
 
 function showStoreMarkers() {
   var bounds = new google.maps.LatLngBounds();
+  data = mapdata[no-1];
 
-  mapdata[0]["Cities"].forEach(function (city, index) {
+  data[company].forEach(function (city, index) {
     var latlng = new google.maps.LatLng(city.latitude, city.longitude);
     var name = city.Name;
     var count = city.Count;
@@ -28,7 +38,7 @@ function showStoreMarkers() {
 }
 
 function createMarker(latlng, name, count, index) {
-  var html = "<b>State : " + name + "</b> <br/>" + count;
+  var html = "<b>State : </b>" + name + "</b> <br/> <b>Tool Count: </b>" + count;
   var marker = new google.maps.Marker({
     map: map,
     position: latlng,

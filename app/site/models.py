@@ -23,7 +23,12 @@ class Tools:
         return data
 
     def getCompanyDetails(self, username):
-        resp = list(mongo.db.tool_data.find({'Name of Owner': username}, {'_id':0, 'City':1, 'Region':1}))
+        resp = list(mongo.db.tool_data.find({'Name of Owner': username}, {'_id':0, 'City':1, 'Region':1, 'latitude':1, 'longitude':1}))
+
+        return resp
+
+    def updateCompanyDetails(self, username, latitude, longitude):
+        resp = list(mongo.db.tool_data.update({'Name of Owner': username}, {'$set': {'latitude': latitude, 'longitude': longitude}}))
 
         return resp
 

@@ -116,21 +116,19 @@ border-radius: 2px;
 
 def getMapData(username):
     resp = tool.getCompanyDetails(username)
+    print("resp => ", resp[0])
     new_dict = dict()
     for i in range(len(resp)):
         new_dict[resp[i]['City']] = new_dict.get(resp[i]['City'], 0) + 1
 
-    geolocator = Nominatim(user_agent='App')
     arr = []
     j = 0
     for key, value in new_dict.items():
-        location = geolocator.geocode(key)
         arr.append(
-            {'Name': key,
-            'Count': value,
-            'latitude': location.latitude,
-            'longitude': location.longitude,
-            'region': resp[j]['Region']
+            {
+                'Name': key,
+                'Count': value,
+                'region': resp[j]['Region'],
             }
         )
         j += 1
@@ -150,9 +148,9 @@ def sendMessage(receipent):
         client = Client(account_sid, auth_token)
 
         message = client.messages.create(
-        body="Your Hilti tool might require some action. Check mail for more info. -Team HTOT",
-        from_='+13312530016',
-        to=receipent
+            body="Your Hilti tool might require some action. Check mail for more info. -Team HTOT",
+            from_='+13312530016',
+            to=receipent
         )
 
         print(message.sid)
@@ -184,6 +182,8 @@ def sendEmail(username):
         return "<h1> We have following error </h1> <p>{}</p>".format(error)
 
 # Prediction
+
+
 def prediction(x):
     pred = model.predict([x])
     print('Prediction : ', pred[0])
@@ -191,12 +191,14 @@ def prediction(x):
         try:
             if session:
                 print("********************MACHINE FAILURE********************")
-                # sendEmail(session['EMAIL'])
+                sendEmail('tahamustafa053@gmail.com')
                 # sendMessage(phone_num)
         except:
             print("Failure predicted, could not send an email..!!!")
 
 # SOCKET IO
+
+
 @socketio.on('message')
 def handle_message(resp):
     print('Message: ', resp)
@@ -206,6 +208,8 @@ def handle_message(resp):
     prediction(x)
 
 # Error Handler
+
+
 @site.errorhandler(404)
 def not_found(error=None):
     message = {
@@ -217,13 +221,14 @@ def not_found(error=None):
 
 ############# INDEX ROUTE #############
 
+
 @site.route("/")
 def index():
     try:
         if session:
             print("Session : ", session)
-            print("Loggedin as : ",session['EMAIL'])
-            return render_template("home.html")    
+            print("Loggedin as : ", session['EMAIL'])
+            return render_template("home.html")
         return render_template("home.html")
     except:
         return render_template("home.html")
@@ -239,7 +244,7 @@ def dashboard():
 @site.route('/signup', methods=["GET", "POST"])
 def signup():
     if session:
-        flash("Please logout first","danger")
+        flash("Please logout first", "danger")
         return redirect(url_for('site.index'))
     if request.method == "POST":
         req = request.form
@@ -248,30 +253,30 @@ def signup():
         hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(14))
 
         u_dict = {
-        "company": req['company'],
-        "email": req['email'],
-        "password": hashed_pw
+            "company": req['company'],
+            "email": req['email'],
+            "password": hashed_pw
         }
 
         if req['password'] == req['cm_password']:
             found = User.getUser(req['email'])
             if found is None:
                 flash("Signup successful", "success")
-                User.addUser(u_dict,0)
+                User.addUser(u_dict, 0)
                 return render_template('user/login.html')
-            flash("User already exists","danger")
-            return render_template('user/signup.html',u=[])
+            flash("User already exists", "danger")
+            return render_template('user/signup.html', u=[])
 
         flash("Password does not match..!!", 'danger')
         return render_template('user/signup.html', u=u_dict)
 
     return render_template('user/signup.html', u=[])
-    
+
 
 @site.route('/login', methods=["GET", "POST"])
 def login():
     if session:
-        flash("Please logout first","danger")
+        flash("Please logout first", "danger")
         return redirect(url_for('site.index'))
     if request.method == "POST":
         req = request.form
@@ -287,19 +292,17 @@ def login():
             print("Logged in as : ", session['EMAIL'])
             flash("Login successful", "success")
 
-            print(datetime.now())            
-            
-            print(datetime.now())
-
             return redirect(url_for('site.index'))
         elif status == -1:
-            flash("Incorrect Email or Password","danger")
+            flash("Incorrect Email or Password", "danger")
         else:
-            flash("User does not exist, Please Sign Up!","danger")
+            flash("User does not exist, Please Sign Up!", "danger")
 
     return render_template('user/login.html')
 
 # Google oAuth login
+
+
 @site.route('/google_login')
 def google_login():
     google = oauth.create_client('google')
@@ -307,6 +310,8 @@ def google_login():
     return google.authorize_redirect(redirect_uri)
 
 # Google oAuth authorize
+
+
 @site.route('/authorize')
 def authorize():
     google = oauth.create_client('google')
@@ -316,56 +321,58 @@ def authorize():
     user = oauth.google.userinfo()
     session['profile'] = user_info
     session['EMAIL'] = user_info['email']
-    session['logged_in']=True
+    session['logged_in'] = True
     session.permanent = True
     found = User.getUser(user_info['email'])
     if found is None:
         newuser = {
-            'First name' : user_info['given_name'],
-            'Last name' : user_info['family_name'],
-            'Email' : user_info['email'],
-            'Profile pic' : user_info['picture']
-            }
-        
-        User.addUser(newuser,1)
-        return redirect(url_for('site.user_profile',_user=newuser))
+            'First name': user_info['given_name'],
+            'Last name': user_info['family_name'],
+            'Email': user_info['email'],
+            'Profile pic': user_info['picture']
+        }
+
+        User.addUser(newuser, 1)
+        return redirect(url_for('site.user_profile', _user=newuser))
 
     return redirect(url_for('site.index'))
 
 # Add try/except
+
+
 @site.route('/logout')
 def logout():
     try:
         if session:
-            print("CLEARING SESSION FOR : ",session['EMAIL'])
+            print("CLEARING SESSION FOR : ", session['EMAIL'])
             session.clear()
             return redirect(url_for('site.index'))
-    except:    
+    except:
         print("Please login first")
         return render_template('home.html')
 
 
-@site.route("/profile",methods=['GET','POST'])
+@site.route("/profile", methods=['GET', 'POST'])
 def user_profile():
     if request.method == "POST":
         if session:
             req = request.form
             edit = {
                 'Company': req['Company'],
-                'First name' : req ['First name'],
-                'Last name' : req ['Last name'],
-                'Address' : req ['Address'],
-                'City' : req ['City'],
-                'Country' : req ['Country'],
-                'Zip_code' : req ['Zip_code'],
-                'Info' : req ['Info']
+                'First name': req['First name'],
+                'Last name': req['Last name'],
+                'Address': req['Address'],
+                'City': req['City'],
+                'Country': req['Country'],
+                'Zip_code': req['Zip_code'],
+                'Info': req['Info']
             }
-            User.updateUser_data(session['EMAIL'],edit)
+            User.updateUser_data(session['EMAIL'], edit)
             return redirect(url_for('site.user_profile'))
         return redirect(url_for("site.login"))
-    
+
     if request.method == "GET":
-        if session:  
+        if session:
             _user = User.getUser(session['EMAIL'])
             return render_template('user/user_profile.html', _user=_user)
 
@@ -378,19 +385,21 @@ def get_report():
     new_df = df.head(nowPointer)
     new_df.to_csv(site_docs+'user_data.csv')
 
-    return send_from_directory(site_docs, filename="user_data.csv", as_attachment = True)
+    return send_from_directory(site_docs, filename="user_data.csv", as_attachment=True)
 
-@site.route("/history", methods=["POST","GET"])
+
+@site.route("/history", methods=["POST", "GET"])
 def history():
     if session:
         if request.method == "GET":
             val = "Air temp"
-            return render_template("stock_chart.html",val=val)
-        else :
+            return render_template("stock_chart.html", val=val)
+        else:
             req = request.form
             val = req.get('parameter')
-            return render_template("stock_chart.html",val=val)
+            return render_template("stock_chart.html", val=val)
     return redirect(url_for('site.login'))
+
 
 @site.route("/post_json/<string:val>")
 def post_json(val):
@@ -409,14 +418,76 @@ def post_json(val):
     response.content_type = 'application/json'
     return response
 
+
 @site.route('/tool_location')
 def map():
     username = session['COMPANY']
-    response = json.dumps(getMapData(username))
-    # json_object = json.dumps(getMapData(status[1]))
-            
-    with open('app/static/map_data.js', 'w') as file:
-        file.write("let mapdata = " + response)
+    print(username)
+    # response = json.dumps(getMapData(username))
+    mapdb = getMapData(username)
+
+    # data = json.dumps(getMapData(username))
     
-    file.close()
-    return render_template('map.html', mapdb=response)
+    # with open('app/static/map.js', 'w') as file:
+    #     file.write("let googlemap = " + data)
+    
+    return render_template('map.html', company=username, mapdb=mapdb)
+
+
+@site.route('/create_file')
+def create_file():
+    final_ = []
+    for i in range(1, 16):
+        company = 'Company ' + str(i)
+
+        resp = tool.getCompanyDetails(company)
+        new_dict = dict()
+        for i in range(len(resp)):
+            new_dict[resp[i]['City']] = new_dict.get(resp[i]['City'], 0) + 1
+
+        geolocator = Nominatim(user_agent='App')
+        arr = []
+        j = 0
+        for key, value in new_dict.items():
+            location = geolocator.geocode(key)
+            arr.append(
+                {
+                    'Name': key,
+                    'Count': value,
+                    'latitude': location.latitude,
+                    'longitude': location.longitude,
+                    'region': resp[j]['Region']
+                }
+            )
+            j += 1
+
+        final_.append(
+            {
+                company: arr
+            }
+        )
+        print("Company " + str(i) + " Created")
+
+    data = json.dumps(final_)
+
+    with open('app/static/map_data.js', 'w') as file:
+        file.write("let mapdata = " + data)
+
+    return "Completed"
+
+
+# @site.route('/datafromdb')
+# def database():
+#     # final_ = []
+
+#     for i in range(2, 16):
+#         company = 'Company ' + str(i)
+
+#         geolocator = Nominatim(user_agent='App')
+#         location = geolocator.geocode(company)
+#         lat, lng = location.latitude, location.longitude
+
+#         tool.updateCompanyDetails(company, lat, lng)
+
+
+#     return "Completed"

@@ -47,7 +47,7 @@ Tool Location
 
 {% block script %}
 <script>
-  // console.log({{mapdb}});
+  var company = '{{company}}';
 </script>
 <script src="{{ url_for('static', filename='map_data.js') }}"></script>
 <script src="{{ url_for('static', filename='assets/js/index.js') }}"></script>
