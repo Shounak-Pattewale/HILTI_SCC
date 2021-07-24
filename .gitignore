@@ -3,3 +3,4 @@ venv/
 __pycache__
 .vscode/
 app/site/__pycache__
+app/static/map_data.js

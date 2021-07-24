@@ -28,6 +28,7 @@ from geopy import Nominatim
 
 # custom imports
 from .models import *
+from .email_template import email_body
 from app import *
 
 site = Blueprint("site", __name__, template_folder='../templates',
@@ -61,59 +62,9 @@ google = oauth.register(
     client_kwargs={'scope': 'openid email profile'},
 )
 
-html = '''
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-body {
-display: flex;
-justify-content: center;
-align-items:center;
-flex-direction: column;
-background-color: #d0d0d0;
-
-}
-# first {
-padding: 10px;
-border-radius: 5px;
-background-color: #fff;
-}
-
-button {
-padding: .5rem 1rem;
-border: none;
-border-radius: 2px;
-}
-</style>
-</head>
-<body>
-<div id="first">
-<h3>The tool Serial number L6880 needs service. Please contact Hilti Service by clicking the following link</h3>
-
-<button style="background: linear-gradient(to right, #243B55, #141E30) !important; color: white;">
-<a href="https://www.hilti.in/content/hilti/A2/IN/en/services/tool-services/tool-service-.html" style="text-decoration: none; color: white;">Click here</a>
-</button>
-<br>
-<br>
-<br>
-</div>
-<p><b>Thank you and Regards</b></p>
-<p><b>Team HTOT</b></p>
-</body>
-</html>
-
-'''
-
 # USER DEFINED FUNCTIONS
 
 # Map API
-
-
 def getMapData(username):
     resp = tool.getCompanyDetails(username)
     new_dict = dict()
@@ -143,8 +94,6 @@ def getMapData(username):
     return final_
 
 # Send Message
-
-
 def sendMessage(receipent):
     try:
         client = Client(account_sid, auth_token)
@@ -160,8 +109,6 @@ def sendMessage(receipent):
         print("Error while sending message. Try again!")
 
 # Send Email
-
-
 def sendEmail(username):
     # For Email Module
     try:
@@ -172,7 +119,7 @@ def sendEmail(username):
         msg['Subject'] = "HILTI Tool Failure"
         msg['From'] = "Hilti Tool Online Tracking"
         msg['To'] = username
-        msg.set_content(html, subtype='html')
+        msg.set_content(email_body, subtype='html')
 
         server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         server.login(from_mail, from_passw)
@@ -221,7 +168,6 @@ def not_found(error=None):
 def index():
     try:
         if session:
-            print("Session : ", session)
             print("Loggedin as : ",session['EMAIL'])
             return render_template("home.html")    
         return render_template("home.html")
@@ -278,7 +224,7 @@ def login():
         email = req['email']
         password = req['password']
         status = User.findUser(email, password)
-        print("status => ", status)
+
         if status:
             session.clear()
             session['logged_in'] = True
@@ -286,10 +232,6 @@ def login():
             session['COMPANY'] = status[1]
             print("Logged in as : ", session['EMAIL'])
             flash("Login successful", "success")
-
-            print(datetime.now())            
-            
-            print(datetime.now())
 
             return redirect(url_for('site.index'))
         elif status == -1:
@@ -316,6 +258,7 @@ def authorize():
     user = oauth.google.userinfo()
     session['profile'] = user_info
     session['EMAIL'] = user_info['email']
+    session['COMPANY'] = 'Company 1'
     session['logged_in']=True
     session.permanent = True
     found = User.getUser(user_info['email'])
@@ -341,7 +284,6 @@ def logout():
             session.clear()
             return redirect(url_for('site.index'))
     except:    
-        print("Please login first")
         return render_template('home.html')
 
 
