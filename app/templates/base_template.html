@@ -28,6 +28,8 @@
     <!-- Prevent favicon 404 error -->
     <link rel="icon" href="data:,">
 
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/timeline.css') }}">
+
     {% block links %}   {% endblock %}
     <title>{% block title %} {% endblock %} | HILTI-SCC</title>
 </head>

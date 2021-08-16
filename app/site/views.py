@@ -12,13 +12,12 @@ from authlib.integrations.flask_client import OAuth
 import smtplib
 from email.message import EmailMessage
 from twilio.rest import Client
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 # useful libraries
 from flask_socketio import send
-from datetime import datetime
-from time import time
 import bcrypt
-import random
 import json
 import pickle
 import pandas as pd
@@ -60,54 +59,6 @@ google = oauth.register(
     userinfo_endpoint='https://openidconnect.googleapis.com/v1/userinfo',
     client_kwargs={'scope': 'openid email profile'},
 )
-
-html = '''
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-body {
-display: flex;
-justify-content: center;
-align-items:center;
-flex-direction: column;
-background-color: #d0d0d0;
-
-}
-# first {
-padding: 10px;
-border-radius: 5px;
-background-color: #fff;
-}
-
-button {
-padding: .5rem 1rem;
-border: none;
-border-radius: 2px;
-}
-</style>
-</head>
-<body>
-<div id="first">
-<h3>The tool Serial number L6880 needs service. Please contact Hilti Service by clicking the following link</h3>
-
-<button style="background: linear-gradient(to right, #243B55, #141E30) !important; color: white;">
-<a href="https://www.hilti.in/content/hilti/A2/IN/en/services/tool-services/tool-service-.html" style="text-decoration: none; color: white;">Click here</a>
-</button>
-<br>
-<br>
-<br>
-</div>
-<p><b>Thank you and Regards</b></p>
-<p><b>Team HTOT</b></p>
-</body>
-</html>
-
-'''
 
 # USER DEFINED FUNCTIONS
 
@@ -165,17 +116,23 @@ def sendEmail(username):
     try:
         from_mail = email_id
         from_passw = email_pw
+        emails = ""
+        for email in range(3):
+            message = MIMEMultipart("alternative")
+            message['Subject'] = 'HILTI Tool Failure'
+            message['From'] = 'HILTI Tools Online Tracking (HTOT)'
+            message['To'] = ""
+            user_template = open('app/templates/email_templates/user.html', 'r')
+            user_template = user_template.read()
+            print("user template ===>>>>>> ", user_template)
+            template = MIMEText(user_template, 'html')
+            message.attach(template)
+            # msg.set_content(html, subtype='html')
 
-        msg = EmailMessage()
-        msg['Subject'] = "HILTI Tool Failure"
-        msg['From'] = "Hilti Tool Online Tracking"
-        msg['To'] = username
-        msg.set_content(html, subtype='html')
-
-        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-        server.login(from_mail, from_passw)
-        server.send_message(msg)
-        print("Email sent successfully!")
+            server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+            server.login(from_mail, from_passw)
+            server.sendmail(from_mail, username, message.as_string())
+            print("Email sent successfully!")
         server.quit()
     except Exception as error:
         print(error)
@@ -186,7 +143,7 @@ def sendEmail(username):
 
 def prediction(x):
     pred = model.predict([x])
-    print('Prediction : ', pred[0])
+    print('Prediction ======> ', pred[0])
     if pred[0] == 1:
         try:
             if session:
@@ -474,6 +431,10 @@ def create_file():
         file.write("let mapdata = " + data)
 
     return "Completed"
+
+@site.route('/tool_tracking', methods=['GET'])
+def tool_tracking():
+    return render_template('timeline.html')
 
 
 # @site.route('/datafromdb')
