@@ -12,6 +12,7 @@ from authlib.integrations.flask_client import OAuth
 import smtplib
 from email.message import EmailMessage
 from twilio.rest import Client
+from .email_template import email_template
 
 # useful libraries
 from flask_socketio import send
@@ -61,62 +62,11 @@ google = oauth.register(
     client_kwargs={'scope': 'openid email profile'},
 )
 
-html = '''
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-body {
-display: flex;
-justify-content: center;
-align-items:center;
-flex-direction: column;
-background-color: #d0d0d0;
-
-}
-# first {
-padding: 10px;
-border-radius: 5px;
-background-color: #fff;
-}
-
-button {
-padding: .5rem 1rem;
-border: none;
-border-radius: 2px;
-}
-</style>
-</head>
-<body>
-<div id="first">
-<h3>The tool Serial number L6880 needs service. Please contact Hilti Service by clicking the following link</h3>
-
-<button style="background: linear-gradient(to right, #243B55, #141E30) !important; color: white;">
-<a href="https://www.hilti.in/content/hilti/A2/IN/en/services/tool-services/tool-service-.html" style="text-decoration: none; color: white;">Click here</a>
-</button>
-<br>
-<br>
-<br>
-</div>
-<p><b>Thank you and Regards</b></p>
-<p><b>Team HTOT</b></p>
-</body>
-</html>
-
-'''
-
 # USER DEFINED FUNCTIONS
-
 # Map API
-
-
 def getMapData(username):
     resp = tool.getCompanyDetails(username)
-    print("resp => ", resp[0])
+    # print("resp => ", resp[0])
     new_dict = dict()
     for i in range(len(resp)):
         new_dict[resp[i]['City']] = new_dict.get(resp[i]['City'], 0) + 1
@@ -141,18 +91,14 @@ def getMapData(username):
     return final_
 
 # Send Message
-
-
 def sendMessage(receipent):
     try:
-        client = Client(account_sid, auth_token)
-
+        client = Client(app.config["ACCOUNT_SID"], app.config["AUTH_TOKEN"])
         message = client.messages.create(
             body="Your Hilti tool might require some action. Check mail for more info. -Team HTOT",
             from_='+13312530016',
             to=receipent
         )
-
         print(message.sid)
     except:
         print("Error while sending message. Try again!")
@@ -182,8 +128,6 @@ def sendEmail(username):
         return "<h1> We have following error </h1> <p>{}</p>".format(error)
 
 # Prediction
-
-
 def prediction(x):
     pred = model.predict([x])
     print('Prediction : ', pred[0])
@@ -191,14 +135,12 @@ def prediction(x):
         try:
             if session:
                 print("********************MACHINE FAILURE********************")
-                sendEmail('tahamustafa053@gmail.com')
+                sendEmail('ds661225@gmail.com')
                 # sendMessage(phone_num)
         except:
             print("Failure predicted, could not send an email..!!!")
 
 # SOCKET IO
-
-
 @socketio.on('message')
 def handle_message(resp):
     print('Message: ', resp)
@@ -208,8 +150,6 @@ def handle_message(resp):
     prediction(x)
 
 # Error Handler
-
-
 @site.errorhandler(404)
 def not_found(error=None):
     message = {
@@ -219,15 +159,14 @@ def not_found(error=None):
     resp = jsonify(message)
     return (resp, 200)
 
+
 ############# INDEX ROUTE #############
-
-
 @site.route("/")
 def index():
     try:
         if session:
-            print("Session : ", session)
-            print("Loggedin as : ", session['EMAIL'])
+            # print("Session : ", session)
+            # print("Loggedin as : ", session['EMAIL'])
             return render_template("home.html")
         return render_template("home.html")
     except:
@@ -240,6 +179,11 @@ def dashboard():
         return render_template('dashboard.html')
     return redirect(url_for('site.login'))
 
+@site.route("/workshop/dashboard")
+def workshop_dashboard():
+    if session:
+        return render_template('workshop/workshop_dashboard.html')
+    return redirect(url_for('site.login'))
 
 @site.route('/signup', methods=["GET", "POST"])
 def signup():
@@ -255,7 +199,8 @@ def signup():
         u_dict = {
             "company": req['company'],
             "email": req['email'],
-            "password": hashed_pw
+            "password": hashed_pw,
+            "account_type" : req['account_type']
         }
 
         if req['password'] == req['cm_password']:
@@ -283,13 +228,12 @@ def login():
         email = req['email']
         password = req['password']
         status = User.findUser(email, password)
-        print("status => ", status)
         if status:
             session.clear()
             session['logged_in'] = True
-            session['EMAIL'] = status[0]
-            session['COMPANY'] = status[1]
-            print("Logged in as : ", session['EMAIL'])
+            session['EMAIL'] = status["Email"]
+            session['COMPANY'] = status["Company"]
+            session['ACCOUNT_TYPE'] = status["account_type"]
             flash("Login successful", "success")
 
             return redirect(url_for('site.index'))
@@ -301,8 +245,6 @@ def login():
     return render_template('user/login.html')
 
 # Google oAuth login
-
-
 @site.route('/google_login')
 def google_login():
     google = oauth.create_client('google')
@@ -310,8 +252,6 @@ def google_login():
     return google.authorize_redirect(redirect_uri)
 
 # Google oAuth authorize
-
-
 @site.route('/authorize')
 def authorize():
     google = oauth.create_client('google')
@@ -324,31 +264,33 @@ def authorize():
     session['logged_in'] = True
     session.permanent = True
     found = User.getUser(user_info['email'])
-    if found is None:
+    if found:
+        if found['Company']:
+            session['COMPANY'] = found['Company']
+        else:
+            session['COMPANY'] = 'Company 1'
+
+        return redirect(url_for('site.index'))
+    else:
         newuser = {
             'First name': user_info['given_name'],
             'Last name': user_info['family_name'],
             'Email': user_info['email'],
-            'Profile pic': user_info['picture']
+            'Profile pic': user_info['picture'],
+            'Account type': 'user'
         }
-
         User.addUser(newuser, 1)
+        session['COMPANY'] = 'Company 1'
         return redirect(url_for('site.user_profile', _user=newuser))
-
     return redirect(url_for('site.index'))
-
-# Add try/except
-
 
 @site.route('/logout')
 def logout():
     try:
         if session:
-            print("CLEARING SESSION FOR : ", session['EMAIL'])
             session.clear()
             return redirect(url_for('site.index'))
     except:
-        print("Please login first")
         return render_template('home.html')
 
 
@@ -422,7 +364,6 @@ def post_json(val):
 @site.route('/tool_location')
 def map():
     username = session['COMPANY']
-    print(username)
     # response = json.dumps(getMapData(username))
     mapdb = getMapData(username)
 
