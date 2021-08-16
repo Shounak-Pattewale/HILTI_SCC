@@ -35,30 +35,28 @@ class Tools:
 class Users:
 
     def addUser(self,newuser,google):
-
-        if google == 0:
-            user = {
-                "Company": newuser['company'],
-                "Email": newuser['email'],
-                "password": newuser['password']
-            }
-        elif google == 1:
+        if google:
             user = {
                 "First name": newuser['First name'],
                 "Last name": newuser['Last name'],
                 "Email": newuser['Email'],
-                "Profile pic" : newuser['Profile pic']
+                "Profile pic": newuser['Profile pic'],
+                "Account type": newuser['account_type']
             }
-
+        else:
+            user = {
+                "Company": newuser['company'],
+                "Email": newuser['email'],
+                "password": newuser['password'],
+                'Account type': newuser['account_type']
+            }
         mongo.db.htot_users.insert_one(user) 
 
     def findUser(self,email,password):
-        
         found = mongo.db.htot_users.find_one({"Email":email},{"_id":0})
-      
         if found is not None:
             if bcrypt.checkpw(password.encode('utf-8'), found["password"]):
-                return [found["Email"], found["Company"]]
+                return found
             else:
                 return -1
         else:

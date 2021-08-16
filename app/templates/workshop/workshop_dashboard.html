@@ -1,0 +1,65 @@
+{% extends 'base_template.html' %}
+{% block link %} {% endblock %}
+{% block title %} Dashboard {% endblock %}
+{% block main %}
+{% include 'sidebar.html' %}
+<div class="main-panel panel-newbgcolor" id="main-panel">
+  <!-- Navbar -->
+  {% include 'navbar.html' %}
+  <!-- End Navbar -->
+
+  <div class="content pt-5 mt-5">
+    <div class="row">
+      <div class="col-lg-4 col-md-6">
+        <div class="card card-chart">
+          <div class="card-header">
+            <h5 class="card-category">Tools Under Repair</h5>
+            <h5>&nbsp; 22</h5>
+          </div>
+        </div>
+        <div class="card card-chart">
+          <div class="card-header">
+            <h5 class="card-category">Tools Repaired</h5>
+            <h5>&nbsp; 22</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="card card-chart">
+          <div class="card-header">
+            <h5 class="card-category">Tools Way To Workshop</h5>
+            <h5>&nbsp; 22</h5>
+          </div>
+        </div>
+        <div class="card card-chart">
+          <div class="card-header">
+            <h5 class="card-category">Total Way To Customers</h5>
+            <h5>&nbsp; 22</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="card card-chart">
+          <div class="card-header">
+            <h5 class="card-category">Tools To Be Picked Up From Workshop</h5>
+            <h5>&nbsp; 22</h5>
+          </div>
+        </div>
+        <div class="card card-chart">
+          <div class="card-header">
+            <h5 class="card-category">Tools To Be Picked Up From Customers</h5>
+            <h5>&nbsp; 22</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% block script %}
+
+<script>
+</script>
+
+{% endblock %}
+
+{% endblock %}
