@@ -13,7 +13,6 @@ body {
   /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#bea2e7", endColorstr="#86b7e7",GradientType=0 );
   /* IE6-9 */
-  overflow: hidden !important;
 }
 
 .container ul {

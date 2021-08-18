@@ -10,14 +10,15 @@ from authlib.integrations.flask_client import OAuth
 
 # imports for sending alert message
 import smtplib
-from email.message import EmailMessage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from twilio.rest import Client
 from .email_template import email_template
 
 # useful libraries
 from flask_socketio import send
 from datetime import datetime
-from time import time
+import time
 import bcrypt
 import random
 import json
@@ -40,11 +41,8 @@ tool = Tools()
 User = Users()
 
 site_docs = app.config["SITE_DOCS"]
-email_id = app.config["EMAIL_ID"]
-email_pw = app.config["EMAIL_PW"]
 account_sid = app.config["ACCOUNT_SID"]
 auth_token = app.config["AUTH_TOKEN"]
-phone_num = app.config['PHONE_NUM']
 google_client_id = app.config['GOOGLE_CLIENT_ID']
 google_client_secret = app.config['GOOGLE_CLIENT_SECRET']
 
@@ -109,19 +107,26 @@ def sendMessage(receipent):
 def sendEmail(username):
     # For Email Module
     try:
-        from_mail = email_id
-        from_passw = email_pw
+        from_mail = app.config["EMAIL_ID"]
+        from_passw = app.config["EMAIL_PW"]
 
-        msg = EmailMessage()
-        msg['Subject'] = "HILTI Tool Failure"
-        msg['From'] = "Hilti Tool Online Tracking"
-        msg['To'] = username
-        msg.set_content(html, subtype='html')
+        emails = ['developer8242@gmail.com']
+        for email in emails:
+            message = MIMEMultipart("alternative")
+            message['Subject'] = 'HILTI Tool Failure'
+            message['From'] = 'HILTI Tools Online Tracking (HTOT)'
+            message['To'] = email
+            user_template = open('app/templates/email_templates/user.html', 'r')
+            user_template = user_template.read()
+            print("user template ===>>>>>> ", user_template)
+            template = MIMEText(user_template, 'html')
+            message.attach(template)
+            # msg.set_content(html, subtype='html')
 
-        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-        server.login(from_mail, from_passw)
-        server.send_message(msg)
-        print("Email sent successfully!")
+            server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+            server.login(from_mail, from_passw)
+            server.sendmail(from_mail, email, message.as_string())
+            print("Email sent successfully!")
         server.quit()
     except Exception as error:
         print(error)
@@ -136,7 +141,8 @@ def prediction(x):
             if session:
                 print("********************MACHINE FAILURE********************")
                 sendEmail('ds661225@gmail.com')
-                # sendMessage(phone_num)
+                time.sleep(240)
+                # sendMessage(app.config['PHONE_NUM'])
         except:
             print("Failure predicted, could not send an email..!!!")
 
@@ -148,6 +154,7 @@ def handle_message(resp):
     global nowPointer
     nowPointer = resp[4]
     prediction(x)
+    time.sleep(240)
 
 # Error Handler
 @site.errorhandler(404)
@@ -415,6 +422,10 @@ def create_file():
         file.write("let mapdata = " + data)
 
     return "Completed"
+
+@site.route('/tool_tracking', methods=['GET'])
+def tool_tracking():
+    return render_template('timeline.html')
 
 
 # @site.route('/datafromdb')

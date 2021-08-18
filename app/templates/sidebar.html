@@ -18,10 +18,10 @@
                     %}>
                     <a href="{{ url_for('site.index') }}">
                         {% if active_page == "/" %}
-                        <i class="now-ui-icons business_bank" style="color: #141E30;"></i>
+                        <i class="fas fa-home" style="color: #141E30;"></i>
                         <p style="color: #141E30;">Home</p>
                         {% else %}
-                        <i class="now-ui-icons business_bank"></i>
+                        <i class="fas fa-home"></i>
                         <p>Home</p>
                         {% endif %}
                     </a>
@@ -32,10 +32,10 @@
                     %}>
                     <a href="{{ url_for('site.user_profile') }}">
                         {% if active_page == "/user_profile" %}
-                        <i class="now-ui-icons users_single-02" style="color: #141E30;"></i>
+                        <i class="far fa-user" style="color: #141E30;"></i>
                         <p style="color: #141E30;">User Profile</p>
                         {% else %}
-                        <i class="now-ui-icons users_single-02"></i>
+                        <i class="far fa-user"></i>
                         <p >User Profile</p>
                         {% endif %}
                     </a>
@@ -58,10 +58,10 @@
                     %}>
                     <a href="{{ url_for('site.map') }}">
                         {% if active_page == "/tool_location" %}
-                        <i class="now-ui-icons location_pin" style="color: #141E30;"></i>
+                        <i class="fas fa-location-arrow" style="color: #141E30;"></i>
                         <p style="color: #141E30;">Tool Location</p>
                         {% else %}
-                        <i class="now-ui-icons location_pin"></i>
+                        <i class="fas fa-location-arrow"></i>
                         <p>Tool Location</p>
                         {% endif %}
                     </a>
@@ -72,10 +72,10 @@
                     <a href="{{url_for('site.history')}}">
 
                         {% if active_page == "/history" %}
-                        <i class="now-ui-icons education_paper" style="color: #141E30;"></i>
+                        <i class="fas fa-history" style="color: #141E30;"></i>
                         <p style="color: #141E30;">Tool History</p>
                         {% else %}
-                        <i class="now-ui-icons education_paper"></i>
+                        <i class="fas fa-history"></i>
                         <p >Tool History</p>
                         {% endif %}
                     </a>
@@ -86,10 +86,10 @@
                     <a href="{{url_for('site.tool_tracking')}}">
 
                         {% if active_page == "/tool_tracking" %}
-                        <i class="now-ui-icons education_paper" style="color: #141E30;"></i>
+                        <i class="fas fa-chalkboard" style="color: #141E30;"></i>
                         <p style="color: #141E30;">Tool Tracking</p>
                         {% else %}
-                        <i class="now-ui-icons education_paper"></i>
+                        <i class="fas fa-chalkboard"></i>
                         <p >Tool Tracking</p>
                         {% endif %}
                     </a>
