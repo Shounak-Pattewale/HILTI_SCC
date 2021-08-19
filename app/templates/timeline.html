@@ -1,28 +1,15 @@
-{% extends 'base_template.html' %}
-
 {% block links %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/timeline.css') }}">
 {% endblock %}
 
-{% block title %}
-Tool tracking
-{% endblock %}
-
 {% block main %}
-{% include 'sidebar.html' %}
-<div class="wrapper ">
-    <div class="main-panel" id="main-panel">
-        <!-- Navbar -->
-        {% include 'navbar.html' %}
-        <!-- End Navbar -->
-        <div class="panel-header panel-header-sm">
-        </div>
-        <div class="content">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card ">
+
+        <div class="">
+            <div class="">
+                <div class="">
+                    <div class="">
                         <div class="card-header ">
-                            <h3><b>L43245</b></h3>
+                            <h5 style="margin-bottom: 0 !important;">L43245</h5>
                         </div>
                         <div class="card-body ">
                             <div class="container">
@@ -37,15 +24,15 @@ Tool tracking
                                     <li>
                                         <div><span></span>
                                             <div class="title">Received at Workshop</div>
-                                            <div class="info">Let&apos;s make coolest things in javascript</div>
-                                            <div class="type">Presentation</div>
+                                            <div class="info"></div>
+                                            <div class="type">16th Aug '21</div>
                                         </div> <span class="number"><span>13:00</span> <span>14:00</span></span>
                                     </li>
                                     <li>
                                         <div><span></span>
                                             <div class="title">In service</div>
-                                            <div class="info">Let&apos;s make coolest things in css</div>
-                                            <div class="type">Review</div>
+                                            <div class="info"></div>
+                                            <div class="type">17th Aug '21</div>
                                         </div> <span class="number"><span>15:00</span> <span>17:45</span></span>
                                     </li>
                                     <li>
@@ -62,6 +49,4 @@ Tool tracking
                 </div>
             </div>
         </div>
-    </div>
-</div>
 {% endblock %}

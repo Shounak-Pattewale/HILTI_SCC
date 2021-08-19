@@ -88,6 +88,7 @@ def getMapData(username):
 
     return final_
 
+
 # Send Message
 def sendMessage(receipent):
     try:
@@ -101,9 +102,8 @@ def sendMessage(receipent):
     except:
         print("Error while sending message. Try again!")
 
+
 # Send Email
-
-
 def sendEmail(username):
     # For Email Module
     try:
@@ -156,6 +156,7 @@ def handle_message(resp):
     prediction(x)
     time.sleep(240)
 
+
 # Error Handler
 @site.errorhandler(404)
 def not_found(error=None):
@@ -186,11 +187,13 @@ def dashboard():
         return render_template('dashboard.html')
     return redirect(url_for('site.login'))
 
+
 @site.route("/workshop/dashboard")
 def workshop_dashboard():
     if session:
         return render_template('workshop/workshop_dashboard.html')
     return redirect(url_for('site.login'))
+
 
 @site.route('/signup', methods=["GET", "POST"])
 def signup():
@@ -251,12 +254,14 @@ def login():
 
     return render_template('user/login.html')
 
+
 # Google oAuth login
 @site.route('/google_login')
 def google_login():
     google = oauth.create_client('google')
     redirect_uri = url_for('site.authorize', _external=True)
     return google.authorize_redirect(redirect_uri)
+
 
 # Google oAuth authorize
 @site.route('/authorize')
@@ -291,6 +296,7 @@ def authorize():
         return redirect(url_for('site.user_profile', _user=newuser))
     return redirect(url_for('site.index'))
 
+
 @site.route('/logout')
 def logout():
     try:
@@ -316,7 +322,7 @@ def user_profile():
                 'Zip_code': req['Zip_code'],
                 'Info': req['Info']
             }
-            User.updateUser_data(session['EMAIL'], edit)
+            User.updateUserData(session['EMAIL'], edit)
             return redirect(url_for('site.user_profile'))
         return redirect(url_for("site.login"))
 
@@ -371,7 +377,6 @@ def post_json(val):
 @site.route('/tool_location')
 def map():
     username = session['COMPANY']
-    # response = json.dumps(getMapData(username))
     mapdb = getMapData(username)
 
     # data = json.dumps(getMapData(username))
@@ -382,64 +387,32 @@ def map():
     return render_template('map.html', company=username, mapdb=mapdb)
 
 
-@site.route('/create_file')
-def create_file():
-    final_ = []
-    for i in range(1, 16):
-        company = 'Company ' + str(i)
-
-        resp = tool.getCompanyDetails(company)
-        new_dict = dict()
-        for i in range(len(resp)):
-            new_dict[resp[i]['City']] = new_dict.get(resp[i]['City'], 0) + 1
-
-        geolocator = Nominatim(user_agent='App')
-        arr = []
-        j = 0
-        for key, value in new_dict.items():
-            location = geolocator.geocode(key)
-            arr.append(
-                {
-                    'Name': key,
-                    'Count': value,
-                    'latitude': location.latitude,
-                    'longitude': location.longitude,
-                    'region': resp[j]['Region']
-                }
-            )
-            j += 1
-
-        final_.append(
-            {
-                company: arr
-            }
-        )
-        print("Company " + str(i) + " Created")
-
-    data = json.dumps(final_)
-
-    with open('app/static/map_data.js', 'w') as file:
-        file.write("let mapdata = " + data)
-
-    return "Completed"
-
 @site.route('/tool_tracking', methods=['GET'])
 def tool_tracking():
     return render_template('timeline.html')
 
 
-# @site.route('/datafromdb')
-# def database():
-#     # final_ = []
-
-#     for i in range(2, 16):
-#         company = 'Company ' + str(i)
-
-#         geolocator = Nominatim(user_agent='App')
-#         location = geolocator.geocode(company)
-#         lat, lng = location.latitude, location.longitude
-
-#         tool.updateCompanyDetails(company, lat, lng)
+@site.route('/manage_tools')
+def manage_tools():
+    response = tool.getTools()
+    return render_template('manage_tool.html', tools=response)
 
 
-#     return "Completed"
+@site.route('/assign_tool', methods=['POST'])
+def assign_tool():
+    req = request.form
+    tool_id = req['tool-id']
+    site = req['site']
+    assign_to = req['assign-to']
+    status = "Assigned"
+
+    response = tool.assignTool(tool_id, site, assign_to, status)
+
+    return redirect(url_for('site.manage_tools'))
+
+
+@site.route('/unassign', methods=['POST'])
+def unassign():
+    print(request.args)
+
+    return redirect(url_for('site.manage_tools'))

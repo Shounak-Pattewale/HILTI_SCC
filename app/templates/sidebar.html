@@ -54,43 +54,15 @@
                     </a>
                 </li>
 
-                <li {% if active_page == "/tool_location" %} class="active"{% endif
+                <li {% if active_page == "/manage_tools" %} class="active"{% endif
                     %}>
-                    <a href="{{ url_for('site.map') }}">
-                        {% if active_page == "/tool_location" %}
-                        <i class="fas fa-location-arrow" style="color: #141E30;"></i>
-                        <p style="color: #141E30;">Tool Location</p>
+                    <a href="{{ url_for('site.manage_tools') }}">
+                        {% if active_page == "/manage_tools" %}
+                        <i class="fas fa-tasks" style="color: #141E30;"></i>
+                        <p style="color: #141E30;">Manage Tools</p>
                         {% else %}
-                        <i class="fas fa-location-arrow"></i>
-                        <p>Tool Location</p>
-                        {% endif %}
-                    </a>
-                </li>
-
-                <li {% if active_page == "/history" %} class="active"{% endif
-                    %}>
-                    <a href="{{url_for('site.history')}}">
-
-                        {% if active_page == "/history" %}
-                        <i class="fas fa-history" style="color: #141E30;"></i>
-                        <p style="color: #141E30;">Tool History</p>
-                        {% else %}
-                        <i class="fas fa-history"></i>
-                        <p >Tool History</p>
-                        {% endif %}
-                    </a>
-                </li>
-
-                <li {% if active_page == "/tool_tracking" %} class="active"{% endif
-                    %}>
-                    <a href="{{url_for('site.tool_tracking')}}">
-
-                        {% if active_page == "/tool_tracking" %}
-                        <i class="fas fa-chalkboard" style="color: #141E30;"></i>
-                        <p style="color: #141E30;">Tool Tracking</p>
-                        {% else %}
-                        <i class="fas fa-chalkboard"></i>
-                        <p >Tool Tracking</p>
+                        <i class="fas fa-tasks"></i>
+                        <p>Manage Tools</p>
                         {% endif %}
                     </a>
                 </li>

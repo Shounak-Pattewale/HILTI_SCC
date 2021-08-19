@@ -1,0 +1,188 @@
+{% extends 'base_template.html' %}
+{% block link %} {% endblock %}
+{% block title %} Dashboard {% endblock %}
+{% block main %}
+{% include 'sidebar.html' %}
+<div class="main-panel panel-newbgcolor" id="main-panel">
+    <!-- Navbar -->
+    {% include 'navbar.html' %}
+    <!-- End Navbar -->
+
+    <div class="content pt-5 mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title pl-2 pb-0 text-uppercase">Manage Tools</h4>
+            </div>
+            <div class="card-body pt-0">
+                <table class="table text-center">
+                    <thead class="text-primary">
+                        <th>
+                            Tool ID
+                        </th>
+                        <th>
+                            Tool
+                        </th>
+                        <th>
+                            Site location
+                        </th>
+                        <th>
+                            Assigned to
+                        </th>
+                        <th>
+                            Assigned on
+                        </th>
+                        <th>
+                            Track
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                    </thead>
+                    <tbody>
+                        {% for tool in tools %}
+                        <tr>
+                            <td>
+                                {{ tool['Product ID'] }}
+                            </td>
+                            <td>
+                                NA
+                            </td>
+                            {% if tool['site'] %}
+                            <td>
+                                NA
+                            </td>
+                            {% else %}
+                            <td>
+                                Some Site
+                            </td>
+                            {% endif %}
+                            {% if tool['assign-to'] %}
+                            <td>
+                                Mr. XYZ (Labour)
+                            </td>
+                            {% else %}
+                            <td>
+                                NA
+                            </td>
+                            {% endif %}
+                            {% if tool['assign-on'] %}
+                            <td>
+                                01-01-2021
+                            </td>
+                            {% else %}
+                            <td>
+                                NA
+                            </td>
+                            {% endif %}
+                            {% if tool['assign-on'] %}
+                            <td>
+                                <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
+                                    data-target=".bd-example-modal-xl">View</button>
+
+                            </td>
+                            {% else %}
+                            <td>
+                                <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
+                                    data-target=".bd-example-modal-xl">View</button>
+
+                            </td>
+                            {% endif %}
+                            {% if tool['Assigned'] == 'True' %}
+                            <td>
+                                <form action="/unassign?toolid={{ tool['Product ID'] }}" method="POST">
+                                    <button type="submit" class="btn btn-sm btn-danger"
+                                     data-whatever="@xyz">Unassign</button>
+                                </form>
+                            </td>
+                            {% else %}
+                            <td>
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-sm btn-success" data-toggle="modal"
+                                    data-target="#exampleModal" data-whatever="@xyz">Assign</button>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Assign Tool</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="/assign_tool">
+                            <div class="form-group">
+                                <label for="tool-id" class="col-form-label">Tool Id</label>
+                                <input type="text" class="form-control" id="tool-id" name="tool-id">
+                            </div>
+                            <div class="form-group">
+                                <label for="site" class="col-form-label">Site</label>
+                                <input type="text" class="form-control" id="site" name="site">
+                            </div>
+                            <div class="form-group">
+                                <label for="assign-to" class="col-form-label">Assign to</label>
+                                <input type="text" class="form-control" id="assign-to" name="assign-to">
+                            </div>
+
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button class="btn btn-primary" type="submit">Assign</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <!---- Tabs ---->
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <a class="nav-item u-pr-5 nav-link active" id="tool-track-tab" data-toggle="tab"
+                                href="#tool_track" role="tab" aria-controls="nav-signin" aria-selected="true">
+                                Tool Track
+                            </a>
+                            <a class="nav-item u-pr-5 nav-link" id="tool-hist-tab" data-toggle="tab" href="#tool_hist"
+                                role="tab" aria-controls="nav-signup" aria-selected="false">
+                                Tool Location
+                            </a>
+                            <a class="nav-item u-pr-5 nav-link" id="tool-hist-tab" data-toggle="tab" href="#tool_hist"
+                                role="tab" aria-controls="nav-signup" aria-selected="false">
+                                Tool History
+                            </a>
+                        </div>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="tool_track" role="tabpanel"
+                            aria-labelledby="tool-track-tab">
+                            {% include 'timeline.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% block script %}
+
+    {% endblock %}
+
+    {% endblock %}
