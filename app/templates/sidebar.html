@@ -14,8 +14,7 @@
         <div class="sidebar-wrapper" id="sidebar-wrapper">
             <ul class="nav">
 
-                <li {% if active_page == "/" %} class="active" style="color: #141E30;"{%endif
-                    %}>
+                <li {% if active_page=="/" %} class="active" style="color: #141E30;" {%endif %}>
                     <a href="{{ url_for('site.index') }}">
                         {% if active_page == "/" %}
                         <i class="fas fa-home" style="color: #141E30;"></i>
@@ -26,51 +25,73 @@
                         {% endif %}
                     </a>
                 </li>
-                
-                {% if session['logged_in']==True  %}
-                <li {% if active_page == "/user_profile" %} class="active"{% endif
-                    %}>
-                    <a href="{{ url_for('site.user_profile') }}">
-                        {% if active_page == "/user_profile" %}
-                        <i class="far fa-user" style="color: #141E30;"></i>
-                        <p style="color: #141E30;">User Profile</p>
-                        {% else %}
-                        <i class="far fa-user"></i>
-                        <p >User Profile</p>
-                        {% endif %}
-                    </a>
-                </li>
 
-                <li {% if active_page == "/dashboard" %} class="active"{% endif
-                    %}>
-                    <a href="{{ url_for('site.dashboard') }}">
-                        {% if active_page == "/dashboard" %}
-                        <i class="now-ui-icons business_chart-bar-32" style="color: #141E30;"></i>
-                        <p style="color: #141E30;">Dashboard </p>
-                        {% else %}
-                        <i class="now-ui-icons business_chart-bar-32"></i>
-                        <p>Dashboard</p>
-                        {% endif %}
-                    </a>
-                </li>
+                {% if session['logged_in']==True %}
+                    {% if session['ACCOUNT_TYPE'] == 'workshop' %}
+                    <li {% if active_page=="/workshop/dashboard" %} class="active" {% endif %}>
+                        <a href="{{ url_for('site.workshop_dashboard') }}">
+                            {% if active_page == "/workshop/dashboard" %}
+                            <i class="now-ui-icons business_chart-bar-32" style="color: #141E30;"></i>
+                            <p style="color: #141E30;">Workshop Dashboard </p>
+                            {% else %}
+                            <i class="now-ui-icons business_chart-bar-32"></i>
+                            <p>Dashboard</p>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li {% if active_page=="/workshop/inventory" %} class="active" {% endif %}>
+                        <a href="{{url_for('site.workshop_inventory')}}">
 
-                <li {% if active_page == "/manage_tools" %} class="active"{% endif
-                    %}>
-                    <a href="{{ url_for('site.manage_tools') }}">
-                        {% if active_page == "/manage_tools" %}
-                        <i class="fas fa-tasks" style="color: #141E30;"></i>
-                        <p style="color: #141E30;">Manage Tools</p>
-                        {% else %}
-                        <i class="fas fa-tasks"></i>
-                        <p>Manage Tools</p>
-                        {% endif %}
-                    </a>
-                </li>
+                            {% if active_page == "/workshop/inventory" %}
+                            <i class="fas fa-chalkboard" style="color: #141E30;"></i>
+                            <p style="color: #141E30;">Workshop Inventory</p>
+                            {% else %}
+                            <i class="fas fa-chalkboard"></i>
+                            <p>Workshop Inventory</p>
+                            {% endif %}
+                        </a>
+                    </li>
+                    {% else %}
+                    <li {% if active_page=="/user_profile" %} class="active" {% endif %}>
+                        <a href="{{ url_for('site.user_profile') }}">
+                            {% if active_page == "/user_profile" %}
+                            <i class="far fa-user" style="color: #141E30;"></i>
+                            <p style="color: #141E30;">User Profile</p>
+                            {% else %}
+                            <i class="far fa-user"></i>
+                            <p>User Profile</p>
+                            {% endif %}
+                        </a>
+                    </li>
 
+                    <li {% if active_page=="/dashboard" %} class="active" {% endif %}>
+                        <a href="{{ url_for('site.dashboard') }}">
+                            {% if active_page == "/dashboard" %}
+                            <i class="now-ui-icons business_chart-bar-32" style="color: #141E30;"></i>
+                            <p style="color: #141E30;">Dashboard </p>
+                            {% else %}
+                            <i class="now-ui-icons business_chart-bar-32"></i>
+                            <p>Dashboard</p>
+                            {% endif %}
+                        </a>
+                    </li>
+
+                    <li {% if active_page=="/manage_tools" %} class="active" {% endif %}>
+                        <a href="{{ url_for('site.manage_tools') }}">
+                            {% if active_page == "/manage_tools" %}
+                            <i class="fas fa-tasks" style="color: #141E30;"></i>
+                            <p style="color: #141E30;">Manage Tools</p>
+                            {% else %}
+                            <i class="fas fa-tasks"></i>
+                            <p>Manage Tools</p>
+                            {% endif %}
+                        </a>
+                    </li>
+                    {% endif %}
+                    
                 {% else %}
 
-                <li {% if active_page == "/login" %} class="active"{% endif
-                    %}>
+                <li {% if active_page=="/login" %} class="active" {% endif %}>
                     <a href="{{url_for('site.login')}}">
 
                         {% if active_page == "/login" %}
@@ -78,13 +99,12 @@
                         <p style="color: #141E30;">Login</p>
                         {% else %}
                         <i class="now-ui-icons gestures_tap-01"></i>
-                        <p >Login</p>
+                        <p>Login</p>
                         {% endif %}
                     </a>
                 </li>
 
-                <li {% if active_page == "/signup" %} class="active"{% endif
-                    %}>
+                <li {% if active_page=="/signup" %} class="active" {% endif %}>
                     <a href="{{url_for('site.signup')}}">
 
                         {% if active_page == "/signup" %}
@@ -92,7 +112,7 @@
                         <p style="color: #141E30;">Signup</p>
                         {% else %}
                         <i class="now-ui-icons business_badge"></i>
-                        <p >Signup</p>
+                        <p>Signup</p>
                         {% endif %}
                     </a>
                 </li>
