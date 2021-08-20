@@ -32,7 +32,6 @@ from geopy import Nominatim
 # custom imports
 from .models import *
 from app import *
-from .models import Workshop
 
 site = Blueprint("site", __name__, template_folder='../templates',
                  static_folder='static', static_url_path='static')
@@ -201,11 +200,35 @@ def dashboard():
     return redirect(url_for('site.login'))
 
 
-@site.route("/workshop/dashboard")
+@site.route("/workshop/dashboard", methods=["GET", "POST"])
 def workshop_dashboard():
     if session:
         tools = work.getToolData()
-        return render_template('workshop/workshop_dashboard.html', tools=tools)
+        if request.method == "POST":
+            req = request.form
+            if req.get('tool_status') == 'arrived_to_workshop':
+                btn_color = 'btn-secondary'
+            elif req.get('tool_status') == 'under_repair':
+                btn_color = 'btn-danger'
+            elif req.get('tool_status') == 'repair_completed':
+                btn_color = 'btn-info'
+            elif req.get('tool_status') == 'way_to_customer':
+                btn_color = 'btn-secondary'
+            elif req.get('tool_status') == 'received_by_customer':
+                btn_color = 'btn-success'
+            else:
+                btn_color = 'btn-warning'
+            
+            update_data = {
+                'status_id': req.get('tool_status'),
+                'btn_color': btn_color
+            }
+            Workshop.updateToolData(req.get('hidden_tool_id'),update_data)
+            tool_data_count = Workshop.populateWorkshopDashboard()
+            return render_template('workshop/workshop_dashboard.html', tools=tools, tool_data_count=tool_data_count)
+        else:
+            tool_data_count = Workshop.populateWorkshopDashboard()
+            return render_template('workshop/workshop_dashboard.html', tools=tools, tool_data_count=tool_data_count)
     return redirect(url_for('site.login'))
 
 @site.route("/workshop/inventory")

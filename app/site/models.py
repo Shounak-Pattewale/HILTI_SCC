@@ -100,15 +100,24 @@ class Workshop:
 
     def insertToolData(self, company, email, tool_id, date, status):
         resp = mongo.db.tool_repairs.insert({"Company" : company, "Email" : email, "toolid" : tool_id, "request on" : date, "status" : status})
-
         return resp
 
     def getToolData(self):
-        resp = mongo.db.tool_repairs.find()
-
-        return resp
+        return mongo.db.tool_repairs.find()
 
     def getOneTool(self, tool_id):
-        resp = mongo.db.tool_repairs.find({"toolid" : tool_id})
+        return mongo.db.tool_repairs.find({"toolid" : tool_id})
 
-        return resp
+    def updateToolData(tool_id, update_data):
+        return mongo.db.tool_repairs.update({'toolid': tool_id}, {'$set': update_data})
+
+    def populateWorkshopDashboard():
+        return {
+            'way_to_workshop': mongo.db.tool_repairs.find({"status_id" : 'way_to_workshop'}).count(),
+            'arrived_to_workshop': mongo.db.tool_repairs.find({"status_id" : 'arrived_to_workshop'}).count(),
+            'under_repair': mongo.db.tool_repairs.find({"status_id" : 'under_repair'}).count(),
+            'repair_completed': mongo.db.tool_repairs.find({"status_id" : 'repair_completed'}).count(),
+            'way_to_customer': mongo.db.tool_repairs.find({"status_id" : 'way_to_customer'}).count(),
+            'received_by_customer': mongo.db.tool_repairs.find({"status_id" : 'received_by_customer'}).count()
+        }
+        
