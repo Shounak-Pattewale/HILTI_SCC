@@ -45,7 +45,7 @@ body {
 .container ul li > span {
   width: 2px;
   height: 100%;
-  background: #000;
+  /* background: #000; */
   left: -30px;
   top: 0;
   position: absolute;
@@ -91,4 +91,12 @@ body {
 }
 .container span.number span:last-child {
   top: 100%;
+}
+.completed {
+  width: 2px;
+  height: 100%;
+  background: #000;
+  left: -30px;
+  top: 0;
+  position: absolute;
 }

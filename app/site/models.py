@@ -98,12 +98,11 @@ class Workshop:
     def __init__(self):
         pass
 
-    def insertToolData(self, company, email, tool_id, date, status):
-        resp = mongo.db.tool_repairs.insert({"Company" : company, "Email" : email, "toolid" : tool_id, "request on" : date, "status" : status})
-        return resp
+    def insertToolData(insert_data):
+        return mongo.db.tool_repairs.insert(insert_data)
 
     def getToolData(self):
-        return mongo.db.tool_repairs.find()
+        return mongo.db.tool_repairs.find().sort('id')
 
     def getOneTool(self, tool_id):
         return mongo.db.tool_repairs.find({"toolid" : tool_id})

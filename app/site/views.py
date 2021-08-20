@@ -111,10 +111,8 @@ def sendEmail(username):
     try:
         from_mail = app.config["EMAIL_ID"]
         from_passw = app.config["EMAIL_PW"]
-# 'ds661225@gmail.com' : 'app/templates/email_templates/inventory.html',
-            # 'sarbajitrc@gmail.com' : 'app/templates/email_templates/workshop.html'
         emails = {
-            'developer8242@gmail.com' : 'app/templates/email_templates/user.html'
+            username : 'app/templates/email_templates/user.html'
         }
         for email, template in emails.items():
             message = MIMEMultipart("alternative")
@@ -125,7 +123,6 @@ def sendEmail(username):
             user_template = user_template.read()
             template = MIMEText(user_template, 'html')
             message.attach(template)
-            # msg.set_content(html, subtype='html')
 
             server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
             server.login(from_mail, from_passw)
@@ -144,8 +141,8 @@ def prediction(x):
         try:
             if session:
                 print("********************MACHINE FAILURE********************")
-                sendEmail('ds661225@gmail.com')
-                response = tool.updateTool("L48433", 'Failure')
+                sendEmail(session['EMAIL'])
+                response = tool.updateTool("L47593", 'Failure')
                 # sendMessage(app.config['PHONE_NUM'])
         except:
             print("Failure predicted, could not send an email..!!!")
@@ -185,8 +182,6 @@ def not_found(error=None):
 def index():
     try:
         if session:
-            # print("Session : ", session)
-            # print("Loggedin as : ", session['EMAIL'])
             return render_template("home.html")
         return render_template("home.html")
     except:
@@ -465,11 +460,14 @@ def unassign():
 @site.route('/schedule_pickup', methods=['POST'])
 def schedule_pickup():
     req = request.form
-    tool_id = req['tool-id']
-    date = req['date']
-    company = session['COMPANY']
-    email = session['EMAIL']
-    status = "Way to Workshop"
-    workshop = work.insertToolData(company, email, tool_id, date, status)
-    response = tool.updateTool(tool_id, "In service")
+    insert_data = {
+    'toolid': req['tool-id'],
+    'request on': req['date'],
+    'Company': session['COMPANY'],
+    'Email': session['EMAIL'],
+    'status_id': "way_to_workshop",
+    'btn_color': 'btn-warning' 
+    }
+    Workshop.insertToolData(insert_data)
+    response = tool.updateTool(req['tool-id'], "In service")
     return redirect(url_for('site.manage_tools'))
