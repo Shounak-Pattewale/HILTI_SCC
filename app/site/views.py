@@ -194,6 +194,12 @@ def workshop_dashboard():
         return render_template('workshop/workshop_dashboard.html')
     return redirect(url_for('site.login'))
 
+@site.route("/workshop/inventory")
+def workshop_inventory():
+    if session:
+        return render_template('workshop/workshop_inventory.html')
+    return redirect(url_for('site.login'))
+
 
 @site.route('/signup', methods=["GET", "POST"])
 def signup():
@@ -334,7 +340,7 @@ def user_profile():
     return redirect(url_for("site.login"))
 
 
-@site.route("/generate report")
+@site.route("/generate_report")
 def get_report():
     df = tool.data()
     new_df = df.head(nowPointer)
