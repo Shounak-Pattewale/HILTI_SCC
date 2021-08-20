@@ -32,6 +32,7 @@ from geopy import Nominatim
 # custom imports
 from .models import *
 from app import *
+from .models import Workshop
 
 site = Blueprint("site", __name__, template_folder='../templates',
                  static_folder='static', static_url_path='static')
@@ -40,6 +41,7 @@ model = pickle.load(open('app/site_data/trained.pkl', 'rb'))
 
 tool = Tools()
 User = Users()
+work = Workshop()
 
 site_docs = app.config["SITE_DOCS"]
 account_sid = app.config["ACCOUNT_SID"]
@@ -144,7 +146,7 @@ def prediction(x):
             if session:
                 print("********************MACHINE FAILURE********************")
                 sendEmail('ds661225@gmail.com')
-                response = tool.updateTool("L47333", 'Failure')
+                response = tool.updateTool("L48433", 'Failure')
                 # sendMessage(app.config['PHONE_NUM'])
         except:
             print("Failure predicted, could not send an email..!!!")
@@ -161,9 +163,11 @@ def handle_message(resp):
 
 @socketio.on('pickupSchedule')
 def pickup_schedule(toolid):
-    print('pickup ', toolid)
-
-    socketio.emit('receive pickup notification', toolid)
+    print('pickup =>>>>>>', toolid)
+    tool = work.getOneTool(toolid)
+    print(tool)
+    
+    socketio.emit('receivepickupnotification', tool)
 
 
 # Error Handler
@@ -200,7 +204,14 @@ def dashboard():
 @site.route("/workshop/dashboard")
 def workshop_dashboard():
     if session:
-        return render_template('workshop/workshop_dashboard.html')
+        tools = work.getToolData()
+        return render_template('workshop/workshop_dashboard.html', tools=tools)
+    return redirect(url_for('site.login'))
+
+@site.route("/workshop/inventory")
+def workshop_inventory():
+    if session:
+        return render_template('workshop/workshop_inventory.html')
     return redirect(url_for('site.login'))
 
 
@@ -425,9 +436,17 @@ def assign_tool():
 @site.route('/unassign', methods=['POST'])
 def unassign():
     tool_id = request.args['toolid']
-    response = tool.updateTool(tool_id)
+    response = tool.unassignTool(tool_id, "Unassigned")
     return redirect(url_for('site.manage_tools'))
 
 @site.route('/schedule_pickup', methods=['POST'])
 def schedule_pickup():
-    return "Pick up scheduled"
+    req = request.form
+    tool_id = req['tool-id']
+    date = req['date']
+    company = session['COMPANY']
+    email = session['EMAIL']
+    status = "Way to Workshop"
+    workshop = work.insertToolData(company, email, tool_id, date, status)
+    response = tool.updateTool(tool_id, "In service")
+    return redirect(url_for('site.manage_tools'))

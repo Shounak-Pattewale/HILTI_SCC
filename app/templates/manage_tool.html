@@ -99,14 +99,21 @@
                             <td>
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
-                                    data-target="#pickupModal" data-whatever="@xyz">Schedule Pickup</button>
+                                    data-target="#pickupModal{{ tool['Product ID'] }}" data-whatever="@xyz">Schedule Pickup</button>
                             </td>
                             {% endif %}
-                            {% if not tool['status'] %}
+                            {% if tool['status'] == 'In service' %}
+                            <td>
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
+                                    data-target="#pickupModal{{ tool['Product ID'] }}" data-whatever="@xyz">In Service</button>
+                            </td>
+                            {% endif %}
+                            {% if tool['status'] == 'Unassigned' or not tool['status'] %}
                             <td>
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-sm btn-success" data-toggle="modal"
-                                    data-target="#assignModal" data-whatever="@xyz">Assign</button>
+                                    data-target="#assignModal{{ tool['Product ID'] }}" data-whatever="@xyz">Assign</button>
                             </td>
                             {% endif %}
                         </tr>
@@ -118,7 +125,7 @@
 
         <!-- Modal -->
         {% for tool in tools %}
-        <div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="assignModal{{ tool['Product ID'] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -155,7 +162,7 @@
     {% endfor %}
 
     {% for tool in tools %}
-    <div class="modal fade" id="pickupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="pickupModal{{ tool['Product ID'] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -166,19 +173,19 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="">
+                    <form method="POST" action="/schedule_pickup">
                         <div class="form-group">
                             <label for="tool-id" class="col-form-label">Tool Id</label>
                             <input type="text" class="form-control" id="tool-id" name="tool-id"
                                 value="{{ tool['Product ID'] }}">
                         </div>
                         <div class="form-group">
-                            <label for="site" class="col-form-label">Pick up Date</label>
-                            <input type="date" class="form-control" id="site" name="site">
+                            <label for="date" class="col-form-label">Pick up Date</label>
+                            <input type="date" class="form-control" id="date" name="date">
                         </div>
 
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button class="btn btn-primary" id="schedule-btn" type="button">Schedule</button>
+                        <button class="btn btn-primary" id="schedule-btn" type="submit">Schedule</button>
                     </form>
                 </div>
             </div>
@@ -234,10 +241,11 @@
     $(document).ready(function () {
         console.log('ready')
         var socket = io.connect('http://127.0.0.1:5000');
-        console.log('connected');
         $('#schedule-btn').on('click', function () {
-            console.log('clicked');
-            socket.emit('pickupSchedule', "tool id received");
+            preventDefault();
+            var toolid = $('#tool-id').val();
+            console.log('clicked ', toolid);
+            socket.emit('pickupSchedule', toolid);
         })
     })
 </script>

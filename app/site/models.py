@@ -41,6 +41,9 @@ class Tools:
 
         return resp
 
+    def unassignTool(self, tool_id, status):
+        resp = mongo.db.tool_data.update({"Product ID" : tool_id}, {'$set' : {'status' : status}})
+
     def getTools(self, company):
         resp = list(mongo.db.tool_data.find({'Name of Owner' : company}).limit(5))
         return resp
@@ -89,3 +92,23 @@ class Users:
     def updateUserData(self, email, edit):
         user = mongo.db.htot_users.update({'Email': email}, {'$set': edit})
         return user
+
+
+class Workshop:
+    def __init__(self):
+        pass
+
+    def insertToolData(self, company, email, tool_id, date, status):
+        resp = mongo.db.tool_repairs.insert({"Company" : company, "Email" : email, "toolid" : tool_id, "request on" : date, "status" : status})
+
+        return resp
+
+    def getToolData(self):
+        resp = mongo.db.tool_repairs.find()
+
+        return resp
+
+    def getOneTool(self, tool_id):
+        resp = mongo.db.tool_repairs.find({"toolid" : tool_id})
+
+        return resp

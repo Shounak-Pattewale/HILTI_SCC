@@ -1,5 +1,42 @@
 {% extends 'base_template.html' %}
-{% block link %} {% endblock %}
+{% block link %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+      integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+      crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
+
+<script>
+  $(document).ready(function () {
+    var socket = io.connect('http://127.0.0.1:5000');
+    socket.on('receivepickupnotification', function (tool) {
+      console.log(tool);
+      $('tbody').prepend(`<tr>
+              <td>
+                ${tool}
+              </td>
+              <td>
+                {{ tool['Email'] }}
+              </td>
+              <td>
+                {{ tool['toolid'] }}
+              </td>
+              <td>
+                {{ tool['request on']}}
+              </td>
+              <td>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                  data-bs-target=".tool-status">
+                  Way To Workshop
+                </button>
+              </td>
+            </tr>`)
+    })
+})
+</script>
+
+{% endblock %}
 {% block title %} Dashboard {% endblock %}
 {% block main %}
 {% include 'sidebar.html' %}
@@ -78,18 +115,19 @@
           </thead>
           <tbody>
             <!-- Row 1 -->
+            {% for tool in tools %}
             <tr>
               <td>
-                Company 1
+                {{ tool['Company'] }}
               </td>
               <td>
-                company1@gmail.com
+                {{ tool['Email'] }}
               </td>
               <td>
-                LA2211
+                {{ tool['toolid'] }}
               </td>
               <td>
-                05-01-2021
+                {{ tool['request on']}}
               </td>
               <td>
                 <!-- Button trigger modal -->
@@ -99,116 +137,7 @@
                 </button>
               </td>
             </tr>
-            <!-- Row 2 -->
-            <tr>
-              <td>
-                Company 2
-              </td>
-              <td>
-                company2@gmail.com
-              </td>
-              <td>
-                LA2212
-              </td>
-              <td>
-                04-01-2021
-              </td>
-              <td>
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                  data-bs-target=".tool-status">
-                  Under Repair
-                </button>
-              </td>
-            </tr>
-            <!-- Row 3 -->
-            <tr>
-              <td>
-                Company 3
-              </td>
-              <td>
-                company3@gmail.com
-              </td>
-              <td>
-                LA2213
-              </td>
-              <td>
-                02-01-2021
-              </td>
-              <td>
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                  data-bs-target=".tool-status">
-                  Under Repair
-                </button>
-              </td>
-            </tr>
-            <!-- Row 4 -->
-            <tr>
-              <td>
-                Company 4
-              </td>
-              <td>
-                company4@gmail.com
-              </td>
-              <td>
-                LA2214
-              </td>
-              <td>
-                02-01-2021
-              </td>
-              <td>
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                  data-bs-target=".tool-status">
-                  Repair Completed
-                </button>
-              </td>
-            </tr>
-            <!-- Row 5 -->
-            <tr>
-              <td>
-                Company 5
-              </td>
-              <td>
-                company5@gmail.com
-              </td>
-              <td>
-                LA2215
-              </td>
-              <td>
-                02-01-2021
-              </td>
-              <td>
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                  data-bs-target=".tool-status">
-                  Way To Customer
-                </button>
-              </td>
-            </tr>
-            <!-- Row 6 -->
-            <tr>
-              <td>
-                Company 5
-              </td>
-              <td>
-                company5@gmail.com
-              </td>
-              <td>
-                LA2216
-              </td>
-              <td>
-                01-01-2021
-              </td>
-              <td>
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                  data-bs-target=".tool-status">
-                  Received By Customer
-                </button>
-              </td>
-            </tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
@@ -249,7 +178,18 @@
 
   {% block script %}
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+      integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+      crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
+
   <script>
+    $(document).ready(function () {
+      var socket = io.connect('http://127.0.0.1:5000');
+      socket.on('receivepickupnotification', function (toolid) {
+        console.log(toolid);
+      })
+  })
   </script>
 
   {% endblock %}
