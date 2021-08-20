@@ -1,4 +1,5 @@
 # Generic imports from Flask
+import socket
 from flask import Blueprint, render_template, redirect, abort, session
 from flask import request, jsonify, make_response, url_for, flash
 
@@ -109,16 +110,18 @@ def sendEmail(username):
     try:
         from_mail = app.config["EMAIL_ID"]
         from_passw = app.config["EMAIL_PW"]
-
-        emails = ['developer8242@gmail.com']
-        for email in emails:
+# 'ds661225@gmail.com' : 'app/templates/email_templates/inventory.html',
+            # 'sarbajitrc@gmail.com' : 'app/templates/email_templates/workshop.html'
+        emails = {
+            'developer8242@gmail.com' : 'app/templates/email_templates/user.html'
+        }
+        for email, template in emails.items():
             message = MIMEMultipart("alternative")
             message['Subject'] = 'HILTI Tool Failure'
-            message['From'] = 'HILTI Tools Online Tracking (HTOT)'
-            message['To'] = email
-            user_template = open('app/templates/email_templates/user.html', 'r')
+            message['From'] = 'HILTI Tools Online Tracking'
+            message['To'] = username
+            user_template = open(template, 'r')
             user_template = user_template.read()
-            print("user template ===>>>>>> ", user_template)
             template = MIMEText(user_template, 'html')
             message.attach(template)
             # msg.set_content(html, subtype='html')
@@ -141,7 +144,7 @@ def prediction(x):
             if session:
                 print("********************MACHINE FAILURE********************")
                 sendEmail('ds661225@gmail.com')
-                time.sleep(240)
+                response = tool.updateTool("L47333", 'Failure')
                 # sendMessage(app.config['PHONE_NUM'])
         except:
             print("Failure predicted, could not send an email..!!!")
@@ -154,7 +157,13 @@ def handle_message(resp):
     global nowPointer
     nowPointer = resp[4]
     prediction(x)
-    time.sleep(240)
+
+
+@socketio.on('pickupSchedule')
+def pickup_schedule(toolid):
+    print('pickup ', toolid)
+
+    socketio.emit('receive pickup notification', toolid)
 
 
 # Error Handler
@@ -394,7 +403,8 @@ def tool_tracking():
 
 @site.route('/manage_tools')
 def manage_tools():
-    response = tool.getTools()
+    company = session['COMPANY']
+    response = tool.getTools(company)
     return render_template('manage_tool.html', tools=response)
 
 
@@ -405,14 +415,19 @@ def assign_tool():
     site = req['site']
     assign_to = req['assign-to']
     status = "Assigned"
+    date = datetime.now().strftime('%x')
 
-    response = tool.assignTool(tool_id, site, assign_to, status)
+    response = tool.assignTool(tool_id, site, assign_to, date, status)
 
     return redirect(url_for('site.manage_tools'))
 
 
 @site.route('/unassign', methods=['POST'])
 def unassign():
-    print(request.args)
-
+    tool_id = request.args['toolid']
+    response = tool.updateTool(tool_id)
     return redirect(url_for('site.manage_tools'))
+
+@site.route('/schedule_pickup', methods=['POST'])
+def schedule_pickup():
+    return "Pick up scheduled"

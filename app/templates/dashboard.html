@@ -98,131 +98,149 @@
         </div>
       </div>
     </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card card-chart" style="height: 95.5%;">
-        <div class="card-header">
-          <h5 class="card-category">Machine Failure Count</h5>
-          <!-- <h4 class="card-title" id="temperature">300 K</h4> -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card card-chart" style="height: 95.5%;">
+          <div class="card-header">
+            <h5 class="card-category">Machine Failure Count</h5>
+            <!-- <h4 class="card-title" id="temperature">300 K</h4> -->
+          </div>
+          <div class="card-body">
+            <div class="chart-area">
+              <canvas id="doughnutChart"></canvas>
+            </div>
+          </div>
         </div>
-        <div class="card-body">
-          <div class="chart-area">
-            <canvas id="doughnutChart"></canvas>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-category"></h5>
+            <h3 class="card-title">STATS </h3>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class=" text-primary">
+                  <th>
+                    Parameters
+                  </th>
+                  <th>
+                    Range
+                  </th>
+                  <th>
+                    min
+                  </th>
+                  <th class="text-right">
+                    max
+                  </th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      Rotational Speed
+                    </td>
+                    <td id="rpm">
+
+                    </td>
+                    <td>
+                      1181
+                    </td>
+                    <td class="text-right">
+                      2886
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Process Temperature
+                    </td>
+                    <td id="process">
+
+                    </td>
+                    <td>
+                      305.7
+                    </td>
+                    <td class="text-right">
+                      313.8
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Air Temperature
+                    </td>
+                    <td id="air">
+
+                    </td>
+                    <td>
+                      295.3
+                    </td>
+                    <td class="text-right">
+                      304.5
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Torque
+                    </td>
+                    <td id="torque">
+
+                    </td>
+                    <td>
+                      3.8
+                    </td>
+                    <td class="text-right">
+                      76.6
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Tool Wear
+                    </td>
+                    <td id="toolwear">
+
+                    </td>
+                    <td>
+                      0
+                    </td>
+                    <td class="text-right">
+                      251
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="card-category"></h5>
-          <h3 class="card-title">STATS </h3>
-        </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table">
-              <thead class=" text-primary">
-                <th>
-                  Parameters
-                </th>
-                <th>
-                  Range
-                </th>
-                <th>
-                  min
-                </th>
-                <th class="text-right">
-                  max
-                </th>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    Rotational Speed
-                  </td>
-                  <td id="rpm">
-                    
-                  </td>
-                  <td>
-                    1181
-                  </td>
-                  <td class="text-right">
-                    2886
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Process Temperature
-                  </td>
-                  <td id="process">
-                    
-                  </td>
-                  <td>
-                    305.7
-                  </td>
-                  <td class="text-right">
-                    313.8
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Air Temperature
-                  </td>
-                  <td id="air">
-                    
-                  </td>
-                  <td>
-                    295.3
-                  </td>
-                  <td class="text-right">
-                    304.5
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Torque
-                  </td>
-                  <td id="torque">
-                    
-                  </td>
-                  <td>
-                    3.8
-                  </td>
-                  <td class="text-right">
-                    76.6
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Tool Wear
-                  </td>
-                  <td id="toolwear">
-                    
-                  </td>
-                  <td>
-                    0
-                  </td>
-                  <td class="text-right">
-                    251
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-{% block script %}
+    {% block script %}
 
-<!-- Chart JS -->
-<script src="{{url_for('static',filename='assets/js/plugins/chartjs.min.js')}}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+    <!-- Charlist-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 
-<script>
-</script>
+    <!-- amCHART links -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+      integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+      crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
+    <!-- Resources -->
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/dark.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
 
-{% endblock %}
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.1.1/dist/chart.js"></script>
 
-{% endblock %}
+    <!-- Chart JS -->
+    <script src="{{url_for('static',filename='assets/js/plugins/chartjs.min.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+
+    <script>
+    </script>
+
+    {% endblock %}
+
+    {% endblock %}

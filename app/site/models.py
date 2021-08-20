@@ -35,14 +35,20 @@ class Tools:
 
         return resp
 
-    def assignTool(self, tool_id, site, assign_to, assigned):
+    def assignTool(self, tool_id, site, assign_to, date, status):
         resp = list(mongo.db.tool_data.update({'Product ID': tool_id}, {
-                    '$set': {'site': site, 'assigned to': assign_to, 'assigned': assigned}}))
+                    '$set': {'site': site, 'assigned to': assign_to, 'assigned on' : date, 'status': status}}))
 
         return resp
 
-    def getTools(self):
-        resp = list(mongo.db.tool_data.find().limit(5))
+    def getTools(self, company):
+        resp = list(mongo.db.tool_data.find({'Name of Owner' : company}).limit(5))
+        return resp
+
+    def updateTool(self, tool_id, status):
+        resp = mongo.db.tool_data.update({'Product ID': tool_id}, {
+                                         '$set': {'status': status}})
+
         return resp
 
 
