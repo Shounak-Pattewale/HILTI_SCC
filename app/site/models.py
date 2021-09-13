@@ -42,7 +42,7 @@ class Tools:
         return resp
 
     def unassignTool(self, tool_id, status):
-        resp = mongo.db.tool_data.update({"Product ID" : tool_id}, {'$set' : {'status' : status}})
+        resp = mongo.db.tool_data.update({"Product ID" : tool_id}, {'$set' : {'status' : status, 'site' : None, 'assigned to' : None, 'assigned on' : None}})
 
     def getTools(self, company):
         resp = list(mongo.db.tool_data.find({'Name of Owner' : company}).limit(5))

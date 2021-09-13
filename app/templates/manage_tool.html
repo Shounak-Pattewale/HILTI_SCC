@@ -75,6 +75,17 @@
                             </td>
                             {% endif %}
                             {% if tool['assigned on'] %}
+                                {% if tool['status'] == "Assigned" %}
+                                <td>
+                                    <button type="button" class="btn btn-info btn-sm"><a href='/tool_location' style="color: white !important; text-decoration: none;">View</a></button>
+                                </td>
+                                {% else %}
+                                <td>
+                                <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
+                                    data-target=".bd-example-modal-xl">View</button>
+                                </td>
+                                {% endif %}
+                            {% elif tool['status'] == 'In service' %}
                             <td>
                                 <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
                                     data-target=".bd-example-modal-xl">View</button>
@@ -83,7 +94,7 @@
                             {% else %}
                             <td>
                                 <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
-                                    data-target=".bd-example-modal-xl">View</button>
+                                    data-target=".bd-example-modal-xl" disabled>View</button>
 
                             </td>
                             {% endif %}
@@ -106,7 +117,7 @@
                             <td>
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
-                                    data-target="#pickupModal{{ tool['Product ID'] }}" data-whatever="@xyz">In Service</button>
+                                    data-target="" data-whatever="@xyz">In Service</button>
                             </td>
                             {% endif %}
                             {% if tool['status'] == 'Unassigned' or not tool['status'] %}
@@ -200,13 +211,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                    <!---- Tabs ---->
+                    <!-- Tabs -->
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                         <a class="nav-item u-pr-5 nav-link active" id="tool-track-tab" data-toggle="tab"
                             href="#tool_track" role="tab" aria-controls="nav-signin" aria-selected="true">
                             Tool Track
                         </a>
-                        <!-- <a class="nav-item u-pr-5 nav-link" id="tool-hist-tab" data-toggle="tab" href="#tool_hist"
+                        <!-- <a class="nav-item u-pr-5 nav-link" id="tool-location-tab" data-toggle="tab" href="#tool_location"
                             role="tab" aria-controls="nav-signup" aria-selected="false">
                             Tool Location
                         </a>
@@ -238,15 +249,10 @@
       crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
 <script>
-    $(document).ready(function () {
-        console.log('ready')
-        var socket = io.connect('http://127.0.0.1:5000');
-        $('#schedule-btn').on('click', function () {
-            preventDefault();
-            var toolid = $('#tool-id').val();
-            console.log('clicked ', toolid);
-            socket.emit('pickupSchedule', toolid);
-        })
+    var socket = io.connect('http://127.0.0.1:5000');
+    $('#schedule-btn').on('click', function () {
+        var toolid = $('#tool-id').val();
+        socket.emit('pickupSchedule', toolid);
     })
 </script>
 

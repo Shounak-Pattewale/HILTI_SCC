@@ -142,7 +142,7 @@ def prediction(x):
             if session:
                 print("********************MACHINE FAILURE********************")
                 sendEmail(session['EMAIL'])
-                response = tool.updateTool("L47593", 'Failure')
+                response = tool.updateTool("L48433", 'Failure')
                 # sendMessage(app.config['PHONE_NUM'])
         except:
             print("Failure predicted, could not send an email..!!!")

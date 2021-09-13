@@ -8,7 +8,7 @@ from authlib.integrations.flask_client import OAuth
 app = Flask(__name__)
 app.config.from_object("config.Config")
 mongo = PyMongo(app)
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 oauth = OAuth(app)
 
 from .site.views import site

@@ -2,17 +2,17 @@
 {% block link %}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
-      integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
-      crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
+  integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+  crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
 
 <script>
+  var socket = io.connect('http://127.0.0.1:5000');
   $(document).ready(function () {
-    var socket = io.connect('http://127.0.0.1:5000');
     socket.on('receivepickupnotification', function (tool) {
       console.log(tool);
-      $('tbody').prepend(`<tr>
-              <td>
+      const newNode = document.createElement('tr');
+      newNode.innerHTML = `<td>
                 ${tool}
               </td>
               <td>
@@ -30,10 +30,10 @@
                   data-bs-target=".tool-status">
                   Way To Workshop
                 </button>
-              </td>
-            </tr>`)
+              </td>`
+        document.getElementsByTagName('tbody').appendChild(newNode);
     })
-})
+  })
 </script>
 
 {% endblock %}
@@ -57,7 +57,8 @@
         <div class="card card-chart">
           <div class="card-header">
             <h5 class="card-category">Tools Repaired</h5>
-            <h5>&nbsp; {{tool_data_count['repair_completed'] + tool_data_count['way_to_customer'] + tool_data_count['received_by_customer']}}</h5>
+            <h5>&nbsp; {{tool_data_count['repair_completed'] + tool_data_count['way_to_customer'] +
+              tool_data_count['received_by_customer']}}</h5>
           </div>
         </div>
       </div>
@@ -130,11 +131,11 @@
               </td>
               <td>
                 {% if not tool['btn_color'] %}
-                  {% set btn_color='btn-warning' %}
+                {% set btn_color='btn-warning' %}
                 {% endif %}
                 <!-- Button trigger modal -->
-                <button type="button" class="btn {{tool['btn_color']}} btn-sm get_tool_id" data-bs-toggle="modal" data-tool-id="{{tool['toolid']}}"
-                  data-bs-target=".tool-status">
+                <button type="button" class="btn {{tool['btn_color']}} btn-sm get_tool_id" data-bs-toggle="modal"
+                  data-tool-id="{{tool['toolid']}}" data-bs-target=".tool-status">
                   {{ ' '.join(tool['status_id'].split('_')).title()}}
                 </button>
               </td>
@@ -146,35 +147,35 @@
     </div>
 
     <!-- Modal -->
-      <div class="modal fade tool-status" tabindex="-1" aria-labelledby="toolStatusModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="toolStatusModalLabel">Tool Status</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <!-- Update Order Status Modal Form -->
-              <form action="/workshop/dashboard" class="text-center" method="POST">
-                <label><strong>Select Status</strong></label>
-                <input type="text" hidden name="hidden_tool_id" class="fill_tool_id" value="">
-                <select class="form-control form-control-sm" id="tool_status" name="tool_status">
-                  <option value="way_to_workshop">Way To Workshop</option>
-                  <option value="arrived_to_workshop">Arrived To Workshop</option>
-                  <option value="under_repair">Under Repair</option>
-                  <option value="repair_completed">Repair Completed</option>
-                  <option value="way_to_customer">Way To Customer</option>
-                  <option value="received_by_customer">Received By Customer</option>
-                </select>
-                <div class="modal-body">
-                  <button class="btn btn-danger btn-sm" data-bs-dismiss="modal" type="button">Close</button>
-                  <button class="btn btn-success btn-sm" type="submit">Submit</button>
-                </div>
-              </form>
-            </div>
+    <div class="modal fade tool-status" tabindex="-1" aria-labelledby="toolStatusModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="toolStatusModalLabel">Tool Status</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Update Order Status Modal Form -->
+            <form action="/workshop/dashboard" class="text-center" method="POST">
+              <label><strong>Select Status</strong></label>
+              <input type="text" hidden name="hidden_tool_id" class="fill_tool_id" value="">
+              <select class="form-control form-control-sm" id="tool_status" name="tool_status">
+                <option value="way_to_workshop">Way To Workshop</option>
+                <option value="arrived_to_workshop">Arrived To Workshop</option>
+                <option value="under_repair">Under Repair</option>
+                <option value="repair_completed">Repair Completed</option>
+                <option value="way_to_customer">Way To Customer</option>
+                <option value="received_by_customer">Received By Customer</option>
+              </select>
+              <div class="modal-body">
+                <button class="btn btn-danger btn-sm" data-bs-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-success btn-sm" type="submit">Submit</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
+    </div>
 
   </div>
 
@@ -183,18 +184,18 @@
   {% block script %}
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
-      integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
-      crossorigin="anonymous"></script>
+    integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+    crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
 
   <script>
     $(document).ready(function () {
       var socket = io.connect('http://127.0.0.1:5000');
-      
+
       $(".get_tool_id").click(function () {
-          var tool_id = $(this).attr('data-tool-id');
-          $('.fill_tool_id').val(tool_id)
-        });
+        var tool_id = $(this).attr('data-tool-id');
+        $('.fill_tool_id').val(tool_id)
+      });
 
       socket.on('receivepickupnotification', function (toolid) {
         console.log(toolid);
